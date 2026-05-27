@@ -4,7 +4,33 @@ import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'About Sherly — A Curious Note',
-  description: 'Product designer, slow-blogger, and chronic re-arranger of bookmark folders.',
+  description: 'I write A Curious Note from my home in Jakarta, usually on quiet Sunday mornings, with a cup of tea nearby and my dog asleep at my feet.',
+  keywords: ['about', 'Sherly Septiani', 'blog', 'frontend engineer', 'Jakarta', 'personal'],
+  authors: [{ name: 'Sherly Septiani' }],
+  creator: 'Sherly Septiani',
+  openGraph: {
+    type: 'profile',
+    locale: 'en_US',
+    url: 'https://acuriousnote.com/about',
+    siteName: 'A Curious Note',
+    title: 'About Sherly — A Curious Note',
+    description: 'I write A Curious Note from my home in Jakarta, usually on quiet Sunday mornings, with a cup of tea nearby and my dog asleep at my feet.',
+    images: [
+      {
+        url: 'https://acuriousnote.com/portrait.jpg',
+        alt: 'Sherly - Author of A Curious Note',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Sherly — A Curious Note',
+    description: 'I write A Curious Note from my home in Jakarta, usually on quiet Sunday mornings, with a cup of tea nearby and my dog asleep at my feet.',
+    images: ['https://acuriousnote.com/portrait.jpg'],
+  },
+  alternates: {
+    canonical: 'https://acuriousnote.com/about',
+  },
 }
 
 export default function AboutPage() {

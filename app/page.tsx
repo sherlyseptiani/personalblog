@@ -8,8 +8,6 @@ import type { Post } from '@/lib/types'
 
 async function getInitialPosts(): Promise<{ posts: Post[]; total: number }> {
   try {
-    // Use direct Supabase for SSR - more reliable than fetch during build/SSR
-    const { createServerClient } = await import('@/lib/supabase')
     const db = createServerClient()
     const { data, count, error } = await db
       .from('posts')
@@ -25,21 +23,6 @@ async function getInitialPosts(): Promise<{ posts: Post[]; total: number }> {
     }
 
     return { posts: (data as Post[]) ?? [], total: count ?? 0 }
-  } catch (e) {
-    console.error('[SSR] Exception:', e)
-    return { posts: [], total: 0 }
-  }
-}
-
-    if (!res.ok) {
-      console.error('[SSR] API error:', res.status, res.statusText)
-      return { posts: [], total: 0 }
-    }
-
-    const json = await res.json()
-    console.log('[SSR] API returned posts:', json.posts?.length || 0, 'total:', json.total)
-
-    return { posts: json.posts ?? [], total: json.total ?? 0 }
   } catch (e) {
     console.error('[SSR] Exception:', e)
     return { posts: [], total: 0 }

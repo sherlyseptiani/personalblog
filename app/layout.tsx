@@ -9,8 +9,50 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'A Curious Note — Notes from a curious mind',
   description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages. Occasionally, I leave pieces of my own experiences and perspectives here too.',
+  keywords: ['blog', 'science', 'history', 'animals', 'astrophysics', 'technology', 'languages', 'personal essays'],
+  authors: [{ name: 'Sherly' }],
+  creator: 'Sherly',
+  publisher: 'A Curious Note',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://acuriousnote.com',
+    siteName: 'A Curious Note',
+    title: 'A Curious Note — Notes from a curious mind',
+    description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages.',
+    images: [
+      {
+        url: 'https://acuriousnote.com/og-image.svg',
+        width: 1200,
+        height: 630,
+        alt: 'A Curious Note',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'A Curious Note — Notes from a curious mind',
+    description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages.',
+    images: ['https://acuriousnote.com/og-image.svg'],
+  },
   icons: {
     icon: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
+  manifest: '/site.webmanifest',
+  alternates: {
+    canonical: 'https://acuriousnote.com',
   },
 }
 

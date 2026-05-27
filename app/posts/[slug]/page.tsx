@@ -67,9 +67,46 @@ function extractTocItems(markdown: string) {
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getPost(params.slug)
   if (!post) return {}
+
+  const ogImage = post.post_thumbnail || 'https://acuriousnote.com/og-image.svg'
+
+  const postUrl = `https://acuriousnote.com/posts/${post.slug}`
+
+  const og: Metadata['openGraph'] = {
+    type: 'article',
+    locale: 'en_US',
+    url: postUrl,
+    siteName: 'A Curious Note',
+    title: post.title,
+    description: post.excerpt ?? undefined,
+    modifiedTime: post.updated_at,
+    authors: ['Sherly'],
+    tags: post.tags,
+    images: [
+      {
+        url: ogImage,
+        alt: post.title,
+      },
+    ],
+  }
+
+  if (post.published_at) {
+    og.publishedTime = post.published_at
+  }
+
   return {
     title: `${post.title} — A Curious Note`,
     description: post.excerpt ?? undefined,
+    openGraph: og,
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt ?? undefined,
+      images: [ogImage],
+    },
+    alternates: {
+      canonical: postUrl,
+    },
   }
 }
 

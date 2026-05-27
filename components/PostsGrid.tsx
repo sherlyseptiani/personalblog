@@ -168,14 +168,14 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
         </div>
       </header>
 
-      <div className="posts" id="postsGrid" ref={postsGridRef} style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
+      <div className="posts" id="postsGrid" ref={postsGridRef} style={{ position: 'relative', zIndex: 1, display: 'flex', gap: colCount === 1 ? '10px' : '24px', alignItems: 'flex-start' }}>
         {posts.length === 0 && !loading ? (
           <p style={{ color: 'var(--ink-2)', fontFamily: 'var(--font-serif)', padding: '40px 0' }}>
             No posts found.
           </p>
         ) : (
           Array.from({ length: colCount }, (_, col) => (
-            <div key={col} style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div key={col} style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: colCount === 1 ? '10px' : '24px' }}>
               {posts
                 .filter((_, i) => i % colCount === col)
                 .map(post => (

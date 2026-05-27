@@ -1,0 +1,70 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f7f5f2"/>
+      <stop offset="100%" stop-color="#e8e4df"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#567C94"/>
+      <stop offset="100%" stop-color="#3d5a6c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Decorative dot pattern -->
+  <g opacity="0.15" fill="#567C94">
+    <circle cx="100" cy="100" r="2"/>
+    <circle cx="140" cy="100" r="2"/>
+    <circle cx="180" cy="100" r="2"/>
+    <circle cx="100" cy="140" r="2"/>
+    <circle cx="140" cy="140" r="2"/>
+    <circle cx="180" cy="140" r="2"/>
+    <circle cx="100" cy="180" r="2"/>
+    <circle cx="140" cy="180" r="2"/>
+    <circle cx="180" cy="180" r="2"/>
+  </g>
+
+  <g opacity="0.15" fill="#567C94">
+    <circle cx="1020" cy="450" r="2"/>
+    <circle cx="1060" cy="450" r="2"/>
+    <circle cx="1100" cy="450" r="2"/>
+    <circle cx="1020" cy="490" r="2"/>
+    <circle cx="1060" cy="490" r="2"/>
+    <circle cx="1100" cy="490" r="2"/>
+    <circle cx="1020" cy="530" r="2"/>
+    <circle cx="1060" cy="530" r="2"/>
+    <circle cx="1100" cy="530" r="2"/>
+  </g>
+
+  <!-- Main content area -->
+  <g transform="translate(600, 315)">
+    <!-- Logo mark -->
+    <g transform="translate(-40, -120)">
+      <rect x="0" y="0" width="80" height="80" rx="16" fill="url(#accent)"/>
+      <text x="40" y="56" font-family="Georgia, serif" font-size="40" fill="#f7f5f2" text-anchor="middle" font-style="italic">N</text>
+    </g>
+
+    <!-- Title -->
+    <text x="0" y="20" font-family="Georgia, serif" font-size="64" fill="#1a1a1a" text-anchor="middle" font-weight="400">
+      A Curious Note
+    </text>
+
+    <!-- Tagline -->
+    <text x="0" y="75" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#4a4a4a" text-anchor="middle" font-weight="400">
+      Notes from a curious mind
+    </text>
+
+    <!-- Decorative line -->
+    <line x1="-60" y1="110" x2="60" y2="110" stroke="#567C94" stroke-width="2" opacity="0.6"/>
+
+    <!-- Topics -->
+    <text x="0" y="155" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="#6a6a6a" text-anchor="middle" font-weight="400">
+      Animals · History · Astrophysics · Science · Technology · Languages
+    </text>
+  </g>
+
+  <!-- Bottom accent bar -->
+  <rect x="0" y="610" width="1200" height="20" fill="url(#accent)" opacity="0.8"/>
+</svg>
