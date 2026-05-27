@@ -1,11 +1,14 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 
 type ActivePage = 'writing' | 'about' | undefined
 
 export default function Nav({ activePage }: { activePage?: ActivePage }) {
+  const pathname = usePathname()
+  const isPostPage = pathname?.startsWith('/posts/')
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [mounted, setMounted] = useState(false)
@@ -80,6 +83,7 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
         <span className="brand-text">A Curious Note</span>
       </Link>
       <div className="nav-actions">
+        {!isPostPage && (
         <div className={`search-expand ${mounted && isSearchOpen ? 'open' : ''}`}>
           <form onSubmit={handleSearchSubmit} className="search-form">
             <input
@@ -109,6 +113,7 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
             )}
           </button>
         </div>
+        )}
 
         <button
           className="icon-btn"
@@ -207,8 +212,8 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
         }
 
         .search-toggle svg {
-          width: 16px;
-          height: 16px;
+          width: 18px;
+          height: 18px;
         }
 
         @media (max-width: 680px) {
