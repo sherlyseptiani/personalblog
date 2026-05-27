@@ -7,15 +7,21 @@ import type { Post } from '@/lib/types'
 
 async function getInitialPosts(): Promise<{ posts: Post[]; total: number }> {
   try {
-    const base = process.env.NEXT_PUBLIC_SUPABASE_URL
-      ? `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}`
-      : 'http://localhost:3000'
-    const res = await fetch(`${base}/api/posts?page=1&limit=8`, {
-      next: { revalidate: 60 },
-    })
-    if (!res.ok) return { posts: [], total: 0 }
-    return await res.json()
-  } catch {
+    // Use internal API instead of direct Supabase to avoid env var issues
+    const base = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
+    const res = await fetch(`${base}/api/posts?limit=8`, { next: { revalidate: 60 } })
+
+    if (!res.ok) {
+      console.error('[SSR] API error:', res.status, res.statusText)
+      return { posts: [], total: 0 }
+    }
+
+    const json = await res.json()
+    console.log('[SSR] API returned posts:', json.posts?.length || 0, 'total:', json.total)
+
+    return { posts: json.posts ?? [], total: json.total ?? 0 }
+  } catch (e) {
+    console.error('[SSR] Exception:', e)
     return { posts: [], total: 0 }
   }
 }
@@ -24,9 +30,11 @@ async function getRecentIdeas(): Promise<{ content: string }[]> {
   try {
     const base = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
     const res = await fetch(`${base}/api/ideas/recent`, { next: { revalidate: 60 } })
+
     if (!res.ok) return []
-    const data = await res.json()
-    return data.ideas ?? []
+
+    const json = await res.json()
+    return json.ideas ?? []
   } catch {
     return []
   }
@@ -37,6 +45,13 @@ export default async function HomePage() {
     getInitialPosts(),
     getRecentIdeas(),
   ])
+
+  // Generate issue info from total posts
+  const issueNumber = total
+  const now = new Date()
+  const monthName = now.toLocaleDateString('en-US', { month: 'long' })
+  const year = now.getFullYear()
+  const issueLabel = `Issue ${issueNumber} · ${monthName} ${year}`
 
   return (
     <main className="wrap">
@@ -62,7 +77,7 @@ export default async function HomePage() {
           <div className="hero-text">
             <div className="eyebrow">
               <span className="dot"></span>
-              <span>Issue 27 · April 2026</span>
+              <span>{issueLabel}</span>
             </div>
             <h1>Notes from a <em>curious</em> mind.</h1>
             <p className="lede">

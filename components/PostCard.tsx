@@ -11,7 +11,18 @@ function decodeHtmlEntities(text: string | null): string {
   return textarea.value
 }
 
-export default function PostCard({ post, className }: { post: Post; className?: string }) {
+function ReadChip() {
+  return (
+    <span className="read-chip" aria-label="Read">
+      <svg viewBox="0 0 12 12" width="9" height="9" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2 6l3 3 5-5" />
+      </svg>
+      Read
+    </span>
+  )
+}
+
+export default function PostCard({ post, className, isRead }: { post: Post; className?: string; isRead?: boolean }) {
   const cat = CATEGORIES[post.category]
   const href = `/posts/${post.slug}`
   const date = formatDate(post.published_at)
@@ -24,6 +35,7 @@ export default function PostCard({ post, className }: { post: Post; className?: 
             <span className="tag-dot" style={{ background: cat.color }}></span>
             {cat.label}
           </span>
+          {isRead && <ReadChip />}
         </div>
         <h3>{post.title}</h3>
         <div className="pull" dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(post.pull_quote) }} />
@@ -56,6 +68,7 @@ export default function PostCard({ post, className }: { post: Post; className?: 
           <span className="tag-dot" style={{ background: cat.color }}></span>
           {cat.label}
         </span>
+        {isRead && <ReadChip />}
         <span className="meta-stat" style={{ fontSize: '11.5px' }}>{post.read_time} min read</span>
       </div>
       <h3>{post.title}</h3>

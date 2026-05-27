@@ -129,6 +129,29 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
     window.addEventListener('scroll', updateToc, { passive: true })
     updateToc()
 
+    // Mark as read when reaching the end of the article
+    const postEndEl = document.querySelector('.post-end')
+    let readObserver: IntersectionObserver | null = null
+    if (postEndEl) {
+      readObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return
+          try {
+            const stored = localStorage.getItem('acn-read')
+            const readList: string[] = stored ? JSON.parse(stored) : []
+            if (!readList.includes(post.slug)) {
+              readList.push(post.slug)
+              localStorage.setItem('acn-read', JSON.stringify(readList))
+              window.dispatchEvent(new StorageEvent('storage', { key: 'acn-read', newValue: JSON.stringify(readList) }))
+            }
+          } catch {}
+          readObserver?.disconnect()
+        },
+        { threshold: 0.5 }
+      )
+      readObserver.observe(postEndEl)
+    }
+
     // Reactions
     window.toggleReact = (btn: HTMLElement) => {
       btn.classList.toggle('active')
@@ -174,8 +197,9 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
       window.removeEventListener('scroll', updateToc)
       document.removeEventListener('click', handleOutside)
       accentRow?.removeEventListener('click', handleAccent)
+      readObserver?.disconnect()
     }
-  }, [])
+  }, [post.slug])
 
   return (
     <>

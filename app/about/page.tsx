@@ -55,7 +55,7 @@ export default function AboutPage() {
               </span>
             </h1>
             <p className="role">
-              I write A Curious Note from a small home in Jakarta, usually on quiet Sunday mornings, with a cup of tea nearby and my dog asleep at my feet.
+              I write A Curious Note from my home in Jakarta, usually on quiet Sunday mornings, with a cup of tea nearby and my dog asleep at my feet.
             </p>
             <div className="about-meta-row">
               <span className="meta-pill">
@@ -92,7 +92,7 @@ export default function AboutPage() {
           </span>
           <span className="rs-progress">
             <span className="rs-bar" style={{ '--rs-pct': '51%' } as React.CSSProperties}><span></span></span>
-            147 / 288
+            45 / 100
           </span>
         </a>
 
@@ -160,7 +160,6 @@ export default function AboutPage() {
                   </span>
                   <span className="sm-text">
                     <span className="sm-label">Email</span>
-                    <span className="sm-handle"> sierli.septiani19@gmail.com</span>
                   </span>
                 </a>
                 <a href="#">
@@ -195,7 +194,6 @@ export default function AboutPage() {
                   </span>
                   <span className="sm-text">
                     <span className="sm-label">LinkedIn</span>
-                    <span className="sm-handle"> in/sherly-...</span>
                   </span>
                 </a>
                 <a href="https://github.com/sherlyseptiani">

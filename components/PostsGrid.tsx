@@ -4,6 +4,7 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import PostCard from './PostCard'
 import type { Post } from '@/lib/types'
 import { CATEGORIES } from '@/lib/categories'
+import { spawnGlitter } from '@/lib/glitter'
 
 type Props = {
   initialPosts: Post[]
@@ -22,7 +23,21 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
   const [newPostSlugs, setNewPostSlugs] = useState<Set<string>>(new Set())
   const [categories, setCategories] = useState<string[]>([])
   const [colCount, setColCount] = useState(4)
+  const [readSlugs, setReadSlugs] = useState<Set<string>>(new Set())
   const postsGridRef = useRef<HTMLDivElement>(null)
+
+  // Load read slugs from localStorage and keep in sync across tabs
+  useEffect(() => {
+    const load = () => {
+      try {
+        const stored = localStorage.getItem('acn-read')
+        setReadSlugs(new Set(stored ? JSON.parse(stored) : []))
+      } catch {}
+    }
+    load()
+    window.addEventListener('storage', load)
+    return () => window.removeEventListener('storage', load)
+  }, [])
 
   // Fetch categories on mount
   useEffect(() => {
@@ -89,10 +104,11 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleFilter = (key: string) => {
+  const handleFilter = (key: string, e: React.MouseEvent) => {
     setActiveFilter(key)
     setPage(1)
     fetchPosts(key, search, 1, false)
+    spawnGlitter(e.clientX, e.clientY)
   }
 
   const handleLoadMore = () => {
@@ -125,24 +141,34 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
             key="all"
             data-filter="all"
             className={activeFilter === 'all' ? 'active' : ''}
-            onClick={() => handleFilter('all')}
+            onClick={(e) => handleFilter('all', e)}
           >
             All
           </button>
-          {categories.map(cat => (
-            <button
-              key={cat}
-              data-filter={cat}
-              className={activeFilter === cat ? 'active' : ''}
-              onClick={() => handleFilter(cat)}
-            >
-              {getCategoryLabel(cat)}
-            </button>
-          ))}
+          {categories.length === 0 ? (
+            // Loading skeleton for filters
+            <>
+              <span className="filter-skeleton" style={{ width: '70px' }} />
+              <span className="filter-skeleton" style={{ width: '80px' }} />
+              <span className="filter-skeleton" style={{ width: '60px' }} />
+              <span className="filter-skeleton" style={{ width: '75px' }} />
+            </>
+          ) : (
+            categories.map(cat => (
+              <button
+                key={cat}
+                data-filter={cat}
+                className={activeFilter === cat ? 'active' : ''}
+                onClick={(e) => handleFilter(cat, e)}
+              >
+                {getCategoryLabel(cat)}
+              </button>
+            ))
+          )}
         </div>
       </header>
 
-      <div className="posts" id="postsGrid" ref={postsGridRef} style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '24px', alignItems: 'flex-start', columnCount: 'unset' as never }}>
+      <div className="posts" id="postsGrid" ref={postsGridRef} style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
         {posts.length === 0 && !loading ? (
           <p style={{ color: 'var(--ink-2)', fontFamily: 'var(--font-serif)', padding: '40px 0' }}>
             No posts found.
@@ -156,6 +182,7 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
                   <PostCard
                     key={post.slug}
                     post={post}
+                    isRead={readSlugs.has(post.slug)}
                     className={newPostSlugs.has(post.slug) ? 'post-anim-new' : undefined}
                   />
                 ))}
