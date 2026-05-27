@@ -1,0 +1,87 @@
+/* ─────────────────────────────────────────────────────────
+   Global mobile overrides — supplements /design/styles.css
+   ───────────────────────────────────────────────────────── */
+
+/* ── Footer: compact 2-col layout on mobile ─────────────── */
+@media (max-width: 680px) {
+  /* 2-column grid: identity | socials, idea widget below */
+  .footer-grid {
+    grid-template-columns: 1fr auto;
+    gap: 16px 20px;
+    padding: 20px;
+  }
+
+  /* Identity stays in left column, loses description */
+  .footer-grid .identity {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .footer-grid .identity p {
+    display: none;
+  }
+  .footer-grid .identity .logo {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  /* Socials in right column */
+  .footer-grid .socials-col {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+  }
+  .footer-grid .col-title {
+    margin-bottom: 8px;
+  }
+
+  /* Collapse social links to icon-only horizontal row */
+  .footer-grid .socials {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .footer-grid .socials a {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    background: var(--glass-inner-light);
+  }
+  /* Hide text label while keeping the SVG icon */
+  .footer-grid .socials a .label {
+    font-size: 0;
+    line-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  .footer-grid .socials a .label svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+  .footer-grid .socials a .handle {
+    display: none;
+  }
+
+  /* Idea widget spans both columns */
+  .footer-grid .idea-widget {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  /* Tighter copyline */
+  .copyline {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    padding-top: 12px;
+  }
+  .copyline .links {
+    gap: 14px;
+  }
+}

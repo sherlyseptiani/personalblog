@@ -29,21 +29,6 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
   const [loading, setLoading] = useState(false)
   const [newPostSlugs, setNewPostSlugs] = useState<Set<string>>(new Set())
   const postsGridRef = useRef<HTMLDivElement>(null)
-  const shouldScrollRef = useRef(false)
-
-  // Handle smooth scroll after new posts are loaded
-  useEffect(() => {
-    if (shouldScrollRef.current && newPostSlugs.size > 0 && !loading) {
-      shouldScrollRef.current = false
-      // Small delay to allow DOM to update
-      setTimeout(() => {
-        const firstNewCard = postsGridRef.current?.querySelector('.post-anim-new')
-        if (firstNewCard) {
-          firstNewCard.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })
-        }
-      }, 50)
-    }
-  }, [newPostSlugs, loading])
 
   const fetchPosts = useCallback(
     async (filter: string, q: string, pg: number, append: boolean) => {
@@ -74,6 +59,18 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
     [posts]
   )
 
+  // Read search query from URL on mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const searchQuery = urlParams.get('search')
+    if (searchQuery) {
+      setSearch(searchQuery)
+      setActiveFilter('all')
+      fetchPosts('all', searchQuery, 1, false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const handleFilter = (key: string) => {
     setActiveFilter(key)
     setPage(1)
@@ -90,7 +87,6 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
   const handleLoadMore = () => {
     const next = page + 1
     setPage(next)
-    shouldScrollRef.current = true
     fetchPosts(activeFilter, search, next, true)
   }
 
@@ -120,45 +116,6 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
           ))}
         </div>
       </header>
-
-      <form onSubmit={handleSearch} style={{ position: 'relative', zIndex: 1, marginBottom: '8px' }}>
-        <div style={{ display: 'flex', gap: '8px', maxWidth: '400px' }}>
-          <input
-            type="search"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Search posts…"
-            className="search-input"
-            style={{
-              flex: 1,
-              padding: '8px 14px',
-              background: 'var(--glass-bg)',
-              border: '1px solid var(--border)',
-              borderRadius: '8px',
-              color: 'var(--ink-1)',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '13px',
-            }}
-          />
-          <button
-            type="submit"
-            className="btn btn-ghost-bordered"
-            style={{ padding: '8px 16px', fontSize: '13px' }}
-          >
-            Search
-          </button>
-          {search && (
-            <button
-              type="button"
-              className="btn btn-ghost-bordered"
-              style={{ padding: '8px 12px', fontSize: '13px' }}
-              onClick={() => { setSearch(''); fetchPosts(activeFilter, '', 1, false); setPage(1) }}
-            >
-              ✕
-            </button>
-          )}
-        </div>
-      </form>
 
       <div className="posts" id="postsGrid" ref={postsGridRef} style={{ position: 'relative', zIndex: 1 }}>
         {posts.map(post => (

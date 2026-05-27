@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Script from 'next/script'
 import Nav from '@/components/Nav'
 import '../design/styles.css'
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'A Curious Note — Notes from a curious mind',

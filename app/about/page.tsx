@@ -219,8 +219,8 @@ export default function AboutPage() {
             </div>
             <h3>The card-stock version.</h3>
             <div className="facts">
-              <div className="fact"><span className="k">Based in</span><span className="v">Brooklyn, NY <span className="accent">(mostly)</span></span></div>
-              <div className="fact"><span className="k">Day job</span><span className="v">Senior product designer</span></div>
+              <div className="fact"><span className="k">Based in</span><span className="v">Jakarta, ID <span className="accent">(mostly)</span></span></div>
+              <div className="fact"><span className="k">Day job</span><span className="v">Frontend Engineer Lead</span></div>
               <div className="fact"><span className="k">Posting since</span><span className="v">Jan 2018 &middot; Issue 27</span></div>
             </div>
           </div>
@@ -233,7 +233,7 @@ export default function AboutPage() {
               <div className="shp-greet">Say Hi.<span className="shp-cursor">|</span></div>
               <div className="shp-sub">Reach me out on my social media account!</div>
               <div className="shp-socials">
-                <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? 'hello@acuriousnote.com'}`}>
+                <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? 'sierli.septiani19@gmail.com'}`}>
                   <span className="sm-icon" style={{ '--sa': '#f5b8c7', '--sb': '#d96b8a' } as React.CSSProperties}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                       <rect x="3" y="5" width="18" height="14" rx="2" />
@@ -242,7 +242,7 @@ export default function AboutPage() {
                   </span>
                   <span className="sm-text">
                     <span className="sm-label">Email</span>
-                    <span className="sm-handle">sherly@…</span>
+                    <span className="sm-handle">sierli.septiani19@gmail.com</span>
                   </span>
                 </a>
                 <a href="#">
@@ -253,10 +253,10 @@ export default function AboutPage() {
                   </span>
                   <span className="sm-text">
                     <span className="sm-label">X</span>
-                    <span className="sm-handle">@a_curious_note</span>
+                    <span className="sm-handle">@shrlys</span>
                   </span>
                 </a>
-                <a href="#">
+                <a href="https://www.instagram.com/sherlyseptiani">
                   <span className="sm-icon" style={{ '--sa': '#f6c7a3', '--sb': '#d96b8a' } as React.CSSProperties}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                       <rect x="3" y="3" width="18" height="18" rx="5" />
@@ -266,10 +266,10 @@ export default function AboutPage() {
                   </span>
                   <span className="sm-text">
                     <span className="sm-label">Instagram</span>
-                    <span className="sm-handle">@sherly</span>
+                    <span className="sm-handle">@sherlyseptiani</span>
                   </span>
                 </a>
-                <a href="#">
+                <a href="https://id.linkedin.com/in/sherly-septiani-31ba2959">
                   <span className="sm-icon" style={{ '--sa': '#6f9bd1', '--sb': '#3f5e8c' } as React.CSSProperties}>
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM8.34 17.34H5.67V9.67h2.67zM7 8.34a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1zm11.33 9H15.67V13.5c0-.94-.36-1.5-1.17-1.5-.88 0-1.49.6-1.49 1.5v3.84H10.34V9.67h2.67v1.1c.47-.78 1.36-1.27 2.5-1.27 1.93 0 2.82 1.3 2.82 3.34z" />
@@ -277,7 +277,7 @@ export default function AboutPage() {
                   </span>
                   <span className="sm-text">
                     <span className="sm-label">LinkedIn</span>
-                    <span className="sm-handle">/in/sherly</span>
+                    <span className="sm-handle">in/sherly-septiani-31ba2959</span>
                   </span>
                 </a>
                 <a href="#">

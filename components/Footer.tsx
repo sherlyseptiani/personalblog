@@ -97,7 +97,7 @@ export default function Footer({
             title={compact ? 'Liked this? Tell me what\'s next' : 'Submit an idea'}
             placeholder={compact
               ? 'A thought, a counter-argument, a thing I missed...'
-              : 'e.g. why software UI is getting quieter, or the strange comfort of bookmark managers...'}
+              : 'e.g. why tuna dies when it stops swimming, or how eating polar bear can kill you...'}
             sendLabel={compact ? 'Send' : 'Send it'}
             showCount={!compact}
             showRecent={showRecent}

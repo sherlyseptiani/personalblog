@@ -1748,13 +1748,18 @@ html[data-theme="dark"] .say-hi-panel .shp-blob { opacity: 0.55; }
     align-items: flex-start;
   }
   .hero .hero-meta .btn {
-    width: 100%;
+    width: fit-content;
+    max-width: 85%;
     justify-content: center;
     padding: 14px 24px;
     font-size: 15px;
   }
+  .hero .hero-meta .btn-primary {
+    background: linear-gradient(135deg, var(--video-tint), rgba(var(--video-r), var(--video-g), var(--video-b), 0.8));
+  }
   .hero .hero-meta .btn-ghost-bordered {
     background: var(--glass-bg-strong);
+    border-color: var(--glass-border);
   }
   .hero .eyebrow {
     margin-bottom: 16px;
