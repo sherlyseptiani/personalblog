@@ -6,6 +6,9 @@ import VideoColorSync from '@/components/VideoColorSync'
 import { createServerClient } from '@/lib/supabase'
 import type { Post } from '@/lib/types'
 
+// Force dynamic rendering - fetch fresh data on each request
+export const dynamic = 'force-dynamic'
+
 async function getInitialPosts(): Promise<{ posts: Post[]; total: number }> {
   try {
     const db = createServerClient()

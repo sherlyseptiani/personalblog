@@ -4,6 +4,9 @@ import { createServerClient } from '@/lib/supabase'
 import type { Post } from '@/lib/types'
 import type { Metadata } from 'next'
 
+// Force dynamic rendering - fetch fresh data on each request
+export const dynamic = 'force-dynamic'
+
 async function getPost(slug: string): Promise<Post | null> {
   try {
     const db = createServerClient()
