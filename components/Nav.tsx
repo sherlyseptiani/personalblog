@@ -38,15 +38,6 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
         <span className="mark"></span>
         <span className="brand-text">A Curious Note</span>
       </Link>
-
-      <div className="nav-links" role="navigation">
-        <Link href="/#latest" className={activePage === 'writing' ? 'active' : ''}>Writing</Link>
-        <a href="#">Notes</a>
-        <a href="#">Reading</a>
-        <Link href="/about" className={activePage === 'about' ? 'active' : ''}>About</Link>
-        <a href="#">Subscribe</a>
-      </div>
-
       <div className="nav-actions">
         <div className={`search-expand ${isSearchOpen ? 'open' : ''}`}>
           <form onSubmit={handleSearchSubmit} className="search-form">

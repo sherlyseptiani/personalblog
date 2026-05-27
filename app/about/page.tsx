@@ -7,90 +7,9 @@ export const metadata: Metadata = {
   description: 'Product designer, slow-blogger, and chronic re-arranger of bookmark folders.',
 }
 
-const aboutMobileStyles = `
-/* ── Mobile hero: text left, avatar right ────────────────── */
-@media (max-width: 800px) {
-  .about-hero { min-height: 0; }
-  .about-hero-inner {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 20px;
-  }
-  .about-headline {
-    flex: 1;
-    min-width: 0;
-    order: -1;
-  }
-  .profile-card {
-    width: 80px;
-    height: 80px;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    flex-shrink: 0;
-    order: 1;
-  }
-  .profile-card .pc-status { display: none; }
-}
-
-/* ── Tighter hero padding on phones ─────────────────────── */
-@media (max-width: 600px) {
-  .about-hero { padding: 28px 20px; }
-  .about-card { padding: 20px 20px; }
-  .about-masonry > .say-hi-panel .shp-inner { padding: 24px 20px; }
-}
-
-/* ── Headline cycling word on its own line ───────────────── */
-@media (max-width: 600px) {
-  .about-headline h1 { font-size: 34px; }
-  .about-headline h1 .em-cycle {
-    display: block;
-    min-width: 0;
-    width: 100%;
-    margin-top: 2px;
-  }
-}
-
-/* ── Say-hi socials: 1 column on narrow screens ──────────── */
-@media (max-width: 560px) {
-  .shp-socials { grid-template-columns: 1fr; }
-}
-
-/* ── Meta pills: slightly tighter on very small screens ───── */
-@media (max-width: 420px) {
-  .about-meta-row { gap: 6px; }
-  .meta-pill { font-size: 11px; padding: 5px 10px; }
-}
-
-/* ── Reading strip: clean stacked layout on mobile ──────── */
-@media (max-width: 600px) {
-  .reading-strip {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 14px 16px;
-  }
-  .reading-strip .rs-title {
-    font-size: 15px;
-    flex: none;
-    width: 100%;
-  }
-  .reading-strip .rs-progress {
-    width: 100%;
-    justify-content: flex-start;
-  }
-  .reading-strip .rs-bar {
-    flex: 1;
-    width: auto;
-    min-width: 0;
-  }
-}
-`
-
 export default function AboutPage() {
   return (
     <main className="wrap">
-      <style>{aboutMobileStyles}</style>
 
       {/* ============ ABOUT HERO ============ */}
       <section className="about-hero" data-screen-label="about-hero">
@@ -110,13 +29,11 @@ export default function AboutPage() {
               id="about-portrait"
               shape="rounded"
               radius="26"
-              placeholder="Drop a portrait here"
+              src="/portrait.jpg"
             ></image-slot>
-            <div className="pc-monogram" aria-hidden="true">S</div>
-            <div className="pc-overlay" aria-hidden="true"></div>
             <div className="pc-status">
               <span className="dot"></span>
-              Available for one new project
+              My dog, @glorythecorgi!
             </div>
           </div>
 
@@ -159,12 +76,6 @@ export default function AboutPage() {
                 <span className="pill-color" style={{ background: 'var(--video-tint)' }}></span>
                 Vibing on <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px' }} id="aboutHex">#567C94</span>
               </span>
-              <span className="meta-pill">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                  <path d="M3 12h18M3 6h18M3 18h12" />
-                </svg>
-                Issue 27 · 142 essays
-              </span>
             </div>
           </div>
         </div>
@@ -177,7 +88,7 @@ export default function AboutPage() {
           <span className="rs-eyebrow"><span className="nico"></span>Currently reading</span>
           <span className="rs-sep"></span>
           <span className="rs-title">
-            <em>Four Thousand Weeks</em> by Oliver Burkeman
+            <em>The Icepick Surgeon</em> by Sam Kean
           </span>
           <span className="rs-progress">
             <span className="rs-bar" style={{ '--rs-pct': '51%' } as React.CSSProperties}><span></span></span>
@@ -194,21 +105,28 @@ export default function AboutPage() {
             </div>
             <h3>An incomplete biography.</h3>
             <p>
-              I started this blog in 2018 as a way to keep myself honest about what I was actually
-              thinking, rather than what I was performing online. Eight years later it&apos;s still a
-              small, slightly stubborn project &mdash; no analytics, no sponsorships,
-              no &ldquo;growth strategy&rdquo; beyond <em>writing more carefully than I&apos;d like</em>.
+              My name is Sherly, and I started this blog as a quiet place to keep the things I don’t want to forget:
+              <em> fascinating facts, strange questions, half-finished thoughts, and small moments of wonder. </em>
+              This blog is less about expertise and more about attention; a personal archive of things that made me
+              pause long enough to care.
             </p>
+
             <p>
-              By day I design product at a tools company you&apos;ve probably heard of.
-              <strong> Before that:</strong> design systems at a fintech, agency life in Toronto,
-              and a brief stint as a tea sommelier (long story). My favorite part of any
-              project is the part where we sit around arguing about names.
+              By day, I work in technology as an <strong>engineering manager</strong>, building products and
+              working with people who turn ideas into things that exist.
+              When I’m not working or writing, I’m usually <em>reading, learning a new language,
+              drinking tea, playing tennis, practicing piano, or spending time with my dog</em>.
             </p>
+
             <p>
-              When I&apos;m not writing or designing I&apos;m usually <em>walking</em>,
-              <em> cooking from old library books</em>, or quietly rearranging the furniture in
-              my notes app.
+              I don’t really write this blog to grow an audience. I write it so that years from now,
+              I can return to these pages and remember what fascinated me, what I was learning,
+              and who I was becoming at the time.
+            </p>
+
+            <p>
+              Still, it would make me genuinely happy if people happen to stop by, read for a while, and leave with a new thought
+              to carry around for the rest of the day.
             </p>
           </div>
 
@@ -242,7 +160,7 @@ export default function AboutPage() {
                   </span>
                   <span className="sm-text">
                     <span className="sm-label">Email</span>
-                    <span className="sm-handle">sierli.septiani19@gmail.com</span>
+                    <span className="sm-handle"> sierli.septiani19@gmail.com</span>
                   </span>
                 </a>
                 <a href="#">
@@ -253,7 +171,7 @@ export default function AboutPage() {
                   </span>
                   <span className="sm-text">
                     <span className="sm-label">X</span>
-                    <span className="sm-handle">@shrlys</span>
+                    <span className="sm-handle"> @shrlys</span>
                   </span>
                 </a>
                 <a href="https://www.instagram.com/sherlyseptiani">
@@ -266,7 +184,7 @@ export default function AboutPage() {
                   </span>
                   <span className="sm-text">
                     <span className="sm-label">Instagram</span>
-                    <span className="sm-handle">@sherlyseptiani</span>
+                    <span className="sm-handle"> @sherlyseptiani</span>
                   </span>
                 </a>
                 <a href="https://id.linkedin.com/in/sherly-septiani-31ba2959">
@@ -277,10 +195,10 @@ export default function AboutPage() {
                   </span>
                   <span className="sm-text">
                     <span className="sm-label">LinkedIn</span>
-                    <span className="sm-handle">in/sherly-septiani-31ba2959</span>
+                    <span className="sm-handle"> in/sherly-...</span>
                   </span>
                 </a>
-                <a href="#">
+                <a href="https://github.com/sherlyseptiani">
                   <span className="sm-icon" style={{ '--sa': '#a7d8c5', '--sb': '#3f5547' } as React.CSSProperties}>
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.22.66-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33s1.7.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.16.57.67.48A10 10 0 0 0 22 12c0-5.52-4.48-10-10-10z" />
@@ -288,7 +206,7 @@ export default function AboutPage() {
                   </span>
                   <span className="sm-text">
                     <span className="sm-label">GitHub</span>
-                    <span className="sm-handle">@curiousnote</span>
+                    <span className="sm-handle"> sherlyseptiani</span>
                   </span>
                 </a>
               </div>
@@ -433,12 +351,23 @@ export default function AboutPage() {
           }
 
           // Scroll-reveal
+          var revealElements = document.querySelectorAll('.reveal');
+          // Immediately show elements already in viewport
+          revealElements.forEach(function(el) {
+            var rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+              el.classList.add('in');
+            }
+          });
+          // Observe remaining hidden elements
           var io = new IntersectionObserver(function(entries) {
             entries.forEach(function(e) {
               if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
             });
           }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
-          document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+          revealElements.forEach(function(el) {
+            if (!el.classList.contains('in')) { io.observe(el); }
+          });
 
           // Apply accent from localStorage
           var saved = localStorage.getItem('acn-accent');

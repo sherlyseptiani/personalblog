@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
+import { Analytics } from '@vercel/analytics/next'
 import Nav from '@/components/Nav'
 import '../design/styles.css'
 import './globals.css'
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Nav />
         {children}
         <Script src="/shared.js" strategy="afterInteractive" />
+        <Analytics />
       </body>
     </html>
   )
