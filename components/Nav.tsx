@@ -106,15 +106,18 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
           width: 0;
           overflow: hidden;
           opacity: 0;
+          visibility: hidden;
           transform: translateX(20px);
           transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
                       opacity 0.25s ease,
+                      visibility 0.25s ease,
                       transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .search-expand.open .search-form {
           width: 240px;
           opacity: 1;
+          visibility: visible;
           transform: translateX(0);
         }
 
