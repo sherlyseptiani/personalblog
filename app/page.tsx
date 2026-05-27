@@ -161,7 +161,7 @@ export default async function HomePage() {
                 if (perm === 'granted') {
                   setNotifyState(btn, true);
                   try { localStorage.setItem(NOTIFY_KEY, '1'); } catch(e) {}
-                  window.showToast && window.showToast("Got it — I'll ping you when a new note goes up.");
+                  window.showToast && window.showToast("You'll get notified of new posts");
                   try { new Notification('A Curious Note', { body: "You'll get a quiet ping for each new essay." }); } catch(e) {}
                   return;
                 }
@@ -169,7 +169,7 @@ export default async function HomePage() {
             }
             setNotifyState(btn, true);
             try { localStorage.setItem(NOTIFY_KEY, '1'); } catch(e) {}
-            window.showToast && window.showToast("Subscribed — you'll get a ping when a new note arrives.");
+            window.showToast && window.showToast("Subscribed to notifications");
           };
           var notifyBtn = document.getElementById('notifyBtn');
           if (notifyBtn && localStorage.getItem(NOTIFY_KEY)) setNotifyState(notifyBtn, true);

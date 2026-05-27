@@ -53,7 +53,7 @@ export default function IdeaWidget({
       })
       if (res.ok) {
         setValue('')
-        ;(window as any).showToast?.('Idea sent — thanks for the spark.')
+        ;(window as any).showToast?.('Idea sent — thanks!')
         // Refresh recent ideas optimistically
         if (showRecent) {
           setRecentIdeas(prev => [{ content: trimmed }, ...prev].slice(0, 3))

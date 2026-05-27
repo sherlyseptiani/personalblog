@@ -165,7 +165,7 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
     // Share + bookmark
     window.shareLink = () => {
       try { navigator.clipboard?.writeText?.(location.href) } catch {}
-      ;(window as any).showToast?.('Link copied to clipboard.')
+      ;(window as any).showToast?.('Link copied')
     }
     window.toggleBookmark = () => {
       const btn = document.getElementById('bookmarkBtn')
@@ -184,7 +184,7 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
       }
 
       // Show instructions toast
-      ;(window as any).showToast?.(`Press ${shortcut} to bookmark this page.`)
+      ;(window as any).showToast?.(`Press ${shortcut} to bookmark`)
 
       // Focus the bookmark star briefly to draw attention
       setTimeout(() => btn?.classList.add('pulse'), 100)
@@ -342,7 +342,7 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
           <h1>{post.title}.</h1>
           {post.excerpt && <p className="deck">{post.excerpt}</p>}
           <div className="author-row">
-            <img className="avatar" src="/portrait.JPG" alt="Sherly" style={{ objectFit: 'cover', width: '40px', height: '40px', borderRadius: '50%' }} />
+            <img className="avatar" src="/portrait.jpg" alt="Sherly" style={{ objectFit: 'cover', width: '40px', height: '40px', borderRadius: '50%' }} />
             <div className="info">
               <div className="name">A Curious Note</div>
               <div className="sub">written by Sherly · Jakarta</div>
