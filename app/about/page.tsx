@@ -112,8 +112,8 @@ export default function AboutPage() {
             </p>
 
             <p>
-              By day, I work in technology as an <strong>engineering manager</strong>, building products and
-              working with people who turn ideas into things that exist.
+              By day, I work in technology as an <strong>frontend lead</strong>, building products and
+              working with my beloved team of developers, who turn ideas into things that exist.
               When I’m not working or writing, I’m usually <em>reading, learning a new language,
               drinking tea, playing tennis, practicing piano, or spending time with my dog</em>.
             </p>

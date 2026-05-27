@@ -8,7 +8,12 @@ type ActivePage = 'writing' | 'about' | undefined
 export default function Nav({ activePage }: { activePage?: ActivePage }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [mounted, setMounted] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (isSearchOpen && inputRef.current) {
@@ -24,12 +29,48 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
+  // Sync search input with URL query on page load
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search)
+      const searchParam = urlParams.get('search')
+      if (searchParam) {
+        setSearchQuery(searchParam)
+        setIsSearchOpen(true)
+      }
+    }
+  }, [])
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
       window.location.href = `/?search=${encodeURIComponent(searchQuery.trim())}#latest`
     }
     setIsSearchOpen(false)
+  }
+
+  const handleToggleSearch = () => {
+    if (isSearchOpen) {
+      // Closing search - if there was a search query, clear it and return home
+      if (searchQuery.trim()) {
+        setSearchQuery('')
+        window.location.href = '/'
+      } else {
+        setIsSearchOpen(false)
+      }
+    } else {
+      // Opening search
+      setIsSearchOpen(true)
+    }
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchQuery(value)
+    // If user clears the input completely and there was a search, return to normal
+    if (!value.trim() && window.location.search.includes('search=')) {
+      window.location.href = '/'
+    }
   }
 
   return (
@@ -39,13 +80,13 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
         <span className="brand-text">A Curious Note</span>
       </Link>
       <div className="nav-actions">
-        <div className={`search-expand ${isSearchOpen ? 'open' : ''}`}>
+        <div className={`search-expand ${mounted && isSearchOpen ? 'open' : ''}`}>
           <form onSubmit={handleSearchSubmit} className="search-form">
             <input
               ref={inputRef}
-              type="search"
+              type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleInputChange}
               placeholder="Search posts…"
               aria-label="Search posts"
             />
@@ -54,16 +95,16 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
             type="button"
             className="icon-btn search-toggle"
             aria-label={isSearchOpen ? 'Close search' : 'Search'}
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            onClick={handleToggleSearch}
           >
             {isSearchOpen ? (
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             ) : (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="7" />
-                <path d="m20 20-3.5-3.5" />
+                <path d="m21 21-4.35-4.35" />
               </svg>
             )}
           </button>
@@ -93,20 +134,20 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
 
         .search-form {
           position: absolute;
-          right: 44px;
+          right: 40px;
           width: 0;
           overflow: hidden;
           opacity: 0;
           visibility: hidden;
-          transform: translateX(20px);
-          transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                      opacity 0.25s ease,
-                      visibility 0.25s ease,
-                      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+          transform: translateX(8px);
+          transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                      opacity 0.2s ease,
+                      visibility 0.2s ease,
+                      transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .search-expand.open .search-form {
-          width: 240px;
+          width: 220px;
           opacity: 1;
           visibility: visible;
           transform: translateX(0);
@@ -114,15 +155,17 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
 
         .search-form input {
           width: 100%;
-          padding: 10px 18px;
+          height: 36px;
+          padding: 0 16px;
           background: var(--glass-bg-strong);
-          border: 1.5px solid var(--glass-border);
+          border: 1px solid var(--line);
           border-radius: 999px;
           color: var(--ink);
           font-family: var(--font-mono);
           font-size: 13px;
           outline: none;
           transition: border-color 0.2s ease, box-shadow 0.2s ease;
+          box-sizing: border-box;
         }
 
         .search-form input:hover {
@@ -131,7 +174,7 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
 
         .search-form input:focus {
           border-color: var(--video-tint);
-          box-shadow: 0 0 0 3px rgba(var(--video-r), var(--video-g), var(--video-b), 0.2);
+          box-shadow: 0 0 0 2px rgba(var(--video-r), var(--video-g), var(--video-b), 0.15);
         }
 
         .search-form input::placeholder {
@@ -140,31 +183,43 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
 
         .search-toggle {
           z-index: 2;
-          transition: transform 0.2s ease, background 0.2s ease;
+          width: 36px;
+          height: 36px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          border: 1px solid var(--line);
+          background: var(--glass-inner-light);
+          color: var(--ink-2);
+          cursor: pointer;
+          transition: all 0.2s ease;
         }
 
         .search-toggle:hover {
-          transform: scale(1.05);
+          background: var(--bg-elev);
+          color: var(--ink);
+          transform: translateY(-1px);
         }
 
         .search-toggle:active {
           transform: scale(0.95);
         }
 
+        .search-toggle svg {
+          width: 16px;
+          height: 16px;
+        }
+
         @media (max-width: 680px) {
           .search-expand.open .search-form {
-            width: 180px;
-          }
-
-          .search-form input {
-            font-size: 16px;
-            padding: 10px 14px;
+            width: 160px;
           }
         }
 
         @media (max-width: 520px) {
           .search-expand.open .search-form {
-            width: 160px;
+            width: 140px;
           }
         }
       `}</style>

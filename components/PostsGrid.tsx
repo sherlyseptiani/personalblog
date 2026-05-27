@@ -3,20 +3,12 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import PostCard from './PostCard'
 import type { Post } from '@/lib/types'
+import { CATEGORIES } from '@/lib/categories'
 
 type Props = {
   initialPosts: Post[]
   initialTotal: number
 }
-
-const FILTERS = [
-  { key: 'all', label: 'All' },
-  { key: 'essay', label: 'Essays' },
-  { key: 'craft', label: 'Craft' },
-  { key: 'field', label: 'Field notes' },
-  { key: 'reading', label: 'Reading' },
-  { key: 'systems', label: 'Systems' },
-]
 
 const LIMIT = 8
 
@@ -28,7 +20,33 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const [newPostSlugs, setNewPostSlugs] = useState<Set<string>>(new Set())
+  const [categories, setCategories] = useState<string[]>([])
+  const [colCount, setColCount] = useState(4)
   const postsGridRef = useRef<HTMLDivElement>(null)
+
+  // Fetch categories on mount
+  useEffect(() => {
+    fetch('/api/categories')
+      .then(res => res.json())
+      .then(data => {
+        if (data.categories) {
+          setCategories(data.categories)
+        }
+      })
+      .catch(console.error)
+  }, [])
+
+  // Track container width to match CSS breakpoints for column distribution
+  useEffect(() => {
+    const el = postsGridRef.current
+    if (!el) return
+    const obs = new ResizeObserver(([entry]) => {
+      const w = entry.contentRect.width
+      setColCount(w < 520 ? 1 : w < 780 ? 2 : w < 1100 ? 3 : 4)
+    })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
 
   const fetchPosts = useCallback(
     async (filter: string, q: string, pg: number, append: boolean) => {
@@ -77,13 +95,6 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
     fetchPosts(key, search, 1, false)
   }
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setActiveFilter('all')
-    setPage(1)
-    fetchPosts('all', search, 1, false)
-  }
-
   const handleLoadMore = () => {
     const next = page + 1
     setPage(next)
@@ -92,43 +103,64 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
 
   const showing = posts.length
 
+  // Get category label from CATEGORIES lookup
+  const getCategoryLabel = (key: string) => {
+    return CATEGORIES[key as keyof typeof CATEGORIES]?.label || key
+  }
+
   return (
     <>
       <header className="section-head" style={{ position: 'relative', zIndex: 1 }}>
         <div className="titles">
-          <span className="eyebrow">The archive</span>
-          <h2>Recent writing.</h2>
-          <p>
-            Essays, half-formed ideas, and field notes. New entries arrive most Sundays &mdash;
-            quiet weeks are part of the practice.
-          </p>
+          <span className="eyebrow">{search ? `Search: "${search}"` : 'The archive'}</span>
+          <h2>{search ? `Found ${total} post${total !== 1 ? 's' : ''}` : 'Recent writing.'}</h2>
+          {!search && (
+            <p>
+              New entries will arrive most Sundays - quiet weeks are part of the practice. I will write more often!
+            </p>
+          )}
         </div>
         <div className="filters glass" id="filters" style={{ '--glass-bg': 'var(--glass-bg-strong)' } as React.CSSProperties}>
-          {FILTERS.map(f => (
+          <button
+            key="all"
+            data-filter="all"
+            className={activeFilter === 'all' ? 'active' : ''}
+            onClick={() => handleFilter('all')}
+          >
+            All
+          </button>
+          {categories.map(cat => (
             <button
-              key={f.key}
-              data-filter={f.key}
-              className={activeFilter === f.key ? 'active' : ''}
-              onClick={() => handleFilter(f.key)}
+              key={cat}
+              data-filter={cat}
+              className={activeFilter === cat ? 'active' : ''}
+              onClick={() => handleFilter(cat)}
             >
-              {f.label}
+              {getCategoryLabel(cat)}
             </button>
           ))}
         </div>
       </header>
 
-      <div className="posts" id="postsGrid" ref={postsGridRef} style={{ position: 'relative', zIndex: 1 }}>
-        {posts.map(post => (
-          <PostCard
-            key={post.slug}
-            post={post}
-            className={newPostSlugs.has(post.slug) ? 'post-anim-new' : undefined}
-          />
-        ))}
-        {posts.length === 0 && !loading && (
+      <div className="posts" id="postsGrid" ref={postsGridRef} style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '24px', alignItems: 'flex-start', columnCount: 'unset' as never }}>
+        {posts.length === 0 && !loading ? (
           <p style={{ color: 'var(--ink-2)', fontFamily: 'var(--font-serif)', padding: '40px 0' }}>
             No posts found.
           </p>
+        ) : (
+          Array.from({ length: colCount }, (_, col) => (
+            <div key={col} style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              {posts
+                .filter((_, i) => i % colCount === col)
+                .map(post => (
+                  <PostCard
+                    key={post.slug}
+                    post={post}
+                    className={newPostSlugs.has(post.slug) ? 'post-anim-new' : undefined}
+                  />
+                ))}
+            </div>
+          ))
         )}
       </div>
       <style jsx global>{`
@@ -139,6 +171,29 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
         .post-anim-new {
           animation: fadeInUp 0.45s ease-out forwards;
           opacity: 0;
+        }
+        .search-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 6px 12px;
+          background: transparent;
+          border: none;
+          color: var(--ink-2);
+          cursor: pointer;
+          transition: color 0.2s ease;
+        }
+        .search-toggle:hover {
+          color: var(--video-tint);
+        }
+        .search-toggle.active {
+          color: var(--video-tint);
+          background: var(--glass-inner-light);
+          border-radius: 6px;
+        }
+        .search-toggle svg {
+          width: 16px;
+          height: 16px;
         }
       `}</style>
 

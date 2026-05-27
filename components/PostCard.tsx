@@ -1,6 +1,15 @@
 import Link from 'next/link'
 import type { Post } from '@/lib/types'
-import { CATEGORIES, formatDate, artSvg } from '@/lib/categories'
+import { CATEGORIES, formatDate } from '@/lib/categories'
+import CoverThumb from './CoverThumb'
+
+// Decode HTML entities like &nbsp; &amp; etc.
+function decodeHtmlEntities(text: string | null): string {
+  if (!text) return ''
+  const textarea = document.createElement('textarea')
+  textarea.innerHTML = text
+  return textarea.value
+}
 
 export default function PostCard({ post, className }: { post: Post; className?: string }) {
   const cat = CATEGORIES[post.category]
@@ -17,9 +26,9 @@ export default function PostCard({ post, className }: { post: Post; className?: 
           </span>
         </div>
         <h3>{post.title}</h3>
-        <div className="pull">{post.pull_quote}</div>
+        <div className="pull" dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(post.pull_quote) }} />
         <div className="footline">
-          <span>{date} · {post.read_time}</span>
+          <span>{date} · {post.read_time} min read</span>
           <span className="arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M7 17 17 7M9 7h8v8" />
@@ -30,37 +39,24 @@ export default function PostCard({ post, className }: { post: Post; className?: 
     )
   }
 
-  const art = post.cover_art ?? {}
-  const thumb = art.thumb ?? 'square'
-  const kind = art.kind ?? 'orb'
-
   return (
     <Link
       href={href}
       className={`post-card glass${post.featured ? ' featured' : ''}${className ? ` ${className}` : ''}`}
       data-cat={post.category}
     >
-      <div className={`thumb ${thumb}`}>
-        <div
-          className="ph"
-          style={
-            {
-              '--p1': art.p1 ?? '#1f2a3a',
-              '--p2': art.p2 ?? '#4f6b85',
-            } as React.CSSProperties
-          }
-        >
-          <div dangerouslySetInnerHTML={{ __html: artSvg(kind) }} />
-          <div className="ph-overlay"></div>
-          <div className="ph-label">{cat.label}</div>
-        </div>
-      </div>
+      <CoverThumb
+        thumbnail={post.post_thumbnail ?? null}
+        coverArt={post.cover_art}
+        slug={post.slug}
+        category={post.category}
+      />
       <div className="meta-row">
         <span className="tag">
           <span className="tag-dot" style={{ background: cat.color }}></span>
           {cat.label}
         </span>
-        <span className="meta-stat" style={{ fontSize: '11.5px' }}>{post.read_time}</span>
+        <span className="meta-stat" style={{ fontSize: '11.5px' }}>{post.read_time} min read</span>
       </div>
       <h3>{post.title}</h3>
       <div className="preview">{post.excerpt}</div>

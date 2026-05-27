@@ -1,4 +1,4 @@
-export type Category = 'essay' | 'craft' | 'field' | 'reading' | 'systems'
+export type Category = 'essay' | 'craft' | 'field' | 'reading' | 'systems' | 'science' | 'language' | 'perspective' | 'book' | 'personal' | 'environment' | 'animal' | 'others' | 'uncategorized'
 
 export type CoverArt = {
   p1?: string
@@ -19,6 +19,7 @@ export type Post = {
   read_time: string | null
   issue: string | null
   cover_art: CoverArt | null
+  post_thumbnail: string | null
   text_only: boolean
   featured: boolean
   published: boolean

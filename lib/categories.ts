@@ -1,17 +1,65 @@
-import type { Category } from './types'
+import type { Category, CoverArt } from './types'
+
+const ART_KINDS = ['orb','pages','lines','wave','glass','spines','grid','topo','tools','room','leaves','mesh','objects'] as const
+
+// Lighter accent paired with each category's base color
+const CAT_P2: Record<Category, string> = {
+  essay:         '#a8b8d0',
+  craft:         '#d4a574',
+  field:         '#4a9990',
+  reading:       '#b89ac8',
+  systems:       '#2d8fa6',
+  science:       '#2d8fa6',
+  language:      '#d4a574',
+  perspective:   '#a8b8d0',
+  book:          '#b89ac8',
+  personal:      '#4a9990',
+  environment:   '#5aab9a',
+  animal:        '#4a8fc4',
+  others:        '#8a9db5',
+  uncategorized: '#8a9db5',
+}
+
+// Polynomial hash — safe within JS integer range (h stays < 100003 * 31 + 126 at all times)
+function hashSlug(slug: string): number {
+  let h = 0
+  for (let i = 0; i < slug.length; i++) h = (h * 31 + slug.charCodeAt(i)) % 100003
+  return h
+}
+
+export function deriveArt(slug: string, category: Category): CoverArt {
+  const hash = hashSlug(slug)
+  return {
+    kind:  ART_KINDS[hash % ART_KINDS.length],
+    p1:    CATEGORIES[category]?.color ?? '#1f2a3a',
+    p2:    CAT_P2[category]            ?? '#4f6b85',
+    thumb: 'square',
+  }
+}
 
 export const CATEGORIES: Record<Category, { label: string; color: string }> = {
-  essay:   { label: 'Essay',      color: '#7c8db5' },
-  craft:   { label: 'Craft',      color: '#c08a64' },
-  field:   { label: 'Field note', color: '#6ba39a' },
-  reading: { label: 'Reading',    color: '#a07ab5' },
-  systems: { label: 'Systems',    color: '#3f7a8c' },
+  // Original categories
+  essay:        { label: 'Essay',        color: '#7c8db5' },
+  craft:        { label: 'Craft',        color: '#c08a64' },
+  field:        { label: 'Field note',   color: '#6ba39a' },
+  reading:      { label: 'Reading',      color: '#a07ab5' },
+  systems:      { label: 'Systems',      color: '#3f7a8c' },
+  // Blogger categories
+  science:      { label: 'Science',      color: '#3f7a8c' },
+  language:     { label: 'Language',     color: '#c08a64' },
+  perspective:  { label: 'Perspective',  color: '#7c8db5' },
+  book:         { label: 'Book',         color: '#a07ab5' },
+  personal:     { label: 'Personal',     color: '#6ba39a' },
+  environment:  { label: 'Environment',  color: '#6ba39a' },
+  animal:       { label: 'Animal',       color: '#6f9bd1' },
+  others:       { label: 'Others',       color: '#7c8db5' },
+  uncategorized:{ label: 'Uncategorized',color: '#7c8db5' },
 }
 
 export function formatDate(iso: string | null): string {
   if (!iso) return ''
   const d = new Date(iso)
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
 }
 
 export function artSvg(kind: string): string {

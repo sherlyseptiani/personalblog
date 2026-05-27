@@ -18,9 +18,15 @@
 # misc
 .DS_Store
 *.pem
+
+# images (allow public folder)
 *.png
 *.jpg
 *.jpeg
+!/public/**/*.png
+!/public/**/*.jpg
+!/public/**/*.jpeg
+!/public/**/*.JPG
 
 # debug
 npm-debug.log*

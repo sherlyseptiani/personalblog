@@ -5,7 +5,6 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 import Link from 'next/link'
-import PostCard from './PostCard'
 import Footer from './Footer'
 import { CATEGORIES, formatDate } from '@/lib/categories'
 import type { Post } from '@/lib/types'
@@ -14,12 +13,12 @@ type TocItem = { level: number; text: string; id: string }
 
 type Props = {
   post: Post
-  relatedPosts: Post[]
+  nextPost: Post | null
   tocItems: TocItem[]
 }
 
-export default function PostPageUI({ post, relatedPosts, tocItems }: Props) {
-  const cat = CATEGORIES[post.category]
+export default function PostPageUI({ post, nextPost, tocItems }: Props) {
+  const cat = CATEGORIES[post.category] ?? { label: post.category, color: '#7c8db5' }
   const date = formatDate(post.published_at)
   const art = post.cover_art ?? {}
 
@@ -311,7 +310,7 @@ export default function PostPageUI({ post, relatedPosts, tocItems }: Props) {
             <span className="sep">·</span>
             <span>{date}</span>
             <span className="sep">·</span>
-            <span>{post.read_time} read</span>
+            <span>{post.read_time} min read</span>
             {post.issue && (
               <><span className="sep">·</span><span>{post.issue}</span></>
             )}
@@ -319,10 +318,10 @@ export default function PostPageUI({ post, relatedPosts, tocItems }: Props) {
           <h1>{post.title}.</h1>
           {post.excerpt && <p className="deck">{post.excerpt}</p>}
           <div className="author-row">
-            <div className="avatar">AN</div>
+            <img className="avatar" src="/portrait.JPG" alt="Sherly" style={{ objectFit: 'cover', width: '40px', height: '40px', borderRadius: '50%' }} />
             <div className="info">
-              <div className="name">A. Note</div>
-              <div className="sub">writes A Curious Note · brooklyn · @a_curious_note</div>
+              <div className="name">A Curious Note</div>
+              <div className="sub">written by Sherly · Jakarta</div>
             </div>
             <div className="actions">
               <button className="icon-btn" title="Bookmark" onClick={() => window.toggleBookmark?.()}>
@@ -363,8 +362,12 @@ export default function PostPageUI({ post, relatedPosts, tocItems }: Props) {
         )}
 
         <div className="article" id="articleBody">
-          {post.content?.trim().startsWith('<') ? (
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          {post.content && (post.content.match(/<\w+/) || post.content.includes('&lt;')) ? (
+            <div dangerouslySetInnerHTML={{
+              __html: post.content.includes('&lt;')
+                ? post.content.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+                : post.content
+            }} />
           ) : (
             <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug]}>
               {post.content}
@@ -373,30 +376,14 @@ export default function PostPageUI({ post, relatedPosts, tocItems }: Props) {
         </div>
 
         <div className="post-end glass">
-          {relatedPosts.length > 0 && (
+          {nextPost && (
             <div className="next-up">
               <span>Next up →</span>
-              <Link href={`/posts/${relatedPosts[0].slug}`}>{relatedPosts[0].title}</Link>
+              <Link href={`/posts/${nextPost.slug}`}>{nextPost.title}</Link>
             </div>
           )}
         </div>
       </article>
-
-      {relatedPosts.length > 0 && (
-        <section className="related-section" data-screen-label="related">
-          <div className="section-head">
-            <div className="titles">
-              <span className="eyebrow">Keep reading</span>
-              <h2>Adjacent notes.</h2>
-            </div>
-          </div>
-          <div className="related-grid" id="relatedGrid">
-            {relatedPosts.map(p => (
-              <PostCard key={p.slug} post={p} />
-            ))}
-          </div>
-        </section>
-      )}
 
       <Footer sourcePage={`post:${post.slug}`} postSlug={post.slug} compact />
     </>

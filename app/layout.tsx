@@ -9,6 +9,9 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'A Curious Note — Notes from a curious mind',
   description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages. Occasionally, I leave pieces of my own experiences and perspectives here too.',
+  icons: {
+    icon: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
