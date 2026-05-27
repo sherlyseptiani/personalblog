@@ -3,13 +3,33 @@ import PostsGrid from '@/components/PostsGrid'
 import Footer from '@/components/Footer'
 import NotifyButton from '@/components/NotifyButton'
 import VideoColorSync from '@/components/VideoColorSync'
+import { createServerClient } from '@/lib/supabase'
 import type { Post } from '@/lib/types'
 
 async function getInitialPosts(): Promise<{ posts: Post[]; total: number }> {
   try {
-    // Use internal API instead of direct Supabase to avoid env var issues
-    const base = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
-    const res = await fetch(`${base}/api/posts?limit=8`, { next: { revalidate: 60 } })
+    // Use direct Supabase for SSR - more reliable than fetch during build/SSR
+    const { createServerClient } = await import('@/lib/supabase')
+    const db = createServerClient()
+    const { data, count, error } = await db
+      .from('posts')
+      .select('*', { count: 'exact' })
+      .eq('published', true)
+      .order('published_at', { ascending: false })
+      .order('id', { ascending: false })
+      .range(0, 7)
+
+    if (error) {
+      console.error('[SSR] Supabase error:', error)
+      return { posts: [], total: 0 }
+    }
+
+    return { posts: (data as Post[]) ?? [], total: count ?? 0 }
+  } catch (e) {
+    console.error('[SSR] Exception:', e)
+    return { posts: [], total: 0 }
+  }
+}
 
     if (!res.ok) {
       console.error('[SSR] API error:', res.status, res.statusText)
@@ -28,13 +48,14 @@ async function getInitialPosts(): Promise<{ posts: Post[]; total: number }> {
 
 async function getRecentIdeas(): Promise<{ content: string }[]> {
   try {
-    const base = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
-    const res = await fetch(`${base}/api/ideas/recent`, { next: { revalidate: 60 } })
-
-    if (!res.ok) return []
-
-    const json = await res.json()
-    return json.ideas ?? []
+    const db = createServerClient()
+    const { data, error } = await db
+      .from('ideas')
+      .select('content')
+      .order('created_at', { ascending: false })
+      .limit(3)
+    if (error) return []
+    return data ?? []
   } catch {
     return []
   }

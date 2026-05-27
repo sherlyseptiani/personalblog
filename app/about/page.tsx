@@ -214,7 +214,7 @@ export default function AboutPage() {
           <div className="about-card glass reveal">
             <div className="card-eyebrow">
               <span className="sigil" style={{ '--sigil-a': '#f5b8c7', '--sigil-b': '#c6b5e0' } as React.CSSProperties}></span>
-              <span className="eyebrow">Recommended · For me</span>
+              <span className="eyebrow">Recommended · For humans</span>
             </div>
             <h3>Things I quietly love.</h3>
             <p style={{ fontFamily: 'var(--font-serif)', color: 'var(--ink-2)', fontSize: '14.5px', margin: '-4px 0 16px' }}>
@@ -257,7 +257,7 @@ export default function AboutPage() {
           <div className="about-card glass reveal r-d1">
             <div className="card-eyebrow">
               <span className="sigil" style={{ '--sigil-a': '#f6c7a3', '--sigil-b': '#a7d8c5' } as React.CSSProperties}></span>
-              <span className="eyebrow">Recommended · For Mochi</span>
+              <span className="eyebrow">Recommended · For dogs</span>
             </div>
             <h3>The dog&apos;s wishlist.</h3>
             <p style={{ fontFamily: 'var(--font-serif)', color: 'var(--ink-2)', fontSize: '14.5px', margin: '-4px 0 16px' }}>
@@ -294,7 +294,7 @@ export default function AboutPage() {
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                 <circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" />
               </svg>
-              Affiliate links — Mochi gets a treat, I get a small commission.
+              Affiliate links — Glory gets a treat, I get a small commission.
             </div>
           </div>
 

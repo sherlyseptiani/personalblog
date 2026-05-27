@@ -1,43 +1,50 @@
 import { notFound } from 'next/navigation'
 import PostPageUI from '@/components/PostPageUI'
+import { createServerClient } from '@/lib/supabase'
 import type { Post } from '@/lib/types'
 import type { Metadata } from 'next'
 
 async function getPost(slug: string): Promise<Post | null> {
   try {
-    const base = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
-    const res = await fetch(`${base}/api/posts/${slug}`, { next: { revalidate: 300 } })
-    if (!res.ok) return null
-    const data = await res.json()
-    return data.post ?? null
-  } catch {
+    const db = createServerClient()
+    const { data, error } = await db
+      .from('posts')
+      .select('*')
+      .eq('slug', slug)
+      .eq('published', true)
+      .single()
+
+    if (error || !data) {
+      console.error('[SSR] getPost error:', error)
+      return null
+    }
+    return data as Post
+  } catch (e) {
+    console.error('[SSR] getPost exception:', e)
     return null
   }
 }
 
 async function getNextPost(currentPost: Post): Promise<Post | null> {
   try {
-    const base = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
-    // Get all posts sorted by published_at descending (newest first)
-    const res = await fetch(
-      `${base}/api/posts?limit=100`,
-      { next: { revalidate: 300 } }
-    )
-    if (!res.ok) return null
-    const data = await res.json()
-    const posts: Post[] = data.posts ?? []
+    const db = createServerClient()
+    const { data, error } = await db
+      .from('posts')
+      .select('*')
+      .eq('published', true)
+      .order('published_at', { ascending: false })
+      .order('id', { ascending: false })
 
-    // Find current post index
+    if (error || !data) return null
+
+    const posts = data as Post[]
     const currentIndex = posts.findIndex(p => p.slug === currentPost.slug)
     if (currentIndex === -1) return null
 
-    // Return the next post (older post, next in the array since sorted desc)
-    // If at the end, return the first post (loop back)
     const nextIndex = currentIndex + 1
     if (nextIndex < posts.length) {
       return posts[nextIndex]
     }
-    // No next post - don't loop, just return null
     return null
   } catch {
     return null
