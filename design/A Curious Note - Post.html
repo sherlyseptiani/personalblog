@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The case for quiet software — A Curious Note</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-screen-label="02 Post detail">
+
+<div class="ambient" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="read-progress" id="readProgress"></div>
+
+<!-- Reading mode exit -->
+<button class="reading-exit" onclick="exitReading()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  Exit reading
+  <span class="kbd">esc</span>
+</button>
+
+<!-- Nav -->
+<nav class="nav glass">
+  <a href="A Curious Note - Homepage.html" class="brand">
+    <span class="mark"></span>
+    <span style="font-family: Nunito; font-size: 20px; font-weight: 400">A Curious Note</span>
+  </a>
+  <div class="nav-links">
+    <a href="A Curious Note - Homepage.html#latest">Writing</a>
+    <a href="#">Notes</a>
+    <a href="#">Reading</a>
+    <a href="A Curious Note - About.html">About</a>
+    <a href="#">Subscribe</a>
+  </div>
+  <div class="nav-actions">
+    <button class="icon-btn" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    </button>
+    <button class="icon-btn" aria-label="Toggle theme" data-theme-toggle onclick="toggleTheme()"></button>
+  </div>
+</nav>
+
+<!-- Floating left controls -->
+<aside class="post-controls glass" id="postControls">
+  <button onclick="toggleReading()" aria-label="Reading mode" id="readingBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg>
+    <span class="tooltip">Reading mode <span class="kbd" style="margin-left:6px;">R</span></span>
+  </button>
+  <button onclick="adjustFont(-1)" aria-label="Smaller text">
+    <span class="font-icon"><span class="a small">A</span><span class="sign">−</span></span>
+    <span class="tooltip">Smaller text</span>
+  </button>
+  <button onclick="adjustFont(1)" aria-label="Larger text">
+    <span class="font-icon"><span class="a big">A</span><span class="sign">+</span></span>
+    <span class="tooltip">Larger text</span>
+  </button>
+  <div class="sep"></div>
+  <button onclick="togglePanel()" aria-label="Theme & color" id="themeBtn">
+    <!-- 8-petal flower -->
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="12" r="2.2" fill="currentColor"/>
+      <ellipse cx="12" cy="6"  rx="2.4" ry="3.2"/>
+      <ellipse cx="12" cy="18" rx="2.4" ry="3.2"/>
+      <ellipse cx="6"  cy="12" rx="3.2" ry="2.4"/>
+      <ellipse cx="18" cy="12" rx="3.2" ry="2.4"/>
+      <ellipse cx="7.8"  cy="7.8"  rx="2.4" ry="3.2" transform="rotate(-45 7.8 7.8)"/>
+      <ellipse cx="16.2" cy="16.2" rx="2.4" ry="3.2" transform="rotate(-45 16.2 16.2)"/>
+      <ellipse cx="16.2" cy="7.8"  rx="2.4" ry="3.2" transform="rotate(45 16.2 7.8)"/>
+      <ellipse cx="7.8"  cy="16.2" rx="2.4" ry="3.2" transform="rotate(45 7.8 16.2)"/>
+    </svg>
+    <span class="tooltip">Theme &amp; color</span>
+  </button>
+  <button onclick="toggleBookmark()" aria-label="Bookmark" id="bookmarkBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    <span class="tooltip">Bookmark</span>
+  </button>
+  <button onclick="shareLink()" aria-label="Share">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v14"/></svg>
+    <span class="tooltip">Copy link</span>
+  </button>
+</aside>
+
+<!-- Right TOC -->
+<aside class="post-aside glass" id="postAside">
+  <div class="col-title">In this essay</div>
+  <nav class="toc" id="toc">
+    <a href="#intro" class="active">A quiet morning</a>
+    <a href="#thesis">The case</a>
+    <a href="#examples">Four quiet tools</a>
+    <a href="#counter">What's lost</a>
+    <a href="#close">Closing notes</a>
+  </nav>
+</aside>
+
+<!-- Theme panel -->
+<div class="theme-panel glass" id="themePanel">
+  <div>
+    <div class="col-title">Mode</div>
+    <div class="theme-opts">
+      <button data-theme-target="light" onclick="setTheme('light')">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg>
+        Light
+      </button>
+      <button data-theme-target="sepia" onclick="setTheme('sepia')">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/></svg>
+        Sepia
+      </button>
+      <button data-theme-target="dark" onclick="setTheme('dark')">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        Dark
+      </button>
+    </div>
+  </div>
+  <div>
+    <div class="col-title">Accent</div>
+    <div class="swatch-row" id="accentRow">
+      <button class="swatch" data-color="86,124,148"  style="background:rgb(86,124,148)"></button>
+      <button class="swatch" data-color="192,138,100" style="background:rgb(192,138,100)"></button>
+      <button class="swatch" data-color="107,163,154" style="background:rgb(107,163,154)"></button>
+      <button class="swatch" data-color="160,122,181" style="background:rgb(160,122,181)"></button>
+      <button class="swatch" data-color="180,90,90"   style="background:rgb(180,90,90)"></button>
+    </div>
+  </div>
+  <div>
+    <div class="col-title">Font</div>
+    <div class="theme-opts">
+      <button data-font-target="serif" class="active" onclick="setFont('serif')" style="font-family: var(--font-serif);">Serif</button>
+      <button data-font-target="sans" onclick="setFont('sans')" style="font-family: var(--font-sans);">Sans</button>
+      <button data-font-target="mono" onclick="setFont('mono')" style="font-family: var(--font-mono); font-size: 11px;">Mono</button>
+    </div>
+  </div>
+</div>
+
+<!-- Article -->
+<article class="post-wrap" data-screen-label="article">
+
+  <header class="post-hero">
+    <div class="meta">
+      <span class="tag"><span class="tag-dot" style="background:#7c8db5;"></span>Essay</span>
+      <span class="sep">·</span>
+      <span>April 4, 2026</span>
+      <span class="sep">·</span>
+      <span>12 min read</span>
+      <span class="sep">·</span>
+      <span>Issue 27</span>
+    </div>
+
+    <h1>The case for quiet software.</h1>
+    <p class="deck">
+      Notifications are the rain, the interface is the umbrella.
+      A short argument for tools that whisper &mdash; and a field guide to recognizing them.
+    </p>
+
+    <div class="author-row">
+      <div class="avatar">AN</div>
+      <div class="info">
+        <div class="name">A. Note</div>
+        <div class="sub">writes A Curious Note · brooklyn · @a_curious_note</div>
+      </div>
+      <div class="actions">
+        <button class="icon-btn" title="Listen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 18V5l12-2v13M9 13a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm12-2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+        </button>
+        <button class="icon-btn" title="Bookmark" onclick="toggleBookmark()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </button>
+        <button class="icon-btn" title="Share" onclick="shareLink()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v14"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="post-cover">
+    <div class="ph-cover">
+      <svg width="100%" height="100%" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <radialGradient id="cv1" cx="30%" cy="30%"><stop offset="0%" stop-color="#fff" stop-opacity="0.55"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
+          <pattern id="cvg" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.8"/></pattern>
+        </defs>
+        <rect width="1200" height="675" fill="url(#cvg)"/>
+        <circle cx="380" cy="320" r="220" fill="url(#cv1)"/>
+        <circle cx="380" cy="320" r="220" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+        <circle cx="380" cy="320" r="140" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+        <g transform="translate(720, 200)" opacity="0.45" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.2">
+          <rect width="320" height="220" rx="20"/>
+          <rect y="0" width="320" height="50" rx="20" fill="rgba(255,255,255,0.18)"/>
+          <line x1="20" y1="80" x2="240" y2="80" stroke-width="0.8"/>
+          <line x1="20" y1="100" x2="200" y2="100" stroke-width="0.8"/>
+          <line x1="20" y1="120" x2="270" y2="120" stroke-width="0.8"/>
+          <line x1="20" y1="140" x2="180" y2="140" stroke-width="0.8"/>
+          <line x1="20" y1="160" x2="220" y2="160" stroke-width="0.8"/>
+        </g>
+      </svg>
+    </div>
+    <div class="caption">Cover · A quiet interface (Apr 2026)</div>
+  </div>
+
+  <div class="article" id="articleBody">
+    <p id="intro">
+      It was a Tuesday morning, and my phone had been quiet for two hours.
+      That, more than the coffee, is what I remember about the morning &mdash; the slightly
+      embarrassed feeling that I had been working without anyone needing me.
+      I noticed it in the way I noticed the radiator clicking on:
+      something I hadn't paid for, exactly, but that was now part of the furniture
+      of my attention.
+    </p>
+
+    <p>
+      We talk about software loudly, the way we talk about cities.
+      We compare them. We rank them. We argue about the trains. But the software
+      I actually use, the software I lean on the way you lean on a doorframe to
+      take off your shoes, mostly does not advertise itself. It does what it does.
+      It gets smaller as I get more competent. It will not appear in a keynote.
+    </p>
+
+    <h2 id="thesis">The case</h2>
+
+    <p>
+      I want to make the case for <strong>quiet software</strong> &mdash; not as an
+      aesthetic, but as a kind of engineering practice. Quiet software has three
+      properties, and they are linked the way three sides of a triangle are linked:
+    </p>
+
+    <ul>
+      <li><strong>It withholds notifications by default.</strong> Anything that wants my attention has to earn it on first launch, and re-earn it whenever the design changes.</li>
+      <li><strong>It rewards repeated use with calm</strong>, not novelty. The interface gets <em>simpler</em>, not louder, as I learn it.</li>
+      <li><strong>It assumes I have other things going on.</strong> If I disappear for two months, it does not punish me when I come back.</li>
+    </ul>
+
+    <p>
+      These sound like UX choices, and they are, but they're also a small political
+      stance. They take a position on whose week is more important &mdash; the company's
+      growth meeting, or mine. Quiet software bets on mine.
+    </p>
+
+    <blockquote>
+      The opposite of quiet software is not loud software.
+      It is software that is performing &mdash; for a roadmap, an investor, a quarterly review &mdash;
+      and has forgotten that you are watching.
+    </blockquote>
+
+    <h2 id="examples">Four quiet tools</h2>
+
+    <p>
+      I keep a small list of tools that have stayed quiet for me over years.
+      None of them are obscure; none are precious. What they share is a kind of
+      <em>self-restraint</em> &mdash; an editorial sensibility about what gets
+      brought to the front. Here they are, briefly:
+    </p>
+
+    <h3>1. A plain-text editor</h3>
+    <p>
+      Six years in. It has never asked me to rate it.
+      Updates arrive without a changelog modal. The cursor blinks
+      at the same speed it did when I downloaded it. This is the kind of
+      thing I'd like to be when I grow up.
+    </p>
+
+    <div class="figure">
+      <div class="fig-art">
+        <svg width="100%" height="100%" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
+          <rect x="100" y="80" width="600" height="290" rx="16" fill="rgba(255,255,255,0.22)" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+          <rect x="100" y="80" width="600" height="38" rx="16" fill="rgba(255,255,255,0.3)"/>
+          <circle cx="124" cy="99" r="5" fill="rgba(255,255,255,0.6)"/>
+          <circle cx="142" cy="99" r="5" fill="rgba(255,255,255,0.45)"/>
+          <circle cx="160" cy="99" r="5" fill="rgba(255,255,255,0.32)"/>
+          <line x1="130" y1="160" x2="460" y2="160" stroke="rgba(255,255,255,0.55)" stroke-width="2"/>
+          <line x1="130" y1="190" x2="600" y2="190" stroke="rgba(255,255,255,0.42)" stroke-width="1.5"/>
+          <line x1="130" y1="218" x2="540" y2="218" stroke="rgba(255,255,255,0.42)" stroke-width="1.5"/>
+          <line x1="130" y1="246" x2="580" y2="246" stroke="rgba(255,255,255,0.42)" stroke-width="1.5"/>
+          <line x1="130" y1="274" x2="420" y2="274" stroke="rgba(255,255,255,0.42)" stroke-width="1.5"/>
+          <rect x="418" y="265" width="2" height="18" fill="rgba(255,255,255,0.8)">
+            <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
+          </rect>
+        </svg>
+      </div>
+      <figcaption>Fig. 1 — A plain-text editor, considered as the interior of a room.</figcaption>
+    </div>
+
+    <h3>2. A read-it-later app</h3>
+    <p>
+      Bookmarks I've kept since 2018, none of which have been monetized into me.
+      The app has a single number on the home screen: the count of unread articles.
+      That is enough <code>UI</code> for a service that, structurally, is asking me
+      to <em>not</em> use it more often.
+    </p>
+
+    <h3>3. A weather app</h3>
+    <p>
+      It tells me whether to bring a jacket. It does not have stories.
+      It does not have a podcast. It has not pivoted into lifestyle content.
+      It is a weather app. Five stars.
+    </p>
+
+    <h3>4. A calendar that lies a little</h3>
+    <p>
+      My favorite calendar shows me only the next event, by default.
+      The rest is one click away. This is technically less information,
+      and it makes me <em>much</em> better at my week. The calendar is
+      lying about how much is in front of me. I am grateful.
+    </p>
+
+    <div class="pullquote">
+      "The best tools are the ones that stop being tools and start being
+      the room you work in."
+    </div>
+
+    <h2 id="counter">What's lost</h2>
+
+    <p>
+      Quiet software costs something. There is no growth team in here.
+      There is no badge that tells me how many friends are also here.
+      There is no clever onboarding to make me feel chosen.
+      Quiet software is, in a real sense, a smaller business.
+      I think this is fine, but I want to say it out loud.
+    </p>
+
+    <p>
+      The other thing it costs is novelty. Quiet software is boring
+      in the way a kitchen is boring. The kitchen has a lot going on, but
+      none of it is for you to look at. You came in for a glass of water.
+      The kitchen helped, then went back to being a kitchen.
+    </p>
+
+    <hr/>
+
+    <h2 id="close">Closing notes</h2>
+
+    <p>
+      The reason I am writing this in 2026 and not 2016 is that <em>loud</em>
+      software has gotten so good at being loud that the contrast is now obvious.
+      The arms race has run out of arms. Every app vibrates. Every app has a
+      red dot. Every red dot is yelling.
+    </p>
+
+    <p>
+      So I am keeping a list. The next time someone asks me what software they
+      should use, I am going to start with the list of things that have stayed
+      quiet around me, and let them work backwards from there.
+      <a href="#">Here is mine, in case it's useful.</a>
+    </p>
+
+    <p>
+      That morning I noticed the silence. I drank the coffee. I wrote three
+      pages without anyone asking me to. It was, by any honest standard, the
+      best Tuesday I'd had all month &mdash; and the software, blessedly,
+      had nothing to do with it.
+    </p>
+  </div>
+
+  <!-- end actions -->
+  <div class="post-end glass">
+    <div class="react-btns">
+      <button class="react-btn" onclick="toggleReact(this,'like')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="14" height="14"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Heart <span class="count">128</span>
+      </button>
+      <button class="react-btn" onclick="toggleReact(this,'flame')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="14" height="14"><path d="M8.5 14.5a4 4 0 1 0 7 0c0-2-2-3-2-5 0-1.5 1-3 1-3s-3 1-3 4c0-2-1-4-1-4s-2 4-2 8z"/></svg>
+        Resonate <span class="count">47</span>
+      </button>
+      <button class="react-btn" onclick="toggleReact(this,'note')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="14" height="14"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+        Reply <span class="count">12</span>
+      </button>
+    </div>
+    <div class="next-up">
+      <span>Next up →</span>
+      <a href="A Curious Note - Post.html?id=why-i-bookmark">Why I still bookmark</a>
+    </div>
+  </div>
+</article>
+
+<!-- Related -->
+<section class="related-section" data-screen-label="related">
+  <div class="section-head">
+    <div class="titles">
+      <span class="eyebrow">Keep reading</span>
+      <h2>Adjacent notes.</h2>
+    </div>
+  </div>
+  <div class="related-grid" id="relatedGrid"></div>
+</section>
+
+<!-- Footer (compact reuse of homepage footer) -->
+<footer class="footer-section">
+  <div class="wrap">
+    <div class="footer-grid glass">
+      <div class="identity">
+        <div class="logo"><span class="mark"></span>A Curious Note</div>
+        <p>A quiet personal corner. Written and tended by hand.</p>
+        <div class="meta-stat" style="font-size:12px;">Made in Brooklyn</div>
+      </div>
+      <div class="socials-col">
+        <div class="col-title">Elsewhere</div>
+        <div class="socials">
+          <a href="#"><span class="label">GitHub</span><span class="handle">@curiousnote</span></a>
+          <a href="#"><span class="label">X · Twitter</span><span class="handle">@a_curious_note</span></a>
+          <a href="#"><span class="label">RSS</span><span class="handle">/feed.xml</span></a>
+        </div>
+      </div>
+      <div class="idea-widget">
+        <div class="col-title">Liked this? Tell me what's next <span class="badge">NEW</span></div>
+        <div class="field">
+          <textarea id="ideaInput" placeholder="A thought, a counter-argument, a thing I missed..."></textarea>
+          <div class="field-foot">
+            <span class="helper">280 chars · anonymous ok</span>
+            <button class="send-btn" id="ideaSend">
+              Send <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copyline">
+      <span>© 2026 A Curious Note</span>
+      <div class="links">
+        <a href="#">Privacy</a>
+        <a href="#">Colophon</a>
+        <a href="A Curious Note - Homepage.html">Home</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+<script src="post.js"></script>
+</body>
+</html>

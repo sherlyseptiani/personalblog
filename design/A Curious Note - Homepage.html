@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A Curious Note — Notes from a curious mind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-screen-label="01 Homepage">
+
+<div class="ambient" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- Nav -->
+<nav class="nav glass" aria-label="Primary">
+  <a href="index.html" class="brand">
+    <span class="mark"></span>
+    <span style="font-family: Nunito; font-size: 20px">A Curious Note</span>
+  </a>
+  <div class="nav-links" role="navigation">
+    <a href="#" class="active">Writing</a>
+    <a href="#">Notes</a>
+    <a href="#">Reading</a>
+    <a href="A Curious Note - About.html">About</a>
+    <a href="#">Subscribe</a>
+  </div>
+  <div class="nav-actions">
+    <button class="icon-btn" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    </button>
+    <button class="icon-btn" aria-label="Toggle theme" data-theme-toggle onclick="toggleTheme()"></button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" data-screen-label="hero">
+    <div class="hero-video-bg" aria-hidden="true">
+      <video
+        id="heroVideo"
+        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_145119_f4ec4d9f-3ecd-4116-baa3-26e8cf2df976.mp4"
+        autoplay muted loop playsinline
+        crossorigin="anonymous"
+        preload="metadata"
+      ></video>
+      <div class="tint"></div>
+      <div class="scrim"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="eyebrow">
+          <span class="dot"></span>
+          <span>Issue 27 · April 2026</span>
+        </div>
+        <h1>Notes from a <em>curious</em> mind.</h1>
+        <p class="lede">
+          A slow blog about the things I can't stop thinking about &mdash; small details in software,
+          the weather of attention, and the slightly stubborn art of building things by hand.
+        </p>
+        <div class="hero-meta">
+          <a href="#latest" class="btn btn-primary">
+            Read latest
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <button type="button" class="btn btn-ghost-bordered notify-btn" id="notifyBtn" onclick="toggleNotify(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+            <span class="notify-label">Notify me on new posts</span>
+          </button>
+          <span class="meta-stat">142 essays · 18 minutes avg</span>
+        </div>
+      </div>
+      <div class="hero-side"></div>
+    </div>
+
+    <div class="video-chip" title="The page accent is sampled from the video in real time">
+      <span class="swatch" id="videoSwatch"></span>
+      <span class="chip-text">
+        <span class="label">Palette</span>
+        <span class="val" id="videoHex">#567C94</span>
+      </span>
+    </div>
+  </section>
+
+  <!-- ============ POSTS ============ -->
+  <section class="posts-section" id="latest" data-screen-label="posts">
+    <div class="dotgrid" aria-hidden="true"></div>
+
+    <header class="section-head" style="position:relative; z-index:1;">
+      <div class="titles">
+        <span class="eyebrow">The archive</span>
+        <h2>Recent writing.</h2>
+        <p>Essays, half-formed ideas, and field notes. New entries arrive most Sundays &mdash; quiet weeks are part of the practice.</p>
+      </div>
+      <div class="filters glass" id="filters" style="--glass-bg: var(--glass-bg-strong);">
+        <button class="active" data-filter="all">All</button>
+        <button data-filter="essay">Essays</button>
+        <button data-filter="craft">Craft</button>
+        <button data-filter="field">Field notes</button>
+        <button data-filter="reading">Reading</button>
+        <button data-filter="systems">Systems</button>
+      </div>
+    </header>
+
+    <div class="posts" id="postsGrid" style="position:relative; z-index:1;">
+      <!-- Cards rendered by JS -->
+    </div>
+
+    <div class="load-more-wrap" style="position:relative; z-index:1;">
+      <div class="count" id="postCount">Showing 8 of 24</div>
+      <button class="btn btn-ghost-bordered load-more" id="loadMore">
+        Load more notes
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer-section" data-screen-label="footer">
+    <div class="footer-grid glass">
+      <div class="identity">
+        <div class="logo"><span class="mark"></span>A Curious Note</div>
+        <p>A quiet personal corner. Written and tended by hand &mdash; no analytics chasing, no algorithm whispering.</p>
+        <div class="meta-stat" style="font-size:12px;">Made in Brooklyn · Updated 4 days ago</div>
+      </div>
+
+      <div class="socials-col">
+        <div class="col-title">Elsewhere</div>
+        <div class="socials">
+          <a href="#">
+            <span class="label">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.22.66-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33s1.7.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.16.57.67.48A10 10 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
+              GitHub
+            </span>
+            <span class="handle">@curiousnote</span>
+          </a>
+          <a href="#">
+            <span class="label">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              X · Twitter
+            </span>
+            <span class="handle">@a_curious_note</span>
+          </a>
+          <a href="#">
+            <span class="label">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.5 12c-1.93 0-3.5-1.57-3.5-3.5S17.57 5 19.5 5 23 6.57 23 8.5 21.43 12 19.5 12zm-7-1c-3.31 0-6 2.69-6 6v6h12v-6c0-3.31-2.69-6-6-6zm-7-2C3.57 9 2 7.43 2 5.5S3.57 2 5.5 2 9 3.57 9 5.5 7.43 9 5.5 9z"/></svg>
+              Mastodon
+            </span>
+            <span class="handle">@<span class="__cf_email__" data-cfemail="167563647f796365567f78727f73617374386579757f777a">[email&#160;protected]</span></span>
+          </a>
+          <a href="#">
+            <span class="label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5" fill="currentColor"/></svg>
+              RSS feed
+            </span>
+            <span class="handle">/feed.xml</span>
+          </a>
+          <a href="#">
+            <span class="label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              Newsletter
+            </span>
+            <span class="handle">tinyletter</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="idea-widget" id="ideaWidget">
+        <div class="col-title">Submit an idea <span class="badge">NEW</span></div>
+        <p style="margin:0 0 10px; color: var(--ink-2); font-size: 14px; font-family: var(--font-serif);">
+          What should I write about next? Leave a prompt &mdash; the best ones become essays.
+        </p>
+        <div class="field">
+          <textarea
+            id="ideaInput"
+            placeholder="e.g. why software UI is getting quieter, or the strange comfort of bookmark managers..."
+            maxlength="280"></textarea>
+          <div class="field-foot">
+            <span class="helper"><span id="ideaCount">0</span>/280 · anonymous ok</span>
+            <button class="send-btn" id="ideaSend">
+              Send it
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>
+            </button>
+          </div>
+        </div>
+        <div style="margin-top: 14px;">
+          <div class="col-title" style="margin-bottom: 8px; font-size: 10px;">Recent prompts</div>
+          <div class="recent">
+            <span class="chip">"Software that doesn't track me"</span>
+            <span class="chip">"A taxonomy of restlessness"</span>
+            <span class="chip">"On letting drafts age"</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="copyline">
+      <span>© 2026 A Curious Note · Written by hand · Liquid ink</span>
+      <div class="links">
+        <a href="#">Privacy</a>
+        <a href="#">Colophon</a>
+        <a href="#">Sitemap</a>
+        <a href="#">/uses</a>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="shared.js"></script>
+<script src="home.js"></script>
+</body>
+</html>

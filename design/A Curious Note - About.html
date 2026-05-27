@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About Sherly — A Curious Note</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-screen-label="03 About">
+
+<div class="ambient" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- Nav -->
+<nav class="nav glass" aria-label="Primary">
+  <a href="A Curious Note - Homepage.html" class="brand">
+    <span class="mark"></span>
+    <span style="font-family: Nunito; font-size: 20px;">A Curious Note</span>
+  </a>
+  <div class="nav-links" role="navigation">
+    <a href="A Curious Note - Homepage.html#latest">Writing</a>
+    <a href="#">Notes</a>
+    <a href="#">Reading</a>
+    <a href="A Curious Note - About.html" class="active">About</a>
+    <a href="#">Subscribe</a>
+  </div>
+  <div class="nav-actions">
+    <button class="icon-btn" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    </button>
+    <button class="icon-btn" aria-label="Toggle theme" data-theme-toggle onclick="toggleTheme()"></button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ============ ABOUT HERO ============ -->
+  <section class="about-hero" data-screen-label="about-hero">
+    <div class="color-mesh" aria-hidden="true">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="blob b3"></div>
+      <div class="blob b4"></div>
+      <div class="blob b5"></div>
+      <div class="blob b6"></div>
+    </div>
+
+    <div class="about-hero-inner">
+      <div class="profile-card floating">
+        <image-slot
+          id="about-portrait"
+          shape="rounded"
+          radius="26"
+          placeholder="Drop a portrait here">
+        </image-slot>
+        <div class="pc-monogram" aria-hidden="true">S</div>
+        <div class="pc-overlay" aria-hidden="true"></div>
+        <div class="pc-status">
+          <span class="dot"></span>
+          Available for one new project
+        </div>
+      </div>
+
+      <div class="about-headline">
+        <div class="eyebrow">
+          <span style="width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#d96b8a,#6f9bd1);"></span>
+          <span>About the writer</span>
+        </div>
+        <h1>Hi, I'm <span class="em-cycle" aria-label="a dog mom"><span class="word active">a dog mom</span><span class="word">an avid reader</span><span class="word">a programmer</span><span class="word">a tennis player</span><span class="word">a language learner</span><span class="word">an animal lover</span><span class="word">a science enthusiast</span></span></h1>
+        <p class="role">
+          Product designer, slow-blogger, and chronic re-arranger of bookmark folders.
+          I write A Curious Note from a small apartment in Brooklyn, mostly on Sunday mornings,
+          mostly with my phone on airplane mode.
+        </p>
+        <div class="about-meta-row">
+          <span class="meta-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.5 8 12 8 12s8-6.5 8-12a8 8 0 0 0-8-8z"/></svg>
+            Brooklyn, NY
+          </span>
+          <span class="meta-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            Local time · 9:42 AM
+          </span>
+          <span class="meta-pill">
+            <span class="pill-color" style="background:var(--video-tint);"></span>
+            Vibing on <span style="font-family: var(--font-mono); font-size: 12px;" id="aboutHex">#567C94</span>
+          </span>
+          <span class="meta-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12h18M3 6h18M3 18h12"/></svg>
+            Issue 27 · 142 essays
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT BODY ============ -->
+  <section class="about-body" id="aboutBody">
+
+    <!-- Currently reading strip -->
+    <a class="reading-strip glass reveal" id="readingStrip" href="#" style="text-decoration:none;">
+      <span class="rs-eyebrow"><span class="nico"></span>Currently reading</span>
+      <span class="rs-sep"></span>
+      <span class="rs-title">
+        <em>Four Thousand Weeks</em> by Oliver Burkeman
+      </span>
+      <span class="rs-progress">
+        <span class="rs-bar" style="--rs-pct:51%;"><span></span></span>
+        147 / 288
+      </span>
+    </a>
+
+    <!-- Masonry of all cards -->
+    <div class="about-masonry" id="aboutMasonry">
+
+      <div class="about-card about-bio glass reveal">
+        <div class="card-eyebrow">
+          <span class="sigil" style="--sigil-a:#f5b8c7;--sigil-b:#c6b5e0;"></span>
+          <span class="eyebrow">The longer version</span>
+        </div>
+        <h3>An incomplete biography.</h3>
+        <p>
+          I started this blog in 2018 as a way to keep myself honest about what I was actually
+          thinking, rather than what I was performing online. Eight years later it's still a
+          small, slightly stubborn project &mdash; no analytics, no sponsorships,
+          no "growth strategy" beyond <em>writing more carefully than I'd like</em>.
+        </p>
+        <p>
+          By day I design product at a tools company you've probably heard of.
+          <strong>Before that:</strong> design systems at a fintech, agency life in Toronto,
+          and a brief stint as a tea sommelier (long story). My favorite part of any
+          project is the part where we sit around arguing about names.
+        </p>
+        <p>
+          When I'm not writing or designing I'm usually <em>walking</em>,
+          <em>cooking from old library books</em>, or quietly rearranging the furniture in
+          my notes app.
+        </p>
+      </div>
+
+      <div class="about-card glass reveal r-d1">
+        <div class="card-eyebrow">
+          <span class="sigil" style="--sigil-a:#a7d8c5;--sigil-b:#b3d0e8;"></span>
+          <span class="eyebrow">Quick facts</span>
+        </div>
+        <h3>The card-stock version.</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Based in</span><span class="v">Brooklyn, NY <span class="accent">(mostly)</span></span></div>
+          <div class="fact"><span class="k">Day job</span><span class="v">Senior product designer</span></div>
+          <div class="fact"><span class="k">Posting since</span><span class="v">Jan 2018 &middot; Issue 27</span></div>
+        </div>
+      </div>
+
+      <!-- Decorative side panel — now also the contact card -->
+      <div class="say-hi-panel reveal r-d2">
+        <div class="shp-blob shp-b1" aria-hidden="true"></div>
+        <div class="shp-blob shp-b2" aria-hidden="true"></div>
+        <div class="shp-blob shp-b3" aria-hidden="true"></div>
+        <div class="shp-inner">
+          <div class="shp-greet">Say Hi.<span class="shp-cursor">|</span></div>
+          <div class="shp-sub">Reach me out on my social media account!</div>
+          <div class="shp-socials">
+            <a href="/cdn-cgi/l/email-protection#c5b6ada0b7a9bc85a4a6b0b7acaab0b6abaab1a0eba6aaa8">
+              <span class="sm-icon" style="--sa:#f5b8c7;--sb:#d96b8a;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              </span>
+              <span class="sm-text">
+                <span class="sm-label">Email</span>
+                <span class="sm-handle">sherly@…</span>
+              </span>
+            </a>
+            <a href="#">
+              <span class="sm-icon" style="--sa:#c6b5e0;--sb:#a07ab5;">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z"/></svg>
+              </span>
+              <span class="sm-text">
+                <span class="sm-label">X</span>
+                <span class="sm-handle">@a_curious_note</span>
+              </span>
+            </a>
+            <a href="#">
+              <span class="sm-icon" style="--sa:#f6c7a3;--sb:#d96b8a;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+              </span>
+              <span class="sm-text">
+                <span class="sm-label">Instagram</span>
+                <span class="sm-handle">@sherly</span>
+              </span>
+            </a>
+            <a href="#">
+              <span class="sm-icon" style="--sa:#b3d0e8;--sb:#6f9bd1;">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.07 8.5c-3.5.05-5.5 1.95-5.5 4.4 0 2 1.5 3.5 4.3 3.7 2.65.15 4.6-1.05 5.3-3.55l-1.7-.5c-.45 1.55-1.55 2.3-3.5 2.2-1.8-.1-2.6-1.05-2.6-2 0-1.2 1.05-2.2 3.65-2.25 1.95-.05 3.55.5 4.3 1.55l1.5-1.1c-1.15-1.55-3.15-2.5-5.75-2.45zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+              </span>
+              <span class="sm-text">
+                <span class="sm-label">Threads</span>
+                <span class="sm-handle">@sherly</span>
+              </span>
+            </a>
+            <a href="#">
+              <span class="sm-icon" style="--sa:#6f9bd1;--sb:#3f5e8c;">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM8.34 17.34H5.67V9.67h2.67zM7 8.34a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1zm11.33 9H15.67V13.5c0-.94-.36-1.5-1.17-1.5-.88 0-1.49.6-1.49 1.5v3.84H10.34V9.67h2.67v1.1c.47-.78 1.36-1.27 2.5-1.27 1.93 0 2.82 1.3 2.82 3.34z"/></svg>
+              </span>
+              <span class="sm-text">
+                <span class="sm-label">LinkedIn</span>
+                <span class="sm-handle">/in/sherly</span>
+              </span>
+            </a>
+            <a href="#">
+              <span class="sm-icon" style="--sa:#a7d8c5;--sb:#3f5547;">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.22.66-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33s1.7.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.16.57.67.48A10 10 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
+              </span>
+              <span class="sm-text">
+                <span class="sm-label">GitHub</span>
+                <span class="sm-handle">@curiousnote</span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-card glass reveal">
+        <div class="card-eyebrow">
+          <span class="sigil" style="--sigil-a:#f5b8c7;--sigil-b:#c6b5e0;"></span>
+          <span class="eyebrow">Recommended · For me</span>
+        </div>
+        <h3>Things I quietly love.</h3>
+        <p style="font-family: var(--font-serif); color: var(--ink-2); font-size: 14.5px; margin: -4px 0 16px;">
+          Tools, books, and a few small luxuries I've kept around long enough to recommend.
+        </p>
+        <div class="recs-list">
+          <a class="rec-item" href="#" target="_blank" rel="noopener" style="--ra:#f5b8c7; --rb:#d96b8a;">
+            <span class="rec-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></span>
+            <span class="rec-info">
+              <span class="rec-name">iA Writer</span>
+              <span class="rec-desc">A plain-text editor that has never asked me to rate it.</span>
+            </span>
+            <span class="rec-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+          </a>
+          <a class="rec-item" href="#" target="_blank" rel="noopener" style="--ra:#c6b5e0; --rb:#a07ab5;">
+            <span class="rec-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h10a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 7h13"/></svg></span>
+            <span class="rec-info">
+              <span class="rec-name">Field Notes — Original Kraft 3-pack</span>
+              <span class="rec-desc">The pocket notebook I've used through three apartments.</span>
+            </span>
+            <span class="rec-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+          </a>
+          <a class="rec-item" href="#" target="_blank" rel="noopener" style="--ra:#b3d0e8; --rb:#6f9bd1;">
+            <span class="rec-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 4h10l-1 8H8z"/><path d="M9 12v4a3 3 0 0 0 6 0v-4"/><path d="M10 20h4"/></svg></span>
+            <span class="rec-info">
+              <span class="rec-name">AeroPress Original</span>
+              <span class="rec-desc">Three-minute coffee that ruined cafés for me.</span>
+            </span>
+            <span class="rec-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+          </a>
+          <a class="rec-item" href="#" target="_blank" rel="noopener" style="--ra:#a7d8c5; --rb:#6ba39a;">
+            <span class="rec-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12c0-1.5 1.5-3 3-3s3 1.5 3 3-1.5 3-3 3-3-1.5-3-3z"/><path d="M9 12h6"/><path d="M15 12c0-1.5 1.5-3 3-3s3 1.5 3 3-1.5 3-3 3-3-1.5-3-3z"/></svg></span>
+            <span class="rec-info">
+              <span class="rec-name">Loop Quiet earplugs</span>
+              <span class="rec-desc">For Sunday mornings and the louder kind of café.</span>
+            </span>
+            <span class="rec-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+          </a>
+          <a class="rec-item" href="#" target="_blank" rel="noopener" style="--ra:#f6c7a3; --rb:#c08a64;">
+            <span class="rec-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19V5a1 1 0 0 1 1-1h10l5 5v10a1 1 0 0 1-1 1z"/><path d="M14 4v5h6"/><path d="M8 13h8M8 17h5"/></svg></span>
+            <span class="rec-info">
+              <span class="rec-name">Four Thousand Weeks — Oliver Burkeman</span>
+              <span class="rec-desc">A time-management book for people who hate them.</span>
+            </span>
+            <span class="rec-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+          </a>
+        </div>
+        <div class="rec-disclosure">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+          Affiliate links — I only recommend things I actually use.
+        </div>
+      </div>
+
+      <div class="about-card glass reveal r-d1">
+        <div class="card-eyebrow">
+          <span class="sigil" style="--sigil-a:#f6c7a3;--sigil-b:#a7d8c5;"></span>
+          <span class="eyebrow">Recommended · For Mochi</span>
+        </div>
+        <h3>The dog's wishlist.</h3>
+        <p style="font-family: var(--font-serif); color: var(--ink-2); font-size: 14.5px; margin: -4px 0 16px;">
+          Approved by my 18-pound co-editor. She is a tough critic.
+        </p>
+        <div class="recs-list">
+          <a class="rec-item" href="#" target="_blank" rel="noopener" style="--ra:#f6c7a3; --rb:#d96b8a;">
+            <span class="rec-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="14" rx="7" ry="6"/><path d="M5 14V9a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v5"/><circle cx="9" cy="13" r="0.8" fill="currentColor"/><circle cx="15" cy="13" r="0.8" fill="currentColor"/></svg></span>
+            <span class="rec-info">
+              <span class="rec-name">KONG Classic — medium</span>
+              <span class="rec-desc">The toy she has not destroyed. Stuff with peanut butter.</span>
+            </span>
+            <span class="rec-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+          </a>
+          <a class="rec-item" href="#" target="_blank" rel="noopener" style="--ra:#a7d8c5; --rb:#6ba39a;">
+            <span class="rec-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 9h14v8a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3z"/><path d="M3 6h18l-1 3H4z"/></svg></span>
+            <span class="rec-info">
+              <span class="rec-name">Ruffwear Front Range Harness</span>
+              <span class="rec-desc">Reflective, padded, survived a year of subway escalators.</span>
+            </span>
+            <span class="rec-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+          </a>
+          <a class="rec-item" href="#" target="_blank" rel="noopener" style="--ra:#f5b8c7; --rb:#a07ab5;">
+            <span class="rec-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="9" width="14" height="10" rx="2"/><path d="M9 9V5a3 3 0 0 1 6 0v4"/></svg></span>
+            <span class="rec-info">
+              <span class="rec-name">Stewart Freeze-Dried Liver Treats</span>
+              <span class="rec-desc">One ingredient. One very motivated dog.</span>
+            </span>
+            <span class="rec-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+          </a>
+          <a class="rec-item" href="#" target="_blank" rel="noopener" style="--ra:#b3d0e8; --rb:#6f9bd1;">
+            <span class="rec-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M9 9c1 1 2 1 3 0M12 9c1 1 2 1 3 0"/><path d="M9 14h6"/></svg></span>
+            <span class="rec-info">
+              <span class="rec-name">LickiMat Soother</span>
+              <span class="rec-desc">15 minutes of peace, delivered via yogurt and silicone.</span>
+            </span>
+            <span class="rec-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+          </a>
+          <a class="rec-item" href="#" target="_blank" rel="noopener" style="--ra:#c6b5e0; --rb:#d96b8a;">
+            <span class="rec-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 3h6v4l3 2v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9l3-2z"/></svg></span>
+            <span class="rec-info">
+              <span class="rec-name">Highwave AutoDogMug</span>
+              <span class="rec-desc">Travel water bottle. Press a button, dog drinks.</span>
+            </span>
+            <span class="rec-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+          </a>
+        </div>
+        <div class="rec-disclosure">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+          Affiliate links — Mochi gets a treat, I get a small commission.
+        </div>
+      </div>
+
+    </div><!-- /.about-masonry -->
+  </section>
+
+
+  <!-- Footer (reused) -->
+  <footer class="footer-section" data-screen-label="footer">
+    <div class="footer-grid glass">
+      <div class="identity">
+        <div class="logo"><span class="mark"></span><span style="font-family: Nunito;">A Curious Note</span></div>
+        <p>A quiet personal corner. Written and tended by hand &mdash; no analytics chasing, no algorithm whispering.</p>
+        <div class="meta-stat" style="font-size:12px;">Made in Brooklyn · Updated 4 days ago</div>
+      </div>
+      <div class="socials-col">
+        <div class="col-title">Elsewhere</div>
+        <div class="socials">
+          <a href="#"><span class="label">GitHub</span><span class="handle">@curiousnote</span></a>
+          <a href="#"><span class="label">X · Twitter</span><span class="handle">@a_curious_note</span></a>
+          <a href="#"><span class="label">RSS</span><span class="handle">/feed.xml</span></a>
+          <a href="/cdn-cgi/l/email-protection#d0a3b8b5a2bca990b1b3a5a2b9bfa5a3bebfa4b5feb3bfbd"><span class="label">Email</span><span class="handle">sherly@…</span></a>
+        </div>
+      </div>
+      <div class="idea-widget" id="ideaWidget">
+        <div class="col-title">Submit an idea <span class="badge">NEW</span></div>
+        <p style="margin:0 0 10px; color: var(--ink-2); font-size: 14px; font-family: var(--font-serif);">
+          What should I write about next? Leave a prompt &mdash; the best ones become essays.
+        </p>
+        <div class="field">
+          <textarea id="ideaInput" placeholder="e.g. on letting drafts age..." maxlength="280"></textarea>
+          <div class="field-foot">
+            <span class="helper"><span id="ideaCount">0</span>/280 · anonymous ok</span>
+            <button class="send-btn" id="ideaSend">
+              Send it
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copyline">
+      <span>© 2026 A Curious Note · Written by hand · Liquid ink</span>
+      <div class="links">
+        <a href="#">Privacy</a>
+        <a href="#">Colophon</a>
+        <a href="A Curious Note - Homepage.html">Home</a>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="shared.js"></script>
+<script src="image-slot.js"></script>
+
+<!-- Tweaks panel -->
+<aside class="tweaks-panel" id="tweaksPanel" aria-label="Tweaks">
+  <div class="tp-head">
+    <h4>Tweaks</h4>
+    <button class="tp-close" id="tweaksClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+
+  <div class="tp-section">
+    <div class="tp-section-title">Layout</div>
+    <div class="tp-row">
+      <span class="tp-label">Columns<span class="tp-hint">Masonry density</span></span>
+      <span class="tp-seg" data-key="columns">
+        <button data-val="1">1</button>
+        <button data-val="2">2</button>
+        <button data-val="3">3</button>
+      </span>
+    </div>
+    <div class="tp-row">
+      <span class="tp-label">Card density</span>
+      <span class="tp-seg" data-key="density">
+        <button data-val="compact">Snug</button>
+        <button data-val="normal">Cozy</button>
+        <button data-val="spacious">Roomy</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="tp-section">
+    <div class="tp-section-title">Hero</div>
+    <div class="tp-row">
+      <span class="tp-label">Profile shape</span>
+      <span class="tp-seg" data-key="profileShape">
+        <button data-val="portrait">Tall</button>
+        <button data-val="square">Square</button>
+        <button data-val="circle">Round</button>
+      </span>
+    </div>
+    <div class="tp-row">
+      <span class="tp-label">Mesh intensity</span>
+      <span class="tp-seg" data-key="meshIntensity">
+        <button data-val="low">Soft</button>
+        <button data-val="normal">Normal</button>
+        <button data-val="high">Loud</button>
+      </span>
+    </div>
+    <div class="tp-row">
+      <span class="tp-label">Floating animation</span>
+      <button class="tp-toggle" data-toggle="floating" aria-label="Floating animation"></button>
+    </div>
+    <div class="tp-row">
+      <span class="tp-label">Headline cycle<span class="tp-hint">Seconds between phrases</span></span>
+      <input type="range" class="tp-slider" data-slider="cycleMs" min="1500" max="6000" step="100" />
+    </div>
+  </div>
+
+  <div class="tp-section">
+    <div class="tp-section-title">Sections</div>
+    <div class="tp-row">
+      <span class="tp-label">Currently-reading strip</span>
+      <button class="tp-toggle" data-toggle="showReading"></button>
+    </div>
+    <div class="tp-row">
+      <span class="tp-label">Available status pill</span>
+      <button class="tp-toggle" data-toggle="showStatus"></button>
+    </div>
+    <div class="tp-row">
+      <span class="tp-label">Status text</span>
+      <input type="text" class="tp-text" data-text="statusText" />
+    </div>
+  </div>
+
+  <div class="tp-section">
+    <div class="tp-section-title">Accent</div>
+    <div class="tp-row">
+      <span class="tp-label">Page tint</span>
+      <span class="tp-swatches" data-key="accent">
+        <button class="tp-swatch" data-val="86,124,148"  style="background:rgb(86,124,148)"></button>
+        <button class="tp-swatch" data-val="217,107,138" style="background:rgb(217,107,138)"></button>
+        <button class="tp-swatch" data-val="160,122,181" style="background:rgb(160,122,181)"></button>
+        <button class="tp-swatch" data-val="107,163,154" style="background:rgb(107,163,154)"></button>
+        <button class="tp-swatch" data-val="192,138,100" style="background:rgb(192,138,100)"></button>
+      </span>
+    </div>
+  </div>
+</aside>
+
+<script>
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "columns": 2,
+    "density": "compact",
+    "profileShape": "portrait",
+    "meshIntensity": "normal",
+    "floating": false,
+    "cycleMs": 3100,
+    "showReading": true,
+    "showStatus": true,
+    "statusText": "Available for one new project",
+    "accent": "107,163,154"
+  }/*EDITMODE-END*/;
+
+  const tweaks = { ...TWEAK_DEFAULTS };
+
+  // === Live time on hero pill ===
+  function updateLocal() {
+    const t = new Date();
+    const h = t.getHours() % 12 || 12;
+    const m = String(t.getMinutes()).padStart(2,'0');
+    const ap = t.getHours() >= 12 ? 'PM' : 'AM';
+    document.querySelectorAll('.meta-pill').forEach(p => {
+      if (p.textContent.includes('Local time')) {
+        const icon = p.querySelector('svg').outerHTML;
+        p.innerHTML = icon + ' Local time · ' + h + ':' + m + ' ' + ap;
+      }
+    });
+  }
+  updateLocal();
+  setInterval(updateLocal, 30000);
+
+  // === Accent hex pill ===
+  function syncAccentPill() {
+    const root = getComputedStyle(document.documentElement);
+    const r = root.getPropertyValue('--video-r').trim() || '86';
+    const g = root.getPropertyValue('--video-g').trim() || '124';
+    const b = root.getPropertyValue('--video-b').trim() || '148';
+    const hex = '#' + [r,g,b].map(v=>parseInt(v,10).toString(16).padStart(2,'0')).join('').toUpperCase();
+    const el = document.getElementById('aboutHex');
+    if (el) el.textContent = hex;
+  }
+
+  // === Idea send ===
+  const ideaSend = document.getElementById('ideaSend');
+  const ideaInput = document.getElementById('ideaInput');
+  const ideaCount = document.getElementById('ideaCount');
+  ideaInput.addEventListener('input', () => { ideaCount.textContent = ideaInput.value.length; });
+  ideaSend.addEventListener('click', () => {
+    if (!ideaInput.value.trim()) { ideaInput.focus(); return; }
+    ideaInput.value = ''; ideaCount.textContent = '0';
+    window.showToast('Idea sent — thanks for the spark.');
+  });
+
+  // === Cycle headline words ===
+  let cycleTimer = 0;
+  function startCycle() {
+    clearInterval(cycleTimer);
+    const words = document.querySelectorAll('.em-cycle .word');
+    if (words.length < 2) return;
+    let i = 0;
+    cycleTimer = setInterval(() => {
+      const cur = words[i];
+      i = (i + 1) % words.length;
+      const next = words[i];
+      cur.classList.remove('active');
+      cur.classList.add('outgoing');
+      next.classList.remove('outgoing');
+      next.classList.add('active');
+      setTimeout(() => cur.classList.remove('outgoing'), 600);
+    }, tweaks.cycleMs);
+  }
+
+  // === Scroll-reveal ===
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ============== TWEAKS APPLICATION ==============
+  function applyTweaks() {
+    document.documentElement.style.setProperty('--mason-cols', tweaks.columns);
+
+    const body = document.getElementById('aboutBody');
+    body.classList.remove('density-compact', 'density-normal', 'density-spacious');
+    body.classList.add('density-' + tweaks.density);
+
+    const profile = document.querySelector('.profile-card');
+    profile.classList.remove('shape-portrait', 'shape-square', 'shape-circle');
+    profile.classList.add('shape-' + tweaks.profileShape);
+
+    const mesh = document.querySelector('.color-mesh');
+    mesh.classList.remove('intensity-low', 'intensity-normal', 'intensity-high');
+    mesh.classList.add('intensity-' + tweaks.meshIntensity);
+
+    profile.classList.toggle('floating', !!tweaks.floating);
+
+    document.getElementById('readingStrip').classList.toggle('hide-when-off', !tweaks.showReading);
+
+    const status = document.querySelector('.pc-status');
+    status.classList.toggle('hide-when-off', !tweaks.showStatus);
+    // Update status text (preserve dot)
+    const dot = status.querySelector('.dot');
+    status.innerHTML = '';
+    status.appendChild(dot);
+    status.appendChild(document.createTextNode(' ' + tweaks.statusText));
+
+    // Accent
+    const [r,g,b] = tweaks.accent.split(',').map(s => parseInt(s.trim(),10));
+    document.documentElement.style.setProperty('--video-r', r);
+    document.documentElement.style.setProperty('--video-g', g);
+    document.documentElement.style.setProperty('--video-b', b);
+    syncAccentPill();
+
+    // Cycle
+    startCycle();
+
+    // Reflect on controls
+    syncControls();
+  }
+
+  function syncControls() {
+    document.querySelectorAll('.tp-seg').forEach(seg => {
+      const key = seg.dataset.key;
+      seg.querySelectorAll('button').forEach(b => {
+        b.classList.toggle('active', String(b.dataset.val) === String(tweaks[key]));
+      });
+    });
+    document.querySelectorAll('.tp-swatches').forEach(s => {
+      const key = s.dataset.key;
+      s.querySelectorAll('.tp-swatch').forEach(b => {
+        b.classList.toggle('active', b.dataset.val === tweaks[key]);
+      });
+    });
+    document.querySelectorAll('[data-toggle]').forEach(b => {
+      const key = b.dataset.toggle;
+      b.classList.toggle('on', !!tweaks[key]);
+    });
+    document.querySelectorAll('[data-slider]').forEach(s => {
+      s.value = tweaks[s.dataset.slider];
+    });
+    document.querySelectorAll('[data-text]').forEach(t => {
+      t.value = tweaks[t.dataset.text];
+    });
+  }
+
+  function setTweak(key, val) {
+    tweaks[key] = val;
+    applyTweaks();
+    try {
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: val } }, '*');
+    } catch(e) {}
+  }
+
+  // Wire up controls
+  document.querySelectorAll('.tp-seg').forEach(seg => {
+    seg.addEventListener('click', e => {
+      const b = e.target.closest('button[data-val]');
+      if (!b) return;
+      let val = b.dataset.val;
+      if (!isNaN(parseInt(val,10))) val = parseInt(val,10);
+      setTweak(seg.dataset.key, val);
+    });
+  });
+  document.querySelectorAll('.tp-swatches').forEach(s => {
+    s.addEventListener('click', e => {
+      const b = e.target.closest('.tp-swatch');
+      if (!b) return;
+      setTweak(s.dataset.key, b.dataset.val);
+    });
+  });
+  document.querySelectorAll('[data-toggle]').forEach(b => {
+    b.addEventListener('click', () => setTweak(b.dataset.toggle, !tweaks[b.dataset.toggle]));
+  });
+  document.querySelectorAll('[data-slider]').forEach(s => {
+    s.addEventListener('input', () => setTweak(s.dataset.slider, parseInt(s.value,10)));
+  });
+  document.querySelectorAll('[data-text]').forEach(t => {
+    t.addEventListener('input', () => setTweak(t.dataset.text, t.value));
+  });
+
+  // Edit-mode protocol
+  const panel = document.getElementById('tweaksPanel');
+  const closeBtn = document.getElementById('tweaksClose');
+  window.addEventListener('message', e => {
+    if (!e.data || !e.data.type) return;
+    if (e.data.type === '__activate_edit_mode') panel.classList.add('open');
+    if (e.data.type === '__deactivate_edit_mode') panel.classList.remove('open');
+  });
+  closeBtn.addEventListener('click', () => {
+    panel.classList.remove('open');
+    try { window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); } catch(e) {}
+  });
+  try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e) {}
+
+  // Initial apply
+  applyTweaks();
+</script>
+</body>
+</html>
