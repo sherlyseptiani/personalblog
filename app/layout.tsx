@@ -31,20 +31,11 @@ export const metadata: Metadata = {
     siteName: 'A Curious Note',
     title: 'A Curious Note — Notes from a curious mind',
     description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages.',
-    images: [
-      {
-        url: 'https://acuriousnote.com/opengraph-image',
-        width: 1200,
-        height: 630,
-        alt: 'A Curious Note',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'A Curious Note — Notes from a curious mind',
     description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages.',
-    images: ['https://acuriousnote.com/opengraph-image'],
   },
   icons: {
     icon: '/favicon.svg',
