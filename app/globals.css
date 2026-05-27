@@ -46,6 +46,31 @@
   }
 }
 
+/* Post end: make next-up bigger since react buttons are removed */
+.post-end {
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px;
+}
+.post-end .next-up {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 12px;
+}
+.post-end .next-up span {
+  font-size: 13px;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.post-end .next-up a {
+  font-size: 17px;
+  font-weight: 500;
+  max-width: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* Say-hi subtitle: keep on one line on desktop */
 .shp-sub {
   white-space: nowrap;
