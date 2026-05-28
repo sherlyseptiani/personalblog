@@ -80,7 +80,7 @@ export default function RecommendationsPage() {
           <div className="rec-hero-text">
             <div className="eyebrow" style={{ marginBottom: '24px' }}>
               <span className="rec-eyebrow-dot"></span>
-              <span>My honest picks</span>
+              <span> My honest picks</span>
             </div>
             <h1 className="rec-hero-h1">
               Things I actually <em>use.</em>

@@ -18,51 +18,54 @@ const LIMIT = 8
 export default function PostsGrid({ initialPosts, initialTotal, initialCategories }: Props) {
   const searchParams = useSearchParams()
 
-  const [posts, setPosts] = useState<Post[]>(() => {
-    if (typeof window === 'undefined') return initialPosts
-    try {
-      const saved = sessionStorage.getItem('acn-posts-state')
-      if (saved) {
-        const { posts: p } = JSON.parse(saved)
-        if (Array.isArray(p) && p.length > initialPosts.length) return p
-      }
-    } catch {}
-    return initialPosts
-  })
-  const [total, setTotal] = useState<number>(() => {
-    if (typeof window === 'undefined') return initialTotal
-    try {
-      const saved = sessionStorage.getItem('acn-posts-state')
-      if (saved) {
-        const { posts: p, total: t } = JSON.parse(saved)
-        if (Array.isArray(p) && p.length > initialPosts.length) return t ?? initialTotal
-      }
-    } catch {}
-    return initialTotal
-  })
+  // All initial state matches server-rendered output (no browser APIs).
+  // Browser state (sessionStorage, window.innerWidth) is restored in useEffect
+  // after hydration to avoid server/client HTML mismatch.
+  const [posts, setPosts] = useState<Post[]>(initialPosts)
+  const [total, setTotal] = useState<number>(initialTotal)
   const [activeFilter, setActiveFilter] = useState('all')
   const [search, setSearch] = useState('')
-  const [page, setPage] = useState<number>(() => {
-    if (typeof window === 'undefined') return 1
-    try {
-      const saved = sessionStorage.getItem('acn-posts-state')
-      if (saved) {
-        const { posts: p, page: pg } = JSON.parse(saved)
-        if (Array.isArray(p) && p.length > initialPosts.length) return pg ?? 1
-      }
-    } catch {}
-    return 1
-  })
+  const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState(false)
   const [newPostSlugs, setNewPostSlugs] = useState<Set<string>>(new Set())
   const [categories, setCategories] = useState<string[]>(initialCategories)
-  const [colCount, setColCount] = useState(() => {
-    if (typeof window === 'undefined') return 1
-    const w = window.innerWidth
-    return w < 520 ? 1 : w < 780 ? 2 : w < 1100 ? 3 : 4
-  })
+  const [colCount, setColCount] = useState(1)
   const [readSlugs, setReadSlugs] = useState<Set<string>>(new Set())
   const postsGridRef = useRef<HTMLDivElement>(null)
+
+  // After hydration: restore scroll position, grid state, and column count from browser APIs
+  useEffect(() => {
+    // Scroll restoration
+    try {
+      const saved = sessionStorage.getItem('acn-scroll-y')
+      if (saved) {
+        sessionStorage.removeItem('acn-scroll-y')
+        const y = parseInt(saved, 10)
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          window.scrollTo({ top: y, behavior: 'instant' })
+        }))
+      }
+    } catch {}
+
+    // Grid state restoration (load-more pages)
+    try {
+      const saved = sessionStorage.getItem('acn-posts-state')
+      if (saved) {
+        const { posts: p, total: t, page: pg } = JSON.parse(saved)
+        if (Array.isArray(p) && p.length > initialPosts.length) {
+          setPosts(p)
+          setTotal(t ?? initialTotal)
+          setPage(pg ?? 1)
+        }
+      }
+    } catch {}
+
+    // Column count from actual viewport width
+    const w = window.innerWidth
+    setColCount(w < 520 ? 1 : w < 780 ? 2 : w < 1100 ? 3 : 4)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Persist grid state on every change so back-navigation restores it.
   // Only save unfiltered/unsearched state — filtered results aren't worth restoring.
   useEffect(() => {
@@ -223,7 +226,14 @@ export default function PostsGrid({ initialPosts, initialTotal, initialCategorie
         </div>
       </header>
 
-      <div className="posts" id="postsGrid" ref={postsGridRef} style={{ position: 'relative', zIndex: 1, display: 'flex', gap: colCount === 1 ? '10px' : '24px', alignItems: 'flex-start' }}>
+      <div className="posts" id="postsGrid" ref={postsGridRef}
+        style={{ position: 'relative', zIndex: 1, display: 'flex', gap: colCount === 1 ? '10px' : '24px', alignItems: 'flex-start' }}
+        onClick={(e) => {
+          if ((e.target as HTMLElement).closest('a[href^="/posts/"]')) {
+            try { sessionStorage.setItem('acn-scroll-y', String(window.scrollY)) } catch {}
+          }
+        }}
+      >
         {posts.length === 0 && !loading ? (
           <p style={{ color: 'var(--ink-2)', fontFamily: 'var(--font-serif)', padding: '40px 0' }}>
             No posts found.

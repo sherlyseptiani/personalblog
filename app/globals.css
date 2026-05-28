@@ -1267,3 +1267,109 @@ html[data-theme="dark"] .post-card:hover {
 @media (prefers-reduced-motion: reduce) {
   .rec-card, .rec-swatch-dot { animation: none; opacity: 1; }
 }
+
+/* ── Say Hi panel — mobile layout ──────────────────────────
+   clamp(48px, 6vw, 80px) doesn't scale to the card width on
+   mobile (6vw ≈ 22px but floor is 48px). Also 36px/32px padding
+   eats 64px on a ~375px screen, and the 2-col socials grid lets
+   nowrap handles overflow. Fix all three. */
+@media (max-width: 680px) {
+  .about-masonry > .say-hi-panel .shp-inner {
+    padding: 24px 20px;
+  }
+  .say-hi-panel .shp-greet {
+    font-size: 40px;
+  }
+  .say-hi-panel .shp-sub {
+    font-size: 14px;
+    max-width: 100%;
+    margin-top: 8px;
+  }
+  .shp-socials {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-top: 16px;
+  }
+  .shp-socials .sm-handle {
+    display: none;
+  }
+  .shp-socials a {
+    padding: 10px 12px;
+  }
+}
+
+/* ── Currently reading strip — mobile layout ───────────────
+   styles.css just wraps the flex row, creating awkward breaks.
+   Override to a proper vertical stack with a full-width bar. */
+@media (max-width: 700px) {
+  .reading-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .reading-strip .rs-title {
+    font-size: 16px;
+  }
+  .reading-strip .rs-progress {
+    width: 100%;
+    gap: 12px;
+  }
+  .reading-strip .rs-bar {
+    flex: 1;
+    width: auto;
+  }
+}
+
+/* ── About page: "Things I quietly love" heading + expand link */
+.rec-card-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 0;
+}
+.rec-card-heading-row h3 {
+  margin: 0;
+}
+.rec-expand-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: var(--ink-3);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  transition: color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+  text-decoration: none;
+}
+.rec-expand-btn svg {
+  width: 14px;
+  height: 14px;
+}
+.rec-expand-btn:hover {
+  color: var(--video-tint);
+  background: rgba(var(--video-r), var(--video-g), var(--video-b), 0.1);
+  border-color: rgba(var(--video-r), var(--video-g), var(--video-b), 0.3);
+  transform: translate(1px, -1px);
+}
+
+/* ── Notify button "subscribed" state — mobile fix ──────────
+   styles.css mobile override resets .btn-ghost-bordered to a
+   plain glass background inside .hero .hero-meta, which wipes
+   out the coloured gradient from .notify-btn.on and leaves
+   white text on a near-white surface. Restore the gradient. */
+@media (max-width: 680px) {
+  .hero .hero-meta .btn-ghost-bordered.notify-btn.on {
+    background: linear-gradient(180deg,
+      color-mix(in oklab, var(--video-tint), white 12%),
+      var(--video-tint));
+    border-color: transparent;
+    color: white;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.4) inset,
+      0 6px 14px -4px rgba(var(--video-r),var(--video-g),var(--video-b),0.5);
+  }
+}

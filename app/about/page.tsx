@@ -242,7 +242,14 @@ export default function AboutPage() {
               <span className="sigil" style={{ '--sigil-a': '#f5b8c7', '--sigil-b': '#c6b5e0' } as React.CSSProperties}></span>
               <span className="eyebrow">Recommended · For humans</span>
             </div>
-            <h3>Things I quietly love.</h3>
+            <div className="rec-card-heading-row">
+              <h3>Things I quietly love.</h3>
+              <a href="/recommendations" className="rec-expand-btn" title="See all recommendations" aria-label="See all recommendations">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M7 17 17 7M9 7h8v8" />
+                </svg>
+              </a>
+            </div>
             <p style={{ fontFamily: 'var(--font-serif)', color: 'var(--ink-2)', fontSize: '14.5px', margin: '-4px 0 16px' }}>
               A few small luxuries I&apos;ve kept around long enough to recommend.
             </p>
