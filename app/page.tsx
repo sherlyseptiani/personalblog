@@ -1,4 +1,5 @@
 import Script from 'next/script'
+import { Suspense } from 'react'
 import PostsGrid from '@/components/PostsGrid'
 import Footer from '@/components/Footer'
 import NotifyButton from '@/components/NotifyButton'
@@ -32,6 +33,17 @@ async function getInitialPosts(): Promise<{ posts: Post[]; total: number }> {
   }
 }
 
+async function getCategories(): Promise<string[]> {
+  try {
+    const db = createServerClient()
+    const { data } = await db
+      .from('posts')
+      .select('category')
+      .eq('published', true)
+    return Array.from(new Set(data?.map((r: { category: string }) => r.category) ?? []))
+  } catch { return [] }
+}
+
 async function getRecentIdeas(): Promise<{ content: string }[]> {
   try {
     const db = createServerClient()
@@ -48,9 +60,10 @@ async function getRecentIdeas(): Promise<{ content: string }[]> {
 }
 
 export default async function HomePage() {
-  const [{ posts, total }, recentIdeas] = await Promise.all([
+  const [{ posts, total }, recentIdeas, categories] = await Promise.all([
     getInitialPosts(),
     getRecentIdeas(),
+    getCategories(),
   ])
 
   // Generate issue info from total posts
@@ -115,7 +128,9 @@ export default async function HomePage() {
       {/* ============ POSTS ============ */}
       <section className="posts-section" id="latest" data-screen-label="posts">
         <div className="dotgrid" aria-hidden="true"></div>
-        <PostsGrid initialPosts={posts} initialTotal={total} />
+        <Suspense fallback={<div className="posts" style={{ minHeight: '400px' }} />}>
+          <PostsGrid initialPosts={posts} initialTotal={total} initialCategories={categories} />
+        </Suspense>
       </section>
 
       {/* ============ FOOTER ============ */}

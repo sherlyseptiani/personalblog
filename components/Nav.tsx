@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { spawnGlitter } from '@/lib/glitter'
 
@@ -9,10 +9,15 @@ type ActivePage = 'writing' | 'about' | undefined
 
 export default function Nav({ activePage }: { activePage?: ActivePage }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const isHomePage = pathname === '/'
   const isPostPage = pathname?.startsWith('/posts/')
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
+  const brandTapCount = useRef(0)
+  const brandTapTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (isSearchOpen && inputRef.current) {
@@ -28,28 +33,45 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  // Sync search input with URL query on page load
+  // Sync search input with URL query
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search)
-      const searchParam = urlParams.get('search')
-      if (searchParam) {
-        setSearchQuery(searchParam)
-        setIsSearchOpen(true)
-      }
+    const searchParam = searchParams.get('search')
+    if (searchParam) {
+      setSearchQuery(searchParam)
+      setIsSearchOpen(true)
+    } else {
+      setSearchQuery('')
     }
-  }, [])
+  }, [searchParams])
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (searchQuery.trim()) {
-      window.location.href = `/?search=${encodeURIComponent(searchQuery.trim())}#latest`
+    if (!searchQuery.trim()) return
+
+    const trimmedQuery = searchQuery.trim()
+
+    if (isHomePage) {
+      // On homepage: update URL with shallow routing (no page reload)
+      const newParams = new URLSearchParams(searchParams.toString())
+      newParams.set('search', trimmedQuery)
+      router.push(`/?${newParams.toString()}#latest`, { scroll: false })
+    } else {
+      // On other pages: navigate to homepage with search
+      router.push(`/?search=${encodeURIComponent(trimmedQuery)}#latest`)
     }
     setIsSearchOpen(false)
   }
 
   const handleGlitter = useCallback((e: React.MouseEvent) => {
     spawnGlitter(e.clientX, e.clientY)
+    brandTapCount.current += 1
+    if (brandTapTimer.current) clearTimeout(brandTapTimer.current)
+    if (brandTapCount.current >= 5) {
+      brandTapCount.current = 0
+      window.dispatchEvent(new Event('corgi-trigger'))
+    } else {
+      brandTapTimer.current = setTimeout(() => { brandTapCount.current = 0 }, 800)
+    }
   }, [])
 
   const handleToggleSearch = () => {
@@ -57,7 +79,10 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
       // Closing search - if there was a search query, clear it and return home
       if (searchQuery.trim()) {
         setSearchQuery('')
-        window.location.href = '/'
+        const newParams = new URLSearchParams(searchParams.toString())
+        newParams.delete('search')
+        const newQuery = newParams.toString()
+        router.push(newQuery ? `/?${newQuery}` : '/', { scroll: false })
       } else {
         setIsSearchOpen(false)
       }
@@ -70,9 +95,12 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setSearchQuery(value)
-    // If user clears the input completely and there was a search, return to normal
-    if (!value.trim() && window.location.search.includes('search=')) {
-      window.location.href = '/'
+    // If user clears the input completely and there was a search, clear it
+    if (!value.trim() && searchParams.get('search')) {
+      const newParams = new URLSearchParams(searchParams.toString())
+      newParams.delete('search')
+      const newQuery = newParams.toString()
+      router.push(newQuery ? `/?${newQuery}` : '/', { scroll: false })
     }
   }
 
@@ -139,7 +167,7 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
 
         .search-form {
           position: absolute;
-          right: 40px;
+          right: 0;
           width: 0;
           overflow: hidden;
           opacity: 0;

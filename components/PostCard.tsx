@@ -2,14 +2,7 @@ import Link from 'next/link'
 import type { Post } from '@/lib/types'
 import { CATEGORIES, formatDate } from '@/lib/categories'
 import CoverThumb from './CoverThumb'
-
-// Decode HTML entities like &nbsp; &amp; etc.
-function decodeHtmlEntities(text: string | null): string {
-  if (!text) return ''
-  const textarea = document.createElement('textarea')
-  textarea.innerHTML = text
-  return textarea.value
-}
+import { decodeEntities } from '@/lib/decode'
 
 function ReadChip() {
   return (
@@ -38,9 +31,8 @@ export default function PostCard({ post, className, isRead }: { post: Post; clas
           {isRead && <ReadChip />}
         </div>
         <h3>{post.title}</h3>
-        <div className="pull" dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(post.pull_quote) }} />
         <div className="footline">
-          <span>{date} · {post.read_time} min read</span>
+          <span>{date} &middot; {post.read_time} min read</span>
           <span className="arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M7 17 17 7M9 7h8v8" />
@@ -73,7 +65,7 @@ export default function PostCard({ post, className, isRead }: { post: Post; clas
           <span className="meta-stat" style={{ fontSize: '11.5px' }}>{post.read_time} min read</span>
         </div>
         <h3>{post.title}</h3>
-        <div className="preview">{post.excerpt}</div>
+        <div className="preview">{decodeEntities(post.excerpt)}</div>
         <div className="footline">
           <span>{date}</span>
           <span className="arrow">

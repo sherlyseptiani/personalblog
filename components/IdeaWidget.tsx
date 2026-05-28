@@ -111,7 +111,7 @@ export default function IdeaWidget({
       </div>
       {showRecent && recentIdeas.length > 0 && (
         <div style={{ marginTop: '14px' }}>
-          <div className="col-title" style={{ marginBottom: '8px', fontSize: '10px' }}>Recent prompts</div>
+          <div className="col-title" style={{ marginBottom: '8px', fontSize: '10px' }}>Recent ideas</div>
           <div className="recent">
             {recentIdeas.map((idea, i) => (
               <span key={i} className="chip">&ldquo;{idea.content}&rdquo;</span>

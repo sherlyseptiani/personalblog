@@ -28,15 +28,29 @@ export default function Footer({
                 ? 'A Curious Note'
                 : <span style={{ fontFamily: 'var(--font-serif)' }}>A Curious Note</span>}
             </div>
-            <p>A quiet personal corner. Written and tended by hand.</p>
-            <div className="meta-stat" style={{ fontSize: '12px' }}>
-              Updated recently
-            </div>
+            <p>A quiet personal corner. Written and tended by hand. Easter egg: type corgi on desktop, tap the blog title 5 times on mobile.</p>
+            <a
+              href="https://trakteer.id/sherly_septiani2"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="trakteer-btn"
+            >
+              ☕ Buy me a coffee on Trakteer
+            </a>
           </div>
 
           <div className="socials-col">
             <div className="col-title">Elsewhere</div>
             <div className="socials">
+              <a href="/recommendations" className="rec-link">
+                <span className="label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                  </svg>
+                  Recommendations
+                </span>
+                <span className="handle">Things I love</span>
+              </a>
               <a href="https://github.com/sherlyseptiani" target="_blank" rel="noopener noreferrer">
                 <span className="label">
                   <svg viewBox="0 0 24 24" fill="currentColor">

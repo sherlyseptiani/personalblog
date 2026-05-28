@@ -54,8 +54,24 @@ async function getNextPost(currentPost: Post): Promise<Post | null> {
   }
 }
 
-function extractTocItems(markdown: string) {
-  return markdown
+function extractTocItems(content: string) {
+  const isHtml = /<h[23][\s>]/i.test(content)
+
+  if (isHtml) {
+    const items: { level: number; text: string; id: string }[] = []
+    const re = /<h([23])(?:[^>]*\bid="([^"]*)")?[^>]*>([\s\S]*?)<\/h[23]>/gi
+    let m: RegExpExecArray | null
+    while ((m = re.exec(content)) !== null) {
+      const level = parseInt(m[1], 10)
+      const existingId = m[2] ?? ''
+      const text = m[3].replace(/<[^>]+>/g, '').trim()
+      const id = existingId || text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-')
+      if (text) items.push({ level, text, id })
+    }
+    return items
+  }
+
+  return content
     .split('\n')
     .flatMap(line => {
       const m = line.match(/^(#{2,3})\s+(.+)$/)
@@ -84,7 +100,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     description: post.excerpt ?? undefined,
     modifiedTime: post.updated_at,
     authors: ['Sherly'],
-    tags: post.tags,
+    tags: post.category,
     images: [
       {
         url: ogImage,

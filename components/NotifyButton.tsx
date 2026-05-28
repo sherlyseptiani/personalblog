@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { spawnGlitter } from '@/lib/glitter'
 
 const NOTIFY_KEY = 'acn-notify'
@@ -115,7 +116,7 @@ export default function NotifyButton() {
         </span>
       </button>
 
-      {open && (
+      {open && createPortal(
         <>
           <div className="np-backdrop" onClick={handleClose} aria-hidden="true" />
 
@@ -162,7 +163,7 @@ export default function NotifyButton() {
 
                 <div className="np-tabs">
                   <button type="button" className={type === 'email' ? 'active' : ''} onClick={() => handleTypeSwitch('email')}>Email</button>
-                  <button type="button" className={type === 'phone' ? 'active' : ''} onClick={() => handleTypeSwitch('phone')}>Phone</button>
+                  <button type="button" className={type === 'phone' ? 'active' : ''} onClick={() => handleTypeSwitch('phone')}>Whatsapp</button>
                 </div>
 
                 <div className="np-input-wrap">
@@ -171,7 +172,7 @@ export default function NotifyButton() {
                     type={type === 'email' ? 'email' : 'tel'}
                     value={value}
                     onChange={e => { setValue(e.target.value); setError('') }}
-                    placeholder={type === 'email' ? 'you@example.com' : '+1 234 567 8900'}
+                    placeholder={type === 'email' ? 'you@example.com' : '+62 234 567 8900'}
                     autoComplete={type === 'email' ? 'email' : 'tel'}
                   />
                 </div>
@@ -191,7 +192,8 @@ export default function NotifyButton() {
               </form>
             )}
           </div>
-        </>
+        </>,
+        document.body
       )}
     </>
   )

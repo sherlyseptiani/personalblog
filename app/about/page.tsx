@@ -244,17 +244,17 @@ export default function AboutPage() {
             </div>
             <h3>Things I quietly love.</h3>
             <p style={{ fontFamily: 'var(--font-serif)', color: 'var(--ink-2)', fontSize: '14.5px', margin: '-4px 0 16px' }}>
-              Tools, books, and a few small luxuries I&apos;ve kept around long enough to recommend.
+              A few small luxuries I&apos;ve kept around long enough to recommend.
             </p>
             <div className="recs-list">
               {[
-                { color1: '#f5b8c7', color2: '#d96b8a', name: 'iA Writer', desc: 'A plain-text editor that has never asked me to rate it.' },
-                { color1: '#c6b5e0', color2: '#a07ab5', name: 'Field Notes — Original Kraft 3-pack', desc: 'The pocket notebook I\'ve used through three apartments.' },
-                { color1: '#b3d0e8', color2: '#6f9bd1', name: 'AeroPress Original', desc: 'Three-minute coffee that ruined cafés for me.' },
-                { color1: '#a7d8c5', color2: '#6ba39a', name: 'Loop Quiet earplugs', desc: 'For Sunday mornings and the louder kind of café.' },
-                { color1: '#f6c7a3', color2: '#c08a64', name: 'Four Thousand Weeks — Oliver Burkeman', desc: 'A time-management book for people who hate them.' },
+                { color1: '#f5b8c7', color2: '#d96b8a', name: 'La Roche Posay Cicaplast', desc: 'Best moisturiser, bangun2 kulit sehat bgt + plump', url: 'https://s.shopee.co.id/8pixjeQ6o2' },
+                { color1: '#c6b5e0', color2: '#a07ab5', name: 'Celimax Retinal Shot', desc: 'Texture dan kulit kusam improvement, langsung glowing!', url: 'https://s.shopee.co.id/1gFnCZkV2J' },
+                { color1: '#b3d0e8', color2: '#6f9bd1', name: 'Popcorn Caramel', desc: 'Murah dan sama persis kaya popcorn XXI', url: 'https://s.shopee.co.id/qggEPOH15' },
+                { color1: '#a7d8c5', color2: '#6ba39a', name: 'Monorow Blanc', desc: 'Tas kantor muat laptop paling cakep menurut sayaaa', url: 'https://s.shopee.co.id/7VDaAnzWL5' },
+                { color1: '#f6c7a3', color2: '#c08a64', name: '3CE Lip Tint', desc: 'Lip tint paling smooth, ga bikin kering dan warnanya bagus', url: 'https://s.shopee.co.id/BQzRr5Vxv' },
               ].map(item => (
-                <a key={item.name} className="rec-item" href="#" target="_blank" rel="noopener" style={{ '--ra': item.color1, '--rb': item.color2 } as React.CSSProperties}>
+                <a key={item.name} className="rec-item" href={item.url} target="_blank" rel="noopener" style={{ '--ra': item.color1, '--rb': item.color2 } as React.CSSProperties}>
                   <span className="rec-thumb">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                       <path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z" />
@@ -287,7 +287,7 @@ export default function AboutPage() {
             </div>
             <h3>The dog&apos;s wishlist.</h3>
             <p style={{ fontFamily: 'var(--font-serif)', color: 'var(--ink-2)', fontSize: '14.5px', margin: '-4px 0 16px' }}>
-              Approved by my 18-pound co-editor. She is a tough critic.
+              Approved by my 30-pound co-editor. She is a tough critic.
             </p>
             <div className="recs-list">
               {[

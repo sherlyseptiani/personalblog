@@ -7,6 +7,7 @@ import rehypeSlug from 'rehype-slug'
 import Link from 'next/link'
 import Footer from './Footer'
 import { CATEGORIES, formatDate } from '@/lib/categories'
+import { decodeEntities } from '@/lib/decode'
 import type { Post } from '@/lib/types'
 
 type TocItem = { level: number; text: string; id: string }
@@ -17,6 +18,19 @@ type Props = {
   tocItems: TocItem[]
 }
 
+function injectHeadingIds(html: string): string {
+  return html.replace(
+    /<h([23])(\s[^>]*)?>([\s\S]*?)<\/h[23]>/gi,
+    (match, level, attrs = '', inner) => {
+      if (/\bid\s*=/i.test(attrs)) return match
+      const text = inner.replace(/<[^>]+>/g, '').trim()
+      const id = text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-')
+      if (!id) return match
+      return `<h${level}${attrs} id="${id}">${inner}</h${level}>`
+    }
+  )
+}
+
 export default function PostPageUI({ post, nextPost, tocItems }: Props) {
   const cat = CATEGORIES[post.category] ?? { label: post.category, color: '#7c8db5' }
   const date = formatDate(post.published_at)
@@ -25,8 +39,11 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
   useEffect(() => {
     // Reading mode
     const readingBtn = document.getElementById('readingBtn')
+    const readingBtnMobile = document.getElementById('readingBtnMobile')
     const syncReadingBtn = () => {
-      readingBtn?.classList.toggle('active', document.documentElement.classList.contains('reading-mode'))
+      const on = document.documentElement.classList.contains('reading-mode')
+      readingBtn?.classList.toggle('active', on)
+      readingBtnMobile?.classList.toggle('active', on)
     }
     window.enterReading = () => { document.documentElement.classList.add('reading-mode'); syncReadingBtn() }
     window.exitReading = () => { document.documentElement.classList.remove('reading-mode'); syncReadingBtn() }
@@ -87,10 +104,15 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
     // Theme panel toggle
     const themePanel = document.getElementById('themePanel')
     const themeBtn = document.getElementById('themeBtn')
-    const syncThemeBtn = () => themeBtn?.classList.toggle('active', !!themePanel?.classList.contains('open'))
+    const themeBtnMobile = document.getElementById('themeBtnMobile')
+    const syncThemeBtn = () => {
+      const on = !!themePanel?.classList.contains('open')
+      themeBtn?.classList.toggle('active', on)
+      themeBtnMobile?.classList.toggle('active', on)
+    }
     window.togglePanel = () => { themePanel?.classList.toggle('open'); syncThemeBtn() }
     const handleOutside = (e: MouseEvent) => {
-      if (themePanel?.classList.contains('open') && !themePanel.contains(e.target as Node) && !(e.target as HTMLElement).closest('#themeBtn')) {
+      if (themePanel?.classList.contains('open') && !themePanel.contains(e.target as Node) && !(e.target as HTMLElement).closest('#themeBtn') && !(e.target as HTMLElement).closest('#themeBtnMobile')) {
         themePanel.classList.remove('open'); syncThemeBtn()
       }
     }
@@ -169,7 +191,9 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
     }
     window.toggleBookmark = () => {
       const btn = document.getElementById('bookmarkBtn')
+      const btnMobile = document.getElementById('bookmarkBtnMobile')
       btn?.classList.toggle('active')
+      btnMobile?.classList.toggle('active')
 
       // Try to trigger browser bookmark dialog
       const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0
@@ -258,6 +282,45 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
         </button>
       </aside>
 
+      {/* Mobile bottom controls bar */}
+      <div className="post-controls-mobile glass">
+        <button onClick={() => window.toggleReading?.()} aria-label="Reading mode" id="readingBtnMobile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18">
+            <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z" />
+          </svg>
+        </button>
+        <button onClick={() => window.adjustFont?.(-1)} aria-label="Smaller text">
+          <span className="font-icon"><span className="a small">A</span><span className="sign">−</span></span>
+        </button>
+        <button onClick={() => window.adjustFont?.(1)} aria-label="Larger text">
+          <span className="font-icon"><span className="a big">A</span><span className="sign">+</span></span>
+        </button>
+        <div className="mob-sep" />
+        <button onClick={() => window.togglePanel?.()} aria-label="Theme & color" id="themeBtnMobile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="18" height="18">
+            <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+            <ellipse cx="12" cy="6" rx="2.4" ry="3.2" />
+            <ellipse cx="12" cy="18" rx="2.4" ry="3.2" />
+            <ellipse cx="6" cy="12" rx="3.2" ry="2.4" />
+            <ellipse cx="18" cy="12" rx="3.2" ry="2.4" />
+            <ellipse cx="7.8" cy="7.8" rx="2.4" ry="3.2" transform="rotate(-45 7.8 7.8)" />
+            <ellipse cx="16.2" cy="16.2" rx="2.4" ry="3.2" transform="rotate(-45 16.2 16.2)" />
+            <ellipse cx="16.2" cy="7.8" rx="2.4" ry="3.2" transform="rotate(45 16.2 7.8)" />
+            <ellipse cx="7.8" cy="16.2" rx="2.4" ry="3.2" transform="rotate(45 7.8 16.2)" />
+          </svg>
+        </button>
+        <button onClick={() => window.toggleBookmark?.()} aria-label="Bookmark" id="bookmarkBtnMobile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+          </svg>
+        </button>
+        <button onClick={() => window.shareLink?.()} aria-label="Share">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18">
+            <path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v14" />
+          </svg>
+        </button>
+      </div>
+
       {/* Theme panel */}
       <div className="theme-panel glass" id="themePanel">
         <div>
@@ -307,7 +370,7 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
       {/* TOC */}
       {tocItems.length > 0 && (
         <aside className="post-aside glass" id="postAside">
-          <div className="col-title">In this essay</div>
+          <div className="col-title">In this post</div>
           <nav className="toc" id="toc">
             {tocItems.map((item, i) => (
               <a
@@ -339,8 +402,8 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
               <><span className="sep">·</span><span>{post.issue}</span></>
             )}
           </div>
-          <h1>{post.title}.</h1>
-          {post.excerpt && <p className="deck">{post.excerpt}</p>}
+          <h1>{post.title}</h1>
+          {post.excerpt && <p className="deck">{decodeEntities(post.excerpt)}</p>}
           <div className="author-row">
             <img className="avatar" src="/portrait.jpg" alt="Sherly" style={{ objectFit: 'cover', width: '40px', height: '40px', borderRadius: '50%' }} />
             <div className="info">
@@ -388,9 +451,11 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
         <div className="article" id="articleBody">
           {post.content && (post.content.match(/<\w+/) || post.content.includes('&lt;')) ? (
             <div dangerouslySetInnerHTML={{
-              __html: post.content.includes('&lt;')
-                ? post.content.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
-                : post.content
+              __html: injectHeadingIds(
+                post.content.includes('&lt;')
+                  ? post.content.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+                  : post.content
+              )
             }} />
           ) : (
             <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug]}>
@@ -400,10 +465,15 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
         </div>
 
         <div className="post-end glass">
-          {nextPost && (
+          {nextPost ? (
             <div className="next-up">
               <span>Next up →</span>
               <Link href={`/posts/${nextPost.slug}`}>{nextPost.title}</Link>
+            </div>
+          ) : (
+            <div className="next-up">
+              <span>You&rsquo;ve reached the beginning.</span>
+              <Link href="/">← Back to all posts</Link>
             </div>
           )}
         </div>

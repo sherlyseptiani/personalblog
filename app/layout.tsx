@@ -1,12 +1,16 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
+import { Suspense } from 'react'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Nav from '@/components/Nav'
+import ScrollToTop from '@/components/ScrollToTop'
+import CorgiEasterEgg from '@/components/CorgiEasterEgg'
 import '../design/styles.css'
 import './globals.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://acuriousnote.com'),
   title: 'A Curious Note — Notes from a curious mind',
   description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages. Occasionally, I leave pieces of my own experiences and perspectives here too.',
   keywords: ['blog', 'science', 'history', 'animals', 'astrophysics', 'technology', 'languages', 'personal essays'],
@@ -61,8 +65,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <div className="ambient" aria-hidden="true"></div>
         <div className="grain" aria-hidden="true"></div>
-        <Nav />
+        <Suspense fallback={<nav className="nav glass" style={{ height: '64px' }} />}>
+          <Nav />
+        </Suspense>
+        <ScrollToTop />
         {children}
+        <CorgiEasterEgg />
         <Script src="/shared.js" strategy="afterInteractive" />
         <Analytics />
         <SpeedInsights />

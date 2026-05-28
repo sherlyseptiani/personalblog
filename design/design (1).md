@@ -217,7 +217,7 @@ Segmented control = `.tp-seg` (pill cluster, active = elevated). Toggle = 36×20
 
 ### 6.10 Idea widget (footer)
 
-Textarea inside a `.field` rounded-rect that grows a 4px accent halo on focus. Submit button = gradient accent pill with paper-plane icon. Recent prompts shown as italic-serif chips below.
+Textarea inside a `.field` rounded-rect that grows a 4px accent halo on focus. Submit button = gradient accent pill with paper-plane icon. Recent ideas shown as italic-serif chips below.
 
 ### 6.11 Say-Hi panel (About)
 

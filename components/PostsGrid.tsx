@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import PostCard from './PostCard'
 import type { Post } from '@/lib/types'
 import { CATEGORIES } from '@/lib/categories'
@@ -9,22 +10,70 @@ import { spawnGlitter } from '@/lib/glitter'
 type Props = {
   initialPosts: Post[]
   initialTotal: number
+  initialCategories: string[]
 }
 
 const LIMIT = 8
 
-export default function PostsGrid({ initialPosts, initialTotal }: Props) {
-  const [posts, setPosts] = useState<Post[]>(initialPosts)
-  const [total, setTotal] = useState(initialTotal)
+export default function PostsGrid({ initialPosts, initialTotal, initialCategories }: Props) {
+  const searchParams = useSearchParams()
+
+  const [posts, setPosts] = useState<Post[]>(() => {
+    if (typeof window === 'undefined') return initialPosts
+    try {
+      const saved = sessionStorage.getItem('acn-posts-state')
+      if (saved) {
+        const { posts: p } = JSON.parse(saved)
+        if (Array.isArray(p) && p.length > initialPosts.length) return p
+      }
+    } catch {}
+    return initialPosts
+  })
+  const [total, setTotal] = useState<number>(() => {
+    if (typeof window === 'undefined') return initialTotal
+    try {
+      const saved = sessionStorage.getItem('acn-posts-state')
+      if (saved) {
+        const { posts: p, total: t } = JSON.parse(saved)
+        if (Array.isArray(p) && p.length > initialPosts.length) return t ?? initialTotal
+      }
+    } catch {}
+    return initialTotal
+  })
   const [activeFilter, setActiveFilter] = useState('all')
   const [search, setSearch] = useState('')
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState<number>(() => {
+    if (typeof window === 'undefined') return 1
+    try {
+      const saved = sessionStorage.getItem('acn-posts-state')
+      if (saved) {
+        const { posts: p, page: pg } = JSON.parse(saved)
+        if (Array.isArray(p) && p.length > initialPosts.length) return pg ?? 1
+      }
+    } catch {}
+    return 1
+  })
   const [loading, setLoading] = useState(false)
   const [newPostSlugs, setNewPostSlugs] = useState<Set<string>>(new Set())
-  const [categories, setCategories] = useState<string[]>([])
-  const [colCount, setColCount] = useState(4)
+  const [categories, setCategories] = useState<string[]>(initialCategories)
+  const [colCount, setColCount] = useState(() => {
+    if (typeof window === 'undefined') return 1
+    const w = window.innerWidth
+    return w < 520 ? 1 : w < 780 ? 2 : w < 1100 ? 3 : 4
+  })
   const [readSlugs, setReadSlugs] = useState<Set<string>>(new Set())
   const postsGridRef = useRef<HTMLDivElement>(null)
+  // Persist grid state on every change so back-navigation restores it.
+  // Only save unfiltered/unsearched state — filtered results aren't worth restoring.
+  useEffect(() => {
+    if (activeFilter !== 'all' || search) {
+      try { sessionStorage.removeItem('acn-posts-state') } catch {}
+      return
+    }
+    try {
+      sessionStorage.setItem('acn-posts-state', JSON.stringify({ posts, total, page }))
+    } catch {}
+  }, [posts, total, page, activeFilter, search])
 
   // Load read slugs from localStorage and keep in sync across tabs
   useEffect(() => {
@@ -39,17 +88,14 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
     return () => window.removeEventListener('storage', load)
   }, [])
 
-  // Fetch categories on mount
+  // Background refresh — only needed if SSR categories were unavailable
   useEffect(() => {
+    if (initialCategories.length > 0) return
     fetch('/api/categories')
       .then(res => res.json())
-      .then(data => {
-        if (data.categories) {
-          setCategories(data.categories)
-        }
-      })
+      .then(data => { if (data.categories) setCategories(data.categories) })
       .catch(console.error)
-  }, [])
+  }, [initialCategories.length])
 
   // Track container width to match CSS breakpoints for column distribution
   useEffect(() => {
@@ -92,17 +138,26 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
     [posts]
   )
 
-  // Read search query from URL on mount
+  // Watch for URL search param changes and fetch results
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const searchQuery = urlParams.get('search')
-    if (searchQuery) {
-      setSearch(searchQuery)
+    // Skip if we just restored from sessionStorage (posts would be longer than initial)
+    if (posts.length > initialPosts.length) return
+
+    const q = searchParams.get('search')
+    if (q) {
+      setSearch(q)
       setActiveFilter('all')
-      fetchPosts('all', searchQuery, 1, false)
+      setPage(1)
+      fetchPosts('all', q, 1, false)
+      document.getElementById('latest')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else if (search) {
+      setSearch('')
+      setActiveFilter('all')
+      setPage(1)
+      fetchPosts('all', '', 1, false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [searchParams])
 
   const handleFilter = (key: string, e: React.MouseEvent) => {
     setActiveFilter(key)
@@ -226,7 +281,14 @@ export default function PostsGrid({ initialPosts, initialTotal }: Props) {
 
       <div className="load-more-wrap" style={{ position: 'relative', zIndex: 1 }}>
         <div className="count" id="postCount">
-          {loading ? 'Loading…' : `Showing ${showing} of ${total}`}
+          {loading ? (
+            <span className="juggle-dots" aria-label="Loading">
+              <span className="juggle-dot" style={{ '--d': '0ms', '--c': '#c6b5e0' } as React.CSSProperties} />
+              <span className="juggle-dot" style={{ '--d': '150ms', '--c': '#a7d8c5' } as React.CSSProperties} />
+              <span className="juggle-dot" style={{ '--d': '300ms', '--c': '#f5b8c7' } as React.CSSProperties} />
+              <span className="juggle-dot" style={{ '--d': '450ms', '--c': '#f6c7a3' } as React.CSSProperties} />
+            </span>
+          ) : `Showing ${showing} of ${total}`}
         </div>
         {showing < total && !loading && (
           <button
