@@ -1,0 +1,80 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root {
+  --thumb-purple: #9869D3;
+  --thumb-purple-dark: #7048B0;
+  --thumb-lavender: #C4A8E8;
+  --thumb-lav-light: #E0D4F8;
+  --thumb-pink: #E8A0C0;
+  --thumb-pink-light: #F4D0E4;
+  --thumb-blue: #8CA8D8;
+  --thumb-blue-light: #C4D8F4;
+  --thumb-teal: #6BA39A;
+  --thumb-amber: #C08A64;
+  --thumb-ink: rgba(15,10,40,0.75);
+  --thumb-ink-light: rgba(15,10,40,0.45);
+  --thumb-white: rgba(255,255,255,0.9);
+  --thumb-white-mid: rgba(255,255,255,0.5);
+  --thumb-white-subtle: rgba(255,255,255,0.2);
+}
+</style>
+<defs>
+  <radialGradient id="gbg1" cx="30%" cy="25%" r="60%">
+    <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="var(--thumb-lavender)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg2" cx="75%" cy="70%" r="55%">
+    <stop offset="0%" stop-color="var(--thumb-pink)" stop-opacity=".28"/>
+    <stop offset="100%" stop-color="var(--thumb-pink)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg3" cx="60%" cy="20%" r="50%">
+    <stop offset="0%" stop-color="var(--thumb-blue)" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="var(--thumb-blue)" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".8" fill="var(--thumb-purple)" opacity=".12"/>
+  </pattern>
+  <radialGradient id="gvig" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(100,80,160,0.1)"/>
+  </radialGradient>
+
+</defs>
+  <rect width="400" height="400" fill="rgba(245,243,239,0.01)"/>
+  <rect width="400" height="400" fill="url(#gbg1)"/>
+  <rect width="400" height="400" fill="url(#gbg2)"/>
+  <rect width="400" height="400" fill="url(#gbg3)"/>
+  <rect width="400" height="400" fill="url(#dots)"/>
+
+<!-- tricolor faint -->
+<rect x="0" y="0" width="133" height="400" fill="#002395" opacity=".06"/>
+<rect x="267" y="0" width="133" height="400" fill="#ED2939" opacity=".06"/>
+<!-- paper -->
+<rect x="88" y="62" width="224" height="288" rx="10" fill="var(--thumb-white)" opacity=".7" filter="drop-shadow(0 8px 32px rgba(152,105,211,.15))"/>
+<!-- header bar -->
+<rect x="88" y="62" width="224" height="46" rx="10" fill="var(--thumb-purple)" opacity=".7"/>
+<rect x="88" y="95" width="224" height="13" rx="0" fill="var(--thumb-purple)" opacity=".7"/>
+<!-- ruled lines -->
+<g stroke="var(--thumb-lav-light)" stroke-width="1.2" opacity=".7">
+  <line x1="108" y1="128" x2="292" y2="128"/><line x1="108" y1="148" x2="292" y2="148"/>
+  <line x1="108" y1="168" x2="292" y2="168"/><line x1="108" y1="188" x2="292" y2="188"/>
+  <line x1="108" y1="208" x2="292" y2="208"/><line x1="108" y1="228" x2="292" y2="228"/>
+  <line x1="108" y1="248" x2="292" y2="248"/><line x1="108" y1="268" x2="280" y2="268"/>
+  <line x1="108" y1="288" x2="292" y2="288"/><line x1="108" y1="308" x2="270" y2="308"/>
+</g>
+<!-- pen -->
+<g transform="translate(318,190) rotate(-38)">
+  <rect x="-4.5" y="-56" width="9" height="66" rx="3.5" fill="var(--thumb-purple)" opacity=".8"/>
+  <polygon points="0,10 -4.5,10 0,24 4.5,10" fill="var(--thumb-purple-dark)" opacity=".8"/>
+  <rect x="-4.5" y="-56" width="9" height="11" rx="3" fill="var(--thumb-lavender)" opacity=".9"/>
+</g>
+<!-- Eiffel faint -->
+<g transform="translate(80,370)" fill="var(--thumb-purple)" opacity=".15">
+  <polygon points="0,-65 -7,0 7,0"/>
+  <rect x="-18" y="-12" width="36" height="5" rx="1"/>
+  <rect x="-26" y="-2" width="52" height="5" rx="1"/>
+  <rect x="-3" y="-65" width="6" height="14"/>
+  <rect x="-2.5" y="-90" width="5" height="28"/>
+</g>
+  <rect width="400" height="400" fill="url(#gvig)"/>
+</svg>

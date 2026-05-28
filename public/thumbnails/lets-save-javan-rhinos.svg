@@ -1,0 +1,84 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root {
+  --thumb-purple: #9869D3;
+  --thumb-purple-dark: #7048B0;
+  --thumb-lavender: #C4A8E8;
+  --thumb-lav-light: #E0D4F8;
+  --thumb-pink: #E8A0C0;
+  --thumb-pink-light: #F4D0E4;
+  --thumb-blue: #8CA8D8;
+  --thumb-blue-light: #C4D8F4;
+  --thumb-teal: #6BA39A;
+  --thumb-amber: #C08A64;
+  --thumb-ink: rgba(15,10,40,0.75);
+  --thumb-ink-light: rgba(15,10,40,0.45);
+  --thumb-white: rgba(255,255,255,0.9);
+  --thumb-white-mid: rgba(255,255,255,0.5);
+  --thumb-white-subtle: rgba(255,255,255,0.2);
+}
+</style>
+<defs>
+  <radialGradient id="gbg1" cx="30%" cy="25%" r="60%">
+    <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="var(--thumb-lavender)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg2" cx="75%" cy="70%" r="55%">
+    <stop offset="0%" stop-color="var(--thumb-pink)" stop-opacity=".28"/>
+    <stop offset="100%" stop-color="var(--thumb-pink)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg3" cx="60%" cy="20%" r="50%">
+    <stop offset="0%" stop-color="var(--thumb-blue)" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="var(--thumb-blue)" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".8" fill="var(--thumb-purple)" opacity=".12"/>
+  </pattern>
+  <radialGradient id="gvig" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(100,80,160,0.1)"/>
+  </radialGradient>
+
+</defs>
+  <rect width="400" height="400" fill="rgba(245,243,239,0.01)"/>
+  <rect width="400" height="400" fill="url(#gbg1)"/>
+  <rect width="400" height="400" fill="url(#gbg2)"/>
+  <rect width="400" height="400" fill="url(#gbg3)"/>
+  <rect width="400" height="400" fill="url(#dots)"/>
+
+<!-- foliage -->
+<g fill="var(--thumb-teal)" opacity=".25">
+  <ellipse cx="58" cy="355" rx="82" ry="62"/><ellipse cx="342" cy="362" rx="92" ry="58"/><ellipse cx="200" cy="372" rx="114" ry="52"/>
+</g>
+<g fill="var(--thumb-teal)" opacity=".15">
+  <ellipse cx="28" cy="302" rx="62" ry="42"/><ellipse cx="372" cy="312" rx="72" ry="40"/>
+</g>
+<!-- rhino -->
+<g transform="translate(200,242)">
+  <ellipse cx="0" cy="0" rx="108" ry="64" fill="var(--thumb-purple)" opacity=".3"/>
+  <ellipse cx="-90" cy="-12" rx="57" ry="48" fill="var(--thumb-purple)" opacity=".32"/>
+  <ellipse cx="-133" cy="-7" rx="30" ry="23" fill="var(--thumb-purple-dark)" opacity=".28"/>
+  <!-- horn -->
+  <path d="M -150 -24 Q -158 -64 -148 -84 Q -143 -62 -141 -24 Z" fill="var(--thumb-ink)" opacity=".3"/>
+  <!-- ear -->
+  <ellipse cx="-75" cy="-54" rx="13" ry="17" fill="var(--thumb-lavender)" opacity=".35"/>
+  <!-- eye -->
+  <circle cx="-108" cy="-20" r="7.5" fill="var(--thumb-ink)" opacity=".5"/>
+  <circle cx="-106" cy="-22" r="2.5" fill="var(--thumb-white-mid)"/>
+  <!-- wrinkles -->
+  <path d="M -62 -32 Q -40 -40 -18 -32" fill="none" stroke="var(--thumb-purple)" stroke-width="2" opacity=".3"/>
+  <path d="M -62 8 Q -40 2 -18 8" fill="none" stroke="var(--thumb-purple)" stroke-width="2" opacity=".3"/>
+  <!-- legs -->
+  <rect x="-62" y="57" width="28" height="46" rx="9" fill="var(--thumb-purple-dark)" opacity=".3"/>
+  <rect x="-22" y="62" width="28" height="42" rx="9" fill="var(--thumb-purple-dark)" opacity=".3"/>
+  <rect x="22" y="60" width="28" height="44" rx="9" fill="var(--thumb-purple-dark)" opacity=".3"/>
+  <rect x="65" y="57" width="28" height="46" rx="9" fill="var(--thumb-purple-dark)" opacity=".3"/>
+  <!-- tail -->
+  <path d="M 108 -7 Q 134 -17 129 7 Q 124 17 112 13" fill="none" stroke="var(--thumb-purple)" stroke-width="7" stroke-linecap="round" opacity=".3"/>
+</g>
+<!-- heart -->
+<g transform="translate(328,82)" fill="var(--thumb-pink)" opacity=".55">
+  <path d="M 0 14 Q -22 -4 -22 -15 Q -22 -30 -9 -30 Q -3 -30 0 -22 Q 3 -30 9 -30 Q 22 -30 22 -15 Q 22 -4 0 14 Z"/>
+</g>
+  <rect width="400" height="400" fill="url(#gvig)"/>
+</svg>

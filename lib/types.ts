@@ -5,6 +5,9 @@ export type CoverArt = {
   p2?: string
   kind?: string
   thumb?: string
+  svg_url?: string
+  type?: 'svg' | 'image'
+  image_url?: string
 }
 
 export type Post = {

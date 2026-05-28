@@ -1,0 +1,88 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root {
+  --thumb-purple: #9869D3;
+  --thumb-purple-dark: #7048B0;
+  --thumb-lavender: #C4A8E8;
+  --thumb-lav-light: #E0D4F8;
+  --thumb-pink: #E8A0C0;
+  --thumb-pink-light: #F4D0E4;
+  --thumb-blue: #8CA8D8;
+  --thumb-blue-light: #C4D8F4;
+  --thumb-teal: #6BA39A;
+  --thumb-amber: #C08A64;
+  --thumb-ink: rgba(15,10,40,0.75);
+  --thumb-ink-light: rgba(15,10,40,0.45);
+  --thumb-white: rgba(255,255,255,0.9);
+  --thumb-white-mid: rgba(255,255,255,0.5);
+  --thumb-white-subtle: rgba(255,255,255,0.2);
+}
+</style>
+<defs>
+  <radialGradient id="gbg1" cx="30%" cy="25%" r="60%">
+    <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="var(--thumb-lavender)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg2" cx="75%" cy="70%" r="55%">
+    <stop offset="0%" stop-color="var(--thumb-pink)" stop-opacity=".28"/>
+    <stop offset="100%" stop-color="var(--thumb-pink)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg3" cx="60%" cy="20%" r="50%">
+    <stop offset="0%" stop-color="var(--thumb-blue)" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="var(--thumb-blue)" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".8" fill="var(--thumb-purple)" opacity=".12"/>
+  </pattern>
+  <radialGradient id="gvig" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(100,80,160,0.1)"/>
+  </radialGradient>
+
+<radialGradient id="expg" cx="50%" cy="55%" r="38%">
+  <stop offset="0%" stop-color="var(--thumb-amber)" stop-opacity=".5"/>
+  <stop offset="100%" stop-color="transparent"/>
+</radialGradient>
+</defs>
+  <rect width="400" height="400" fill="rgba(245,243,239,0.01)"/>
+  <rect width="400" height="400" fill="url(#gbg1)"/>
+  <rect width="400" height="400" fill="url(#gbg2)"/>
+  <rect width="400" height="400" fill="url(#gbg3)"/>
+  <rect width="400" height="400" fill="url(#dots)"/>
+
+<!-- explosion glow -->
+
+<rect width="400" height="400" fill="url(#expg)"/>
+<!-- explosion rays -->
+<g stroke="var(--thumb-amber)" fill="none" opacity=".25" stroke-width="1.5">
+  <line x1="200" y1="225" x2="200" y2="55"/><line x1="200" y1="225" x2="345" y2="78"/>
+  <line x1="200" y1="225" x2="55" y2="78"/><line x1="200" y1="225" x2="375" y2="200"/>
+  <line x1="200" y1="225" x2="25" y2="200"/><line x1="200" y1="225" x2="315" y2="355"/>
+  <line x1="200" y1="225" x2="85" y2="355"/>
+</g>
+<!-- dynamite sticks -->
+<g transform="translate(200,258)">
+  <rect x="-50" y="-82" width="30" height="82" rx="7" fill="var(--thumb-pink)" opacity=".65"/>
+  <rect x="-16" y="-92" width="30" height="92" rx="7" fill="var(--thumb-lavender)" opacity=".7"/>
+  <rect x="20" y="-82" width="30" height="82" rx="7" fill="var(--thumb-pink)" opacity=".65"/>
+  <!-- labels -->
+  <rect x="-47" y="-62" width="24" height="12" rx="2" fill="var(--thumb-white-mid)"/>
+  <rect x="-13" y="-72" width="24" height="12" rx="2" fill="var(--thumb-white-mid)"/>
+  <rect x="23" y="-62" width="24" height="12" rx="2" fill="var(--thumb-white-mid)"/>
+  <!-- fuse -->
+  <path d="M 0 -92 Q 12 -114 7 -136 Q 2 -154 10 -170" fill="none" stroke="var(--thumb-amber)" stroke-width="2.8" stroke-linecap="round"/>
+  <!-- spark -->
+  <circle cx="10" cy="-170" r="8" fill="var(--thumb-amber)" opacity=".8"/>
+  <circle cx="10" cy="-170" r="16" fill="var(--thumb-amber)" opacity=".25"/>
+  <g fill="var(--thumb-pink-light)" opacity=".9">
+    <polygon points="10,-159 7,-149 13,-149"/>
+    <polygon points="17,-162 21,-154 14,-156"/>
+    <polygon points="3,-162 -1,-154 6,-156"/>
+  </g>
+</g>
+<!-- Nobel medal -->
+<circle cx="325" cy="82" r="30" fill="none" stroke="var(--thumb-amber)" stroke-width="2" opacity=".45"/>
+<circle cx="325" cy="82" r="23" fill="var(--thumb-amber)" opacity=".12"/>
+<text x="325" y="88" text-anchor="middle" font-size="20" fill="var(--thumb-amber)" opacity=".55" font-family="Georgia,serif" font-style="italic">N</text>
+  <rect width="400" height="400" fill="url(#gvig)"/>
+</svg>

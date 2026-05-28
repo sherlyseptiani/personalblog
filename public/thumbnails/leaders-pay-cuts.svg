@@ -1,0 +1,74 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root {
+  --thumb-purple: #9869D3;
+  --thumb-purple-dark: #7048B0;
+  --thumb-lavender: #C4A8E8;
+  --thumb-lav-light: #E0D4F8;
+  --thumb-pink: #E8A0C0;
+  --thumb-pink-light: #F4D0E4;
+  --thumb-blue: #8CA8D8;
+  --thumb-blue-light: #C4D8F4;
+  --thumb-teal: #6BA39A;
+  --thumb-amber: #C08A64;
+  --thumb-ink: rgba(15,10,40,0.75);
+  --thumb-ink-light: rgba(15,10,40,0.45);
+  --thumb-white: rgba(255,255,255,0.9);
+  --thumb-white-mid: rgba(255,255,255,0.5);
+  --thumb-white-subtle: rgba(255,255,255,0.2);
+}
+</style>
+<defs>
+  <radialGradient id="gbg1" cx="30%" cy="25%" r="60%">
+    <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="var(--thumb-lavender)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg2" cx="75%" cy="70%" r="55%">
+    <stop offset="0%" stop-color="var(--thumb-pink)" stop-opacity=".28"/>
+    <stop offset="100%" stop-color="var(--thumb-pink)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg3" cx="60%" cy="20%" r="50%">
+    <stop offset="0%" stop-color="var(--thumb-blue)" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="var(--thumb-blue)" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".8" fill="var(--thumb-purple)" opacity=".12"/>
+  </pattern>
+  <radialGradient id="gvig" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(100,80,160,0.1)"/>
+  </radialGradient>
+
+</defs>
+  <rect width="400" height="400" fill="rgba(245,243,239,0.01)"/>
+  <rect width="400" height="400" fill="url(#gbg1)"/>
+  <rect width="400" height="400" fill="url(#gbg2)"/>
+  <rect width="400" height="400" fill="url(#gbg3)"/>
+  <rect width="400" height="400" fill="url(#dots)"/>
+
+<!-- French flag tint -->
+<rect x="0" y="0" width="133" height="400" fill="#002395" opacity=".05"/>
+<rect x="267" y="0" width="133" height="400" fill="#ED2939" opacity=".05"/>
+<!-- downward chart -->
+<polyline points="58,98 132,118 204,158 278,222 342,292" fill="none" stroke="var(--thumb-pink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+<polygon points="342,292 324,277 337,272" fill="var(--thumb-pink)" opacity=".7"/>
+<!-- euro symbol -->
+<g transform="translate(138,225)" fill="none" stroke="var(--thumb-amber)" stroke-width="4.5" stroke-linecap="round" opacity=".45">
+  <path d="M 32 -37 Q 12 -50 -12 -40 Q -34 -30 -34 0 Q -34 30 -12 40 Q 12 50 32 37"/>
+  <line x1="-42" y1="-12" x2="12" y2="-12"/>
+  <line x1="-42" y1="12" x2="12" y2="12"/>
+</g>
+<!-- scissors -->
+<g transform="translate(265,158) rotate(28)" fill="none" stroke="var(--thumb-purple)" stroke-width="2.8" stroke-linecap="round" opacity=".4">
+  <circle cx="-15" cy="-9" r="11"/>
+  <circle cx="15" cy="9" r="11"/>
+  <line x1="-5" y1="-13" x2="37" y2="-42"/>
+  <line x1="5" y1="13" x2="37" y2="42"/>
+</g>
+<!-- suit/tie -->
+<g transform="translate(200,306)" opacity=".22">
+  <polygon points="0,-42 -22,0 -11,42 0,30 11,42 22,0" fill="var(--thumb-purple)"/>
+  <polygon points="0,-42 -11,0 0,-10 11,0" fill="var(--thumb-amber)"/>
+</g>
+  <rect width="400" height="400" fill="url(#gvig)"/>
+</svg>

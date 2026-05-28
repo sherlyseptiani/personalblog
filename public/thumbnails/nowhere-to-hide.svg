@@ -1,0 +1,83 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root {
+  --thumb-purple: #9869D3;
+  --thumb-purple-dark: #7048B0;
+  --thumb-lavender: #C4A8E8;
+  --thumb-lav-light: #E0D4F8;
+  --thumb-pink: #E8A0C0;
+  --thumb-pink-light: #F4D0E4;
+  --thumb-blue: #8CA8D8;
+  --thumb-blue-light: #C4D8F4;
+  --thumb-teal: #6BA39A;
+  --thumb-amber: #C08A64;
+  --thumb-ink: rgba(15,10,40,0.75);
+  --thumb-ink-light: rgba(15,10,40,0.45);
+  --thumb-white: rgba(255,255,255,0.9);
+  --thumb-white-mid: rgba(255,255,255,0.5);
+  --thumb-white-subtle: rgba(255,255,255,0.2);
+}
+</style>
+<defs>
+  <radialGradient id="gbg1" cx="30%" cy="25%" r="60%">
+    <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="var(--thumb-lavender)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg2" cx="75%" cy="70%" r="55%">
+    <stop offset="0%" stop-color="var(--thumb-pink)" stop-opacity=".28"/>
+    <stop offset="100%" stop-color="var(--thumb-pink)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg3" cx="60%" cy="20%" r="50%">
+    <stop offset="0%" stop-color="var(--thumb-blue)" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="var(--thumb-blue)" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".8" fill="var(--thumb-purple)" opacity=".12"/>
+  </pattern>
+  <radialGradient id="gvig" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(100,80,160,0.1)"/>
+  </radialGradient>
+<radialGradient id="warmg" cx="50%" cy="42%" r="48%">
+  <stop offset="0%" stop-color="var(--thumb-amber)" stop-opacity=".3"/>
+  <stop offset="100%" stop-color="transparent"/>
+</radialGradient>
+</defs>
+  <rect width="400" height="400" fill="rgba(245,243,239,0.01)"/>
+  <rect width="400" height="400" fill="url(#gbg1)"/>
+  <rect width="400" height="400" fill="url(#gbg2)"/>
+  <rect width="400" height="400" fill="url(#gbg3)"/>
+  <rect width="400" height="400" fill="url(#dots)"/>
+
+
+<rect width="400" height="400" fill="url(#warmg)"/>
+<!-- cat body -->
+<g transform="translate(200,234)">
+  <ellipse cx="0" cy="0" rx="72" ry="57" fill="var(--thumb-amber)" opacity=".55"/>
+  <circle cx="-57" cy="-32" r="42" fill="var(--thumb-amber)" opacity=".55"/>
+  <!-- ears -->
+  <polygon points="-82,-68 -92,-98 -57,-70" fill="var(--thumb-amber)" opacity=".55"/>
+  <polygon points="-32,-68 -22,-98 -57,-70" fill="var(--thumb-amber)" opacity=".55"/>
+  <polygon points="-80,-70 -89,-94 -60,-72" fill="var(--thumb-pink)" opacity=".45"/>
+  <polygon points="-34,-70 -24,-94 -54,-72" fill="var(--thumb-pink)" opacity=".45"/>
+  <!-- eyes -->
+  <circle cx="-70" cy="-37" r="8" fill="var(--thumb-ink)" opacity=".6"/>
+  <circle cx="-44" cy="-37" r="8" fill="var(--thumb-ink)" opacity=".6"/>
+  <circle cx="-67" cy="-40" r="3" fill="var(--thumb-amber)" opacity=".7"/>
+  <circle cx="-41" cy="-40" r="3" fill="var(--thumb-amber)" opacity=".7"/>
+  <!-- nose -->
+  <polygon points="-57,-24 -62,-19 -52,-19" fill="var(--thumb-pink)" opacity=".7"/>
+  <!-- whiskers -->
+  <line x1="-85" y1="-22" x2="-64" y2="-22" stroke="var(--thumb-white-mid)" stroke-width="1.5"/>
+  <line x1="-85" y1="-16" x2="-65" y2="-19" stroke="var(--thumb-white-mid)" stroke-width="1.5"/>
+  <line x1="-30" y1="-22" x2="-50" y2="-22" stroke="var(--thumb-white-mid)" stroke-width="1.5"/>
+  <line x1="-30" y1="-16" x2="-49" y2="-19" stroke="var(--thumb-white-mid)" stroke-width="1.5"/>
+  <!-- tail -->
+  <path d="M 72 8 Q 112 -12 107 18 Q 102 38 88 36" fill="none" stroke="var(--thumb-amber)" stroke-width="11" stroke-linecap="round" opacity=".55"/>
+</g>
+<!-- paw print -->
+<g transform="translate(78,342)" fill="var(--thumb-amber)" opacity=".3">
+  <circle cx="0" cy="0" r="9"/><circle cx="-15" cy="-13" r="6"/><circle cx="0" cy="-17" r="6"/><circle cx="15" cy="-13" r="6"/>
+</g>
+  <rect width="400" height="400" fill="url(#gvig)"/>
+</svg>

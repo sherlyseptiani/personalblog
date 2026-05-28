@@ -1,0 +1,71 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root {
+  --thumb-purple: #9869D3;
+  --thumb-purple-dark: #7048B0;
+  --thumb-lavender: #C4A8E8;
+  --thumb-lav-light: #E0D4F8;
+  --thumb-pink: #E8A0C0;
+  --thumb-pink-light: #F4D0E4;
+  --thumb-blue: #8CA8D8;
+  --thumb-blue-light: #C4D8F4;
+  --thumb-teal: #6BA39A;
+  --thumb-amber: #C08A64;
+  --thumb-ink: rgba(15,10,40,0.75);
+  --thumb-ink-light: rgba(15,10,40,0.45);
+  --thumb-white: rgba(255,255,255,0.9);
+  --thumb-white-mid: rgba(255,255,255,0.5);
+  --thumb-white-subtle: rgba(255,255,255,0.2);
+}
+</style>
+<defs>
+  <radialGradient id="gbg1" cx="30%" cy="25%" r="60%">
+    <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="var(--thumb-lavender)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg2" cx="75%" cy="70%" r="55%">
+    <stop offset="0%" stop-color="var(--thumb-pink)" stop-opacity=".28"/>
+    <stop offset="100%" stop-color="var(--thumb-pink)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg3" cx="60%" cy="20%" r="50%">
+    <stop offset="0%" stop-color="var(--thumb-blue)" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="var(--thumb-blue)" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".8" fill="var(--thumb-purple)" opacity=".12"/>
+  </pattern>
+  <radialGradient id="gvig" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(100,80,160,0.1)"/>
+  </radialGradient>
+
+</defs>
+  <rect width="400" height="400" fill="rgba(245,243,239,0.01)"/>
+  <rect width="400" height="400" fill="url(#gbg1)"/>
+  <rect width="400" height="400" fill="url(#gbg2)"/>
+  <rect width="400" height="400" fill="url(#gbg3)"/>
+  <rect width="400" height="400" fill="url(#dots)"/>
+
+<!-- spotlight -->
+<path d="M 200 0 L 118 400 L 282 400 Z" fill="var(--thumb-amber)" opacity=".08"/>
+<!-- mic stand -->
+<line x1="200" y1="260" x2="200" y2="365" stroke="var(--thumb-purple)" stroke-width="4.5" opacity=".45"/>
+<line x1="148" y1="365" x2="252" y2="365" stroke="var(--thumb-purple)" stroke-width="4.5" stroke-linecap="round" opacity=".45"/>
+<line x1="200" y1="312" x2="158" y2="344" stroke="var(--thumb-purple)" stroke-width="3.5" stroke-linecap="round" opacity=".45"/>
+<!-- mic capsule -->
+<rect x="178" y="178" width="44" height="84" rx="22" fill="var(--thumb-purple)" opacity=".5"/>
+<g stroke="var(--thumb-lavender)" stroke-width=".9" opacity=".4">
+  <line x1="178" y1="198" x2="222" y2="198"/><line x1="178" y1="213" x2="222" y2="213"/>
+  <line x1="178" y1="228" x2="222" y2="228"/><line x1="178" y1="243" x2="222" y2="243"/>
+  <line x1="190" y1="180" x2="190" y2="260"/><line x1="200" y1="178" x2="200" y2="262"/><line x1="210" y1="180" x2="210" y2="260"/>
+</g>
+<!-- earth globe -->
+<circle cx="200" cy="100" r="42" fill="var(--thumb-blue)" opacity=".45"/>
+<path d="M 173 78 Q 187 73 194 86 Q 201 93 215 83 Q 226 76 237 90 Q 231 107 219 111 Q 206 117 196 107 Q 182 93 173 78 Z" fill="var(--thumb-teal)" opacity=".55"/>
+<!-- comedy rings -->
+<g stroke="var(--thumb-amber)" stroke-width="1.5" fill="none" opacity=".3">
+  <path d="M 76 202 Q 98 190 120 202 Q 142 214 162 202"/>
+  <path d="M 238 202 Q 260 190 282 202 Q 304 214 324 202"/>
+</g>
+  <rect width="400" height="400" fill="url(#gvig)"/>
+</svg>

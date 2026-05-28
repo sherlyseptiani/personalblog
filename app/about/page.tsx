@@ -110,7 +110,7 @@ export default function AboutPage() {
       {/* ============ ABOUT BODY ============ */}
       <section className="about-body" id="aboutBody">
 
-        <a className="reading-strip glass reveal" id="readingStrip" href="#" style={{ textDecoration: 'none' }}>
+        <a className="reading-strip glass reveal in" id="readingStrip" href="#" style={{ textDecoration: 'none' }}>
           <span className="rs-eyebrow"><span className="nico"></span>Currently reading</span>
           <span className="rs-sep"></span>
           <span className="rs-title">
@@ -124,7 +124,7 @@ export default function AboutPage() {
 
         <div className="about-masonry" id="aboutMasonry">
 
-          <div className="about-card about-bio glass reveal">
+          <div className="about-card about-bio glass reveal in">
             <div className="card-eyebrow">
               <span className="sigil" style={{ '--sigil-a': '#f5b8c7', '--sigil-b': '#c6b5e0' } as React.CSSProperties}></span>
               <span className="eyebrow">The longer version</span>
@@ -156,7 +156,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="about-card glass reveal r-d1">
+          <div className="about-card glass reveal in r-d1">
             <div className="card-eyebrow">
               <span className="sigil" style={{ '--sigil-a': '#a7d8c5', '--sigil-b': '#b3d0e8' } as React.CSSProperties}></span>
               <span className="eyebrow">Quick facts</span>
@@ -169,7 +169,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="say-hi-panel reveal r-d2">
+          <div className="say-hi-panel reveal in r-d2">
             <div className="shp-blob shp-b1" aria-hidden="true"></div>
             <div className="shp-blob shp-b2" aria-hidden="true"></div>
             <div className="shp-blob shp-b3" aria-hidden="true"></div>
@@ -237,7 +237,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="about-card glass reveal">
+          <div className="about-card glass reveal in">
             <div className="card-eyebrow">
               <span className="sigil" style={{ '--sigil-a': '#f5b8c7', '--sigil-b': '#c6b5e0' } as React.CSSProperties}></span>
               <span className="eyebrow">Recommended · For humans</span>
@@ -287,7 +287,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="about-card glass reveal r-d1">
+          <div className="about-card glass reveal in r-d1">
             <div className="card-eyebrow">
               <span className="sigil" style={{ '--sigil-a': '#f6c7a3', '--sigil-b': '#a7d8c5' } as React.CSSProperties}></span>
               <span className="eyebrow">Recommended · For dogs</span>
@@ -381,24 +381,8 @@ export default function AboutPage() {
             }, 3100);
           }
 
-          // Scroll-reveal
-          var revealElements = document.querySelectorAll('.reveal');
-          // Immediately show elements already in viewport
-          revealElements.forEach(function(el) {
-            var rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight && rect.bottom > 0) {
-              el.classList.add('in');
-            }
-          });
-          // Observe remaining hidden elements
-          var io = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) {
-              if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-            });
-          }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
-          revealElements.forEach(function(el) {
-            if (!el.classList.contains('in')) { io.observe(el); }
-          });
+          // Scroll-reveal — elements already have 'in' class for visibility
+          // Animation is handled by CSS transition on initial render
 
           // Apply accent from localStorage
           var saved = localStorage.getItem('acn-accent');

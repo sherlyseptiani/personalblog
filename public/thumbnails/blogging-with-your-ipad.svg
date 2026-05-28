@@ -1,0 +1,81 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root {
+  --thumb-purple: #9869D3;
+  --thumb-purple-dark: #7048B0;
+  --thumb-lavender: #C4A8E8;
+  --thumb-lav-light: #E0D4F8;
+  --thumb-pink: #E8A0C0;
+  --thumb-pink-light: #F4D0E4;
+  --thumb-blue: #8CA8D8;
+  --thumb-blue-light: #C4D8F4;
+  --thumb-teal: #6BA39A;
+  --thumb-amber: #C08A64;
+  --thumb-ink: rgba(15,10,40,0.75);
+  --thumb-ink-light: rgba(15,10,40,0.45);
+  --thumb-white: rgba(255,255,255,0.9);
+  --thumb-white-mid: rgba(255,255,255,0.5);
+  --thumb-white-subtle: rgba(255,255,255,0.2);
+}
+</style>
+<defs>
+  <radialGradient id="gbg1" cx="30%" cy="25%" r="60%">
+    <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="var(--thumb-lavender)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg2" cx="75%" cy="70%" r="55%">
+    <stop offset="0%" stop-color="var(--thumb-pink)" stop-opacity=".28"/>
+    <stop offset="100%" stop-color="var(--thumb-pink)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg3" cx="60%" cy="20%" r="50%">
+    <stop offset="0%" stop-color="var(--thumb-blue)" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="var(--thumb-blue)" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".8" fill="var(--thumb-purple)" opacity=".12"/>
+  </pattern>
+  <radialGradient id="gvig" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(100,80,160,0.1)"/>
+  </radialGradient>
+
+</defs>
+  <rect width="400" height="400" fill="rgba(245,243,239,0.01)"/>
+  <rect width="400" height="400" fill="url(#gbg1)"/>
+  <rect width="400" height="400" fill="url(#gbg2)"/>
+  <rect width="400" height="400" fill="url(#gbg3)"/>
+  <rect width="400" height="400" fill="url(#dots)"/>
+
+<!-- iPad -->
+<g transform="translate(200,212)">
+  <rect x="-97" y="-132" width="194" height="256" rx="15" fill="var(--thumb-ink)" opacity=".4"/>
+  <rect x="-86" y="-122" width="172" height="226" rx="9" fill="var(--thumb-lav-light)" opacity=".85"/>
+  <circle cx="0" cy="-130" r="3.5" fill="var(--thumb-purple)" opacity=".4"/>
+  <!-- app UI header -->
+  <rect x="-74" y="-112" width="148" height="30" rx="5" fill="var(--thumb-purple)" opacity=".65"/>
+  <g fill="var(--thumb-white)" opacity=".65">
+    <rect x="-66" y="-104" width="13" height="13" rx="2.5"/>
+    <rect x="-48" y="-104" width="24" height="13" rx="2.5"/>
+    <circle cx="56" cy="-97" r="6.5"/>
+  </g>
+  <!-- content lines -->
+  <g stroke="var(--thumb-lav-light)" stroke-width="1.5" opacity=".7">
+    <line x1="-72" y1="-68" x2="72" y2="-68"/><line x1="-72" y1="-52" x2="62" y2="-52"/>
+    <line x1="-72" y1="-36" x2="72" y2="-36"/><line x1="-72" y1="-20" x2="57" y2="-20"/>
+    <line x1="-72" y1="-4" x2="72" y2="-4"/><line x1="-72" y1="12" x2="66" y2="12"/>
+  </g>
+  <!-- image placeholder -->
+  <rect x="-72" y="26" width="144" height="64" rx="5" fill="var(--thumb-lavender)" opacity=".3"/>
+  <line x1="-72" y1="26" x2="72" y2="90" stroke="var(--thumb-lav-light)" stroke-width="1" opacity=".4"/>
+  <line x1="72" y1="26" x2="-72" y2="90" stroke="var(--thumb-lav-light)" stroke-width="1" opacity=".4"/>
+  <!-- home bar -->
+  <rect x="-24" y="108" width="48" height="5.5" rx="2.8" fill="var(--thumb-ink)" opacity=".25"/>
+</g>
+<!-- Apple Pencil -->
+<g transform="translate(324,204) rotate(-22)">
+  <rect x="-5.5" y="-92" width="11" height="114" rx="5.5" fill="var(--thumb-lav-light)" opacity=".8"/>
+  <polygon points="0,22 -5.5,22 0,38 5.5,22" fill="var(--thumb-purple)" opacity=".6"/>
+  <rect x="-5.5" y="-92" width="11" height="13" rx="5.5" fill="var(--thumb-purple)" opacity=".7"/>
+</g>
+  <rect width="400" height="400" fill="url(#gvig)"/>
+</svg>

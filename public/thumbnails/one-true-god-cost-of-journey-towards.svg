@@ -1,0 +1,74 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root {
+  --thumb-purple: #9869D3;
+  --thumb-purple-dark: #7048B0;
+  --thumb-lavender: #C4A8E8;
+  --thumb-lav-light: #E0D4F8;
+  --thumb-pink: #E8A0C0;
+  --thumb-pink-light: #F4D0E4;
+  --thumb-blue: #8CA8D8;
+  --thumb-blue-light: #C4D8F4;
+  --thumb-teal: #6BA39A;
+  --thumb-amber: #C08A64;
+  --thumb-ink: rgba(15,10,40,0.75);
+  --thumb-ink-light: rgba(15,10,40,0.45);
+  --thumb-white: rgba(255,255,255,0.9);
+  --thumb-white-mid: rgba(255,255,255,0.5);
+  --thumb-white-subtle: rgba(255,255,255,0.2);
+}
+</style>
+<defs>
+  <radialGradient id="gbg1" cx="30%" cy="25%" r="60%">
+    <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="var(--thumb-lavender)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg2" cx="75%" cy="70%" r="55%">
+    <stop offset="0%" stop-color="var(--thumb-pink)" stop-opacity=".28"/>
+    <stop offset="100%" stop-color="var(--thumb-pink)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg3" cx="60%" cy="20%" r="50%">
+    <stop offset="0%" stop-color="var(--thumb-blue)" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="var(--thumb-blue)" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".8" fill="var(--thumb-purple)" opacity=".12"/>
+  </pattern>
+  <radialGradient id="gvig" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(100,80,160,0.1)"/>
+  </radialGradient>
+<radialGradient id="g17" cx="50%" cy="18%" r="48%">
+  <stop offset="0%" stop-color="var(--thumb-amber)" stop-opacity=".45"/>
+  <stop offset="100%" stop-color="transparent"/>
+</radialGradient>
+</defs>
+  <rect width="400" height="400" fill="rgba(245,243,239,0.01)"/>
+  <rect width="400" height="400" fill="url(#gbg1)"/>
+  <rect width="400" height="400" fill="url(#gbg2)"/>
+  <rect width="400" height="400" fill="url(#gbg3)"/>
+  <rect width="400" height="400" fill="url(#dots)"/>
+
+
+<rect width="400" height="400" fill="url(#g17)"/>
+<g opacity=".1" fill="var(--thumb-amber)">
+  <polygon points="200,0 183,202 217,202"/><polygon points="200,0 158,222 173,222"/>
+  <polygon points="200,0 227,222 242,222"/><polygon points="200,0 128,242 146,237"/>
+  <polygon points="200,0 254,237 272,242"/>
+</g>
+<!-- idols fading -->
+<g opacity=".22" fill="var(--thumb-purple)">
+  <rect x="48" y="302" width="22" height="52" rx="3"/><rect x="78" y="312" width="20" height="42" rx="3"/>
+  <rect x="106" y="307" width="24" height="47" rx="3"/>
+  <rect x="292" y="302" width="22" height="52" rx="3"/><rect x="320" y="310" width="20" height="44" rx="3"/>
+  <rect x="346" y="304" width="24" height="50" rx="3"/>
+</g>
+<!-- pillar of light -->
+<rect x="186" y="58" width="28" height="284" fill="var(--thumb-amber)" opacity=".06" rx="2"/>
+<!-- flame -->
+<g transform="translate(200,72)">
+  <path d="M 0 0 Q 19 -22 11 -52 Q 6 -32 0 -58 Q -6 -32 -11 -52 Q -19 -22 0 0 Z" fill="var(--thumb-amber)" opacity=".7"/>
+  <path d="M 0 -10 Q 11 -28 6 -48 Q 2 -34 0 -50 Q -2 -34 -6 -48 Q -11 -28 0 -10 Z" fill="var(--thumb-pink-light)" opacity=".65"/>
+</g>
+  <rect width="400" height="400" fill="url(#gvig)"/>
+</svg>

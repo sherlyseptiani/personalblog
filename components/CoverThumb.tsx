@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { artSvg, deriveArt } from '@/lib/categories'
 import type { CoverArt, Category } from '@/lib/types'
 
@@ -26,17 +26,20 @@ type Props = {
   coverArt: CoverArt | null
   slug: string
   category: Category
-  // Above-fold posts: skip opacity gate + use high fetch priority so the
-  // image is visible from SSR HTML without waiting for JS hydration.
   priority?: boolean
 }
 
 export default function CoverThumb({ thumbnail, coverArt, slug, category, priority = false }: Props) {
   const [imgFailed, setImgFailed] = useState(false)
   const [imgLoaded, setImgLoaded] = useState(false)
+  const imgRef = useRef<HTMLImageElement>(null)
 
-  // Merge field-by-field: explicit cover_art values win, derived fills any gaps.
-  // This handles null, {} and partially-filled cover_art objects uniformly.
+  useEffect(() => {
+    if (imgRef.current?.complete) {
+      setImgLoaded(true)
+    }
+  }, [])
+
   const derived = deriveArt(slug, category)
   const art = {
     kind:  coverArt?.kind  ?? derived.kind,
@@ -45,7 +48,8 @@ export default function CoverThumb({ thumbnail, coverArt, slug, category, priori
     thumb: coverArt?.thumb ?? derived.thumb,
   }
 
-  const hasThumbnail = thumbnail && !imgFailed
+  const imageUrl = coverArt?.svg_url ?? coverArt?.image_url ?? thumbnail
+  const hasThumbnail = imageUrl && !imgFailed
 
   return (
     <div className={`thumb ${art.thumb}`}>
@@ -53,13 +57,11 @@ export default function CoverThumb({ thumbnail, coverArt, slug, category, priori
         <>
           {!priority && !imgLoaded && <ThumbSkeleton />}
           <img
-            src={thumbnail}
+            ref={imgRef}
+            src={imageUrl}
             alt=""
-            // Priority images: always visible from SSR HTML, no JS needed.
-            // Non-priority images: lazy-load to save bandwidth below fold.
-            {...(priority ? { fetchPriority: 'high' } : { loading: 'lazy' })}
+            loading={priority ? 'eager' : 'lazy'}
             style={{
-              filter: 'saturate(60%) brightness(85%) contrast(105%)',
               opacity: priority || imgLoaded ? 1 : 0,
               transition: priority ? 'none' : 'opacity 0.3s ease',
             }}

@@ -148,6 +148,25 @@ export default async function HomePage() {
 
       <Script id="homepage-init" strategy="afterInteractive">{`
         (function() {
+          // iOS Low Power Mode detection - hide video if autoplay fails
+          var video = document.getElementById('heroVideo');
+          if (video) {
+            var checkPlaying = function() {
+              if (video.paused && video.readyState >= 2) {
+                // Autoplay failed (likely Low Power Mode) - hide video
+                video.style.opacity = '0';
+                video.style.visibility = 'hidden';
+              }
+            };
+            // Check after a short delay
+            setTimeout(checkPlaying, 500);
+            // Also check on play event failure
+            video.addEventListener('play', function() {
+              video.style.opacity = '1';
+              video.style.visibility = 'visible';
+            });
+          }
+
           var NOTIFY_KEY = 'acn-notify';
           function setNotifyState(btn, on) {
             btn.classList.toggle('on', on);

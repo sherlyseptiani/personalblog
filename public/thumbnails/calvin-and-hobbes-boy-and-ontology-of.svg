@@ -1,0 +1,101 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root {
+  --thumb-purple: #9869D3;
+  --thumb-purple-dark: #7048B0;
+  --thumb-lavender: #C4A8E8;
+  --thumb-lav-light: #E0D4F8;
+  --thumb-pink: #E8A0C0;
+  --thumb-pink-light: #F4D0E4;
+  --thumb-blue: #8CA8D8;
+  --thumb-blue-light: #C4D8F4;
+  --thumb-teal: #6BA39A;
+  --thumb-amber: #C08A64;
+  --thumb-ink: rgba(15,10,40,0.75);
+  --thumb-ink-light: rgba(15,10,40,0.45);
+  --thumb-white: rgba(255,255,255,0.9);
+  --thumb-white-mid: rgba(255,255,255,0.5);
+  --thumb-white-subtle: rgba(255,255,255,0.2);
+}
+</style>
+<defs>
+  <radialGradient id="gbg1" cx="30%" cy="25%" r="60%">
+    <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="var(--thumb-lavender)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg2" cx="75%" cy="70%" r="55%">
+    <stop offset="0%" stop-color="var(--thumb-pink)" stop-opacity=".28"/>
+    <stop offset="100%" stop-color="var(--thumb-pink)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg3" cx="60%" cy="20%" r="50%">
+    <stop offset="0%" stop-color="var(--thumb-blue)" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="var(--thumb-blue)" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".8" fill="var(--thumb-purple)" opacity=".12"/>
+  </pattern>
+  <radialGradient id="gvig" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(100,80,160,0.1)"/>
+  </radialGradient>
+<radialGradient id="sun4" cx="82%" cy="12%" r="25%">
+  <stop offset="0%" stop-color="var(--thumb-amber)" stop-opacity=".35"/>
+  <stop offset="100%" stop-color="transparent"/>
+</radialGradient>
+</defs>
+  <rect width="400" height="400" fill="rgba(245,243,239,0.01)"/>
+  <rect width="400" height="400" fill="url(#gbg1)"/>
+  <rect width="400" height="400" fill="url(#gbg2)"/>
+  <rect width="400" height="400" fill="url(#gbg3)"/>
+  <rect width="400" height="400" fill="url(#dots)"/>
+
+<!-- sky -->
+<rect width="400" height="220" fill="var(--thumb-blue-light)" opacity=".2"/>
+<!-- hill -->
+<ellipse cx="200" cy="385" rx="285" ry="110" fill="var(--thumb-teal)" opacity=".2"/>
+<!-- sun -->
+
+<rect width="400" height="400" fill="url(#sun4)"/>
+<!-- Hobbes tiger -->
+<g transform="translate(248,218)">
+  <ellipse cx="0" cy="0" rx="38" ry="52" fill="var(--thumb-amber)" opacity=".7"/>
+  <circle cx="0" cy="-58" r="32" fill="var(--thumb-amber)" opacity=".7"/>
+  <polygon points="-24,-82 -33,-104 -14,-86" fill="var(--thumb-amber)" opacity=".7"/>
+  <polygon points="24,-82 33,-104 14,-86" fill="var(--thumb-amber)" opacity=".7"/>
+  <polygon points="-23,-84 -30,-102 -15,-88" fill="var(--thumb-pink)" opacity=".5"/>
+  <polygon points="23,-84 30,-102 15,-88" fill="var(--thumb-pink)" opacity=".5"/>
+  <!-- stripes -->
+  <g fill="var(--thumb-ink)" opacity=".35">
+    <ellipse cx="0" cy="-20" rx="6.5" ry="17"/><ellipse cx="0" cy="4" rx="5.5" ry="15"/>
+    <ellipse cx="0" cy="-62" rx="4.5" ry="11"/>
+  </g>
+  <!-- eyes -->
+  <circle cx="-11" cy="-62" r="6" fill="var(--thumb-ink)"/>
+  <circle cx="11" cy="-62" r="6" fill="var(--thumb-ink)"/>
+  <circle cx="-9" cy="-64" r="2" fill="var(--thumb-white-mid)"/>
+  <circle cx="13" cy="-64" r="2" fill="var(--thumb-white-mid)"/>
+  <!-- muzzle -->
+  <ellipse cx="0" cy="-47" rx="13" ry="7" fill="var(--thumb-pink-light)" opacity=".6"/>
+  <!-- tail -->
+  <path d="M 38 28 Q 68 8 72 38 Q 68 55 58 52" fill="none" stroke="var(--thumb-amber)" stroke-width="9" stroke-linecap="round" opacity=".7"/>
+</g>
+<!-- Calvin boy -->
+<g transform="translate(152,248)">
+  <rect x="-15" y="-32" width="30" height="42" rx="7" fill="var(--thumb-pink)" opacity=".65"/>
+  <circle cx="0" cy="-49" r="23" fill="var(--thumb-pink-light)" opacity=".7"/>
+  <!-- spiky hair -->
+  <g fill="var(--thumb-amber)" opacity=".75">
+    <polygon points="0,-68 -7,-51 7,-51"/>
+    <polygon points="-11,-65 -16,-49 -3,-53"/>
+    <polygon points="11,-65 16,-49 3,-53"/>
+  </g>
+  <!-- eyes -->
+  <circle cx="-7" cy="-51" r="4.5" fill="var(--thumb-ink)"/>
+  <circle cx="7" cy="-51" r="4.5" fill="var(--thumb-ink)"/>
+  <circle cx="-5.5" cy="-53" r="1.5" fill="var(--thumb-white-mid)"/>
+  <!-- legs -->
+  <rect x="-13" y="10" width="11" height="30" rx="5" fill="var(--thumb-blue)" opacity=".6"/>
+  <rect x="2" y="10" width="11" height="30" rx="5" fill="var(--thumb-blue)" opacity=".6"/>
+</g>
+  <rect width="400" height="400" fill="url(#gvig)"/>
+</svg>

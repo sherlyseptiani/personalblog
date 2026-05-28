@@ -1,0 +1,72 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root {
+  --thumb-purple: #9869D3;
+  --thumb-purple-dark: #7048B0;
+  --thumb-lavender: #C4A8E8;
+  --thumb-lav-light: #E0D4F8;
+  --thumb-pink: #E8A0C0;
+  --thumb-pink-light: #F4D0E4;
+  --thumb-blue: #8CA8D8;
+  --thumb-blue-light: #C4D8F4;
+  --thumb-teal: #6BA39A;
+  --thumb-amber: #C08A64;
+  --thumb-ink: rgba(15,10,40,0.75);
+  --thumb-ink-light: rgba(15,10,40,0.45);
+  --thumb-white: rgba(255,255,255,0.9);
+  --thumb-white-mid: rgba(255,255,255,0.5);
+  --thumb-white-subtle: rgba(255,255,255,0.2);
+}
+</style>
+<defs>
+  <radialGradient id="gbg1" cx="30%" cy="25%" r="60%">
+    <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="var(--thumb-lavender)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg2" cx="75%" cy="70%" r="55%">
+    <stop offset="0%" stop-color="var(--thumb-pink)" stop-opacity=".28"/>
+    <stop offset="100%" stop-color="var(--thumb-pink)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg3" cx="60%" cy="20%" r="50%">
+    <stop offset="0%" stop-color="var(--thumb-blue)" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="var(--thumb-blue)" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".8" fill="var(--thumb-purple)" opacity=".12"/>
+  </pattern>
+  <radialGradient id="gvig" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(100,80,160,0.1)"/>
+  </radialGradient>
+
+</defs>
+  <rect width="400" height="400" fill="rgba(245,243,239,0.01)"/>
+  <rect width="400" height="400" fill="url(#gbg1)"/>
+  <rect width="400" height="400" fill="url(#gbg2)"/>
+  <rect width="400" height="400" fill="url(#gbg3)"/>
+  <rect width="400" height="400" fill="url(#dots)"/>
+
+<!-- blank page -->
+<rect x="92" y="58" width="216" height="292" rx="8" fill="var(--thumb-white)" opacity=".65" filter="drop-shadow(0 8px 28px rgba(152,105,211,.18))"/>
+<line x1="130" y1="78" x2="130" y2="332" stroke="var(--thumb-pink)" stroke-width="1.5" opacity=".5"/>
+<!-- empty anticipatory lines -->
+<g stroke="var(--thumb-lav-light)" stroke-width="1.5" opacity=".6">
+  <line x1="144" y1="110" x2="290" y2="110"/><line x1="144" y1="132" x2="272" y2="132"/>
+  <line x1="144" y1="154" x2="290" y2="154"/><line x1="144" y1="176" x2="262" y2="176"/>
+</g>
+<!-- pen nib writing first word -->
+<line x1="144" y1="212" x2="185" y2="212" stroke="var(--thumb-purple)" stroke-width="2.2" stroke-linecap="round" opacity=".7"/>
+<g transform="translate(192,212) rotate(-22)">
+  <rect x="-4.5" y="-48" width="9" height="55" rx="3" fill="var(--thumb-purple)" opacity=".75"/>
+  <polygon points="0,7 -4.5,7 0,21 4.5,7" fill="var(--thumb-purple-dark)" opacity=".75"/>
+  <rect x="-4.5" y="-48" width="9" height="10" rx="3" fill="var(--thumb-lavender)" opacity=".85"/>
+</g>
+<!-- confetti -->
+<g opacity=".55">
+  <circle cx="312" cy="88" r="5.5" fill="var(--thumb-purple)"/><circle cx="344" cy="130" r="4" fill="var(--thumb-teal)"/>
+  <circle cx="78" cy="98" r="4.5" fill="var(--thumb-amber)"/><circle cx="58" cy="152" r="3.5" fill="var(--thumb-purple)"/>
+  <rect x="322" y="162" width="8" height="8" rx="1.5" fill="var(--thumb-blue)" transform="rotate(22 326 166)"/>
+  <circle cx="78" cy="280" r="3" fill="var(--thumb-pink)"/>
+</g>
+  <rect width="400" height="400" fill="url(#gvig)"/>
+</svg>

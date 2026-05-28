@@ -1,0 +1,90 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root {
+  --thumb-purple: #9869D3;
+  --thumb-purple-dark: #7048B0;
+  --thumb-lavender: #C4A8E8;
+  --thumb-lav-light: #E0D4F8;
+  --thumb-pink: #E8A0C0;
+  --thumb-pink-light: #F4D0E4;
+  --thumb-blue: #8CA8D8;
+  --thumb-blue-light: #C4D8F4;
+  --thumb-teal: #6BA39A;
+  --thumb-amber: #C08A64;
+  --thumb-ink: rgba(15,10,40,0.75);
+  --thumb-ink-light: rgba(15,10,40,0.45);
+  --thumb-white: rgba(255,255,255,0.9);
+  --thumb-white-mid: rgba(255,255,255,0.5);
+  --thumb-white-subtle: rgba(255,255,255,0.2);
+}
+</style>
+<defs>
+  <radialGradient id="gbg1" cx="30%" cy="25%" r="60%">
+    <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="var(--thumb-lavender)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg2" cx="75%" cy="70%" r="55%">
+    <stop offset="0%" stop-color="var(--thumb-pink)" stop-opacity=".28"/>
+    <stop offset="100%" stop-color="var(--thumb-pink)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg3" cx="60%" cy="20%" r="50%">
+    <stop offset="0%" stop-color="var(--thumb-blue)" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="var(--thumb-blue)" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".8" fill="var(--thumb-purple)" opacity=".12"/>
+  </pattern>
+  <radialGradient id="gvig" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(100,80,160,0.1)"/>
+  </radialGradient>
+<radialGradient id="g30c" cx="50%" cy="50%" r="42%">
+  <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".55"/>
+  <stop offset="45%" stop-color="var(--thumb-purple)" stop-opacity=".2"/>
+  <stop offset="100%" stop-color="transparent"/>
+</radialGradient>
+</defs>
+  <rect width="400" height="400" fill="rgba(245,243,239,0.01)"/>
+  <rect width="400" height="400" fill="url(#gbg1)"/>
+  <rect width="400" height="400" fill="url(#gbg2)"/>
+  <rect width="400" height="400" fill="url(#gbg3)"/>
+  <rect width="400" height="400" fill="url(#dots)"/>
+
+
+<rect width="400" height="400" fill="url(#g30c)"/>
+<!-- star field -->
+<g fill="var(--thumb-purple)">
+  <circle cx="18" cy="28" r="1.2" opacity=".5"/><circle cx="78" cy="13" r=".8" opacity=".4"/>
+  <circle cx="148" cy="23" r="1.2" opacity=".5"/><circle cx="252" cy="8" r=".8" opacity=".35"/>
+  <circle cx="342" cy="28" r="1" opacity=".5"/><circle cx="382" cy="78" r=".7" opacity=".4"/>
+  <circle cx="392" cy="158" r="1.2" opacity=".5"/><circle cx="372" cy="278" r=".8" opacity=".35"/>
+  <circle cx="352" cy="372" r="1" opacity=".5"/><circle cx="282" cy="392" r=".7" opacity=".4"/>
+  <circle cx="178" cy="388" r="1.2" opacity=".5"/><circle cx="58" cy="382" r=".8" opacity=".35"/>
+  <circle cx="8" cy="322" r="1" opacity=".5"/><circle cx="13" cy="198" r=".7" opacity=".4"/>
+</g>
+<!-- galactic filament streams -->
+<g fill="none" stroke-linecap="round">
+  <path d="M 200 200 Q 138 158 76 98" stroke="var(--thumb-lavender)" stroke-width="1.8" opacity=".4"/>
+  <path d="M 200 200 Q 252 138 314 78" stroke="var(--thumb-lavender)" stroke-width="1.5" opacity=".35"/>
+  <path d="M 200 200 Q 158 252 98 312" stroke="var(--thumb-purple)" stroke-width="1.8" opacity=".4"/>
+  <path d="M 200 200 Q 262 252 332 322" stroke="var(--thumb-purple)" stroke-width="1.5" opacity=".35"/>
+  <path d="M 200 200 Q 200 138 200 58" stroke="var(--thumb-lav-light)" stroke-width="1.2" opacity=".3"/>
+  <path d="M 200 200 Q 200 272 200 362" stroke="var(--thumb-blue)" stroke-width="1.2" opacity=".3"/>
+  <path d="M 200 200 Q 128 200 48 200" stroke="var(--thumb-lavender)" stroke-width="1.2" opacity=".28"/>
+  <path d="M 200 200 Q 282 200 372 200" stroke="var(--thumb-lavender)" stroke-width="1.2" opacity=".28"/>
+</g>
+<!-- galaxy clusters -->
+<circle cx="200" cy="200" r="18" fill="var(--thumb-lavender)" opacity=".5"/>
+<circle cx="200" cy="200" r="10" fill="var(--thumb-white)" opacity=".7"/>
+<circle cx="118" cy="143" r="8" fill="var(--thumb-lavender)" opacity=".42"/>
+<circle cx="282" cy="143" r="7" fill="var(--thumb-lavender)" opacity=".38"/>
+<circle cx="138" cy="272" r="9" fill="var(--thumb-purple)" opacity=".42"/>
+<circle cx="277" cy="267" r="7" fill="var(--thumb-purple)" opacity=".38"/>
+<circle cx="76" cy="98" r="6" fill="var(--thumb-blue)" opacity=".35"/>
+<circle cx="314" cy="88" r="5" fill="var(--thumb-blue)" opacity=".32"/>
+<circle cx="92" cy="312" r="6" fill="var(--thumb-purple)" opacity=".35"/>
+<circle cx="328" cy="320" r="5" fill="var(--thumb-purple)" opacity=".32"/>
+<!-- Milky Way ring -->
+<circle cx="200" cy="200" r="24" fill="none" stroke="var(--thumb-white)" stroke-width="1.2" stroke-dasharray="3,6" opacity=".28"/>
+  <rect width="400" height="400" fill="url(#gvig)"/>
+</svg>

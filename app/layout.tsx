@@ -35,11 +35,18 @@ export const metadata: Metadata = {
     siteName: 'A Curious Note',
     title: 'A Curious Note — Notes from a curious mind',
     description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages.',
+    images: [{
+      url: '/og-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'A Curious Note — A slow blog by Sherly',
+    }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'A Curious Note — Notes from a curious mind',
     description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages.',
+    images: ['/og-image.png'],
   },
   icons: {
     icon: '/favicon.svg',

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { spawnGlitter } from '@/lib/glitter'
 
 export default function MobileSearch() {
@@ -10,6 +10,7 @@ export default function MobileSearch() {
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
+  const pathname = usePathname()
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -32,8 +33,8 @@ export default function MobileSearch() {
     setIsOpen(true)
   }
 
-  const handleClose = (e: React.MouseEvent) => {
-    spawnGlitter(e.clientX, e.clientY)
+  const handleClose = (e?: React.MouseEvent) => {
+    if (e) spawnGlitter(e.clientX, e.clientY)
     // Reset search and show all posts if there's an active search
     if (searchParams.get('search')) {
       const newParams = new URLSearchParams(searchParams.toString())
@@ -56,7 +57,7 @@ export default function MobileSearch() {
   }
 
   // Only show on homepage
-  if (typeof window !== 'undefined' && !window.location.pathname.match(/^\/($|\?)/)) {
+  if (!pathname?.match(/^\/($|\?)/)) {
     return null
   }
 
@@ -76,22 +77,34 @@ export default function MobileSearch() {
 
       {/* Search overlay */}
       {isOpen && (
-        <div className="mobile-search-overlay open" onClick={() => setIsOpen(false)}>
-          <button className="mobile-search-close" onClick={handleClose} aria-label="Close search">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          </button>
-          <div className="mobile-search-box" onClick={(e) => e.stopPropagation()}>
-            <form onSubmit={handleSubmit}>
-              <input
-                ref={inputRef}
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search posts..."
-                aria-label="Search posts"
-              />
+        <div className="mobile-search-overlay open" onClick={() => handleClose()}>
+          <div className="mobile-search-content" onClick={(e) => e.stopPropagation()}>
+            <div className="mobile-search-header">
+              <h3>Search</h3>
+              <button className="mobile-search-close" onClick={handleClose} aria-label="Close search">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <form onSubmit={handleSubmit} className="mobile-search-form">
+              <div className="mobile-search-input-wrap">
+                <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search posts..."
+                  aria-label="Search posts"
+                />
+              </div>
+              <button type="submit" className="mobile-search-submit" disabled={!query.trim()}>
+                Search
+              </button>
             </form>
           </div>
         </div>

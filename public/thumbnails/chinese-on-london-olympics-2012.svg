@@ -1,0 +1,76 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root {
+  --thumb-purple: #9869D3;
+  --thumb-purple-dark: #7048B0;
+  --thumb-lavender: #C4A8E8;
+  --thumb-lav-light: #E0D4F8;
+  --thumb-pink: #E8A0C0;
+  --thumb-pink-light: #F4D0E4;
+  --thumb-blue: #8CA8D8;
+  --thumb-blue-light: #C4D8F4;
+  --thumb-teal: #6BA39A;
+  --thumb-amber: #C08A64;
+  --thumb-ink: rgba(15,10,40,0.75);
+  --thumb-ink-light: rgba(15,10,40,0.45);
+  --thumb-white: rgba(255,255,255,0.9);
+  --thumb-white-mid: rgba(255,255,255,0.5);
+  --thumb-white-subtle: rgba(255,255,255,0.2);
+}
+</style>
+<defs>
+  <radialGradient id="gbg1" cx="30%" cy="25%" r="60%">
+    <stop offset="0%" stop-color="var(--thumb-lavender)" stop-opacity=".35"/>
+    <stop offset="100%" stop-color="var(--thumb-lavender)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg2" cx="75%" cy="70%" r="55%">
+    <stop offset="0%" stop-color="var(--thumb-pink)" stop-opacity=".28"/>
+    <stop offset="100%" stop-color="var(--thumb-pink)" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="gbg3" cx="60%" cy="20%" r="50%">
+    <stop offset="0%" stop-color="var(--thumb-blue)" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="var(--thumb-blue)" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".8" fill="var(--thumb-purple)" opacity=".12"/>
+  </pattern>
+  <radialGradient id="gvig" cx="50%" cy="50%" r="50%">
+    <stop offset="55%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(100,80,160,0.1)"/>
+  </radialGradient>
+
+</defs>
+  <rect width="400" height="400" fill="rgba(245,243,239,0.01)"/>
+  <rect width="400" height="400" fill="url(#gbg1)"/>
+  <rect width="400" height="400" fill="url(#gbg2)"/>
+  <rect width="400" height="400" fill="url(#gbg3)"/>
+  <rect width="400" height="400" fill="url(#dots)"/>
+
+<!-- Olympic rings -->
+<g transform="translate(200,192)" fill="none" stroke-width="6.5" opacity=".5">
+  <circle cx="-82" cy="-22" r="40" stroke="var(--thumb-blue)"/>
+  <circle cx="-22" cy="-22" r="40" stroke="var(--thumb-ink)"/>
+  <circle cx="38" cy="-22" r="40" stroke="var(--thumb-pink)"/>
+  <circle cx="-52" cy="28" r="40" stroke="var(--thumb-amber)"/>
+  <circle cx="8" cy="28" r="40" stroke="var(--thumb-teal)"/>
+</g>
+<!-- Big Ben silhouette -->
+<g fill="var(--thumb-purple)" opacity=".2">
+  <rect x="278" y="258" width="24" height="82"/>
+  <rect x="274" y="250" width="32" height="15"/>
+  <rect x="283" y="236" width="14" height="19"/>
+  <polygon points="290,218 283,236 297,236"/>
+  <rect x="308" y="290" width="38" height="52"/>
+  <rect x="248" y="282" width="22" height="60"/>
+</g>
+<!-- red lantern -->
+<g transform="translate(338,108)" fill="var(--thumb-pink)" opacity=".45">
+  <ellipse cx="0" cy="0" rx="18" ry="26"/>
+  <rect x="-2" y="-28" width="4" height="10" rx="1"/>
+  <rect x="-18" y="-2" width="36" height="4" rx="1"/>
+  <g stroke="var(--thumb-pink)" stroke-width="1.5" opacity=".6">
+    <line x1="0" y1="26" x2="-8" y2="40"/><line x1="0" y1="26" x2="8" y2="40"/>
+  </g>
+</g>
+  <rect width="400" height="400" fill="url(#gvig)"/>
+</svg>
