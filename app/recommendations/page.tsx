@@ -87,7 +87,7 @@ export default function RecommendationsPage() {
             </h1>
             <p className="rec-hero-sub">
               A small collection of products I love enough to share.
-              Each one has earned its place in my routine — no fluff, just favorites.
+              Each one has earned its place in my routine.
             </p>
             <div className="rec-cats">
               {categories.map(cat => (

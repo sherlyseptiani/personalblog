@@ -4,6 +4,7 @@ import PostsGrid from '@/components/PostsGrid'
 import Footer from '@/components/Footer'
 import NotifyButton from '@/components/NotifyButton'
 import VideoColorSync from '@/components/VideoColorSync'
+import MobileSearch from '@/components/MobileSearch'
 import { createServerClient } from '@/lib/supabase'
 import type { Post } from '@/lib/types'
 
@@ -143,6 +144,7 @@ export default async function HomePage() {
 
       {/* Video color sync + notify button */}
       <VideoColorSync />
+      <MobileSearch />
 
       <Script id="homepage-init" strategy="afterInteractive">{`
         (function() {

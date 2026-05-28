@@ -26,9 +26,12 @@ type Props = {
   coverArt: CoverArt | null
   slug: string
   category: Category
+  // Above-fold posts: skip opacity gate + use high fetch priority so the
+  // image is visible from SSR HTML without waiting for JS hydration.
+  priority?: boolean
 }
 
-export default function CoverThumb({ thumbnail, coverArt, slug, category }: Props) {
+export default function CoverThumb({ thumbnail, coverArt, slug, category, priority = false }: Props) {
   const [imgFailed, setImgFailed] = useState(false)
   const [imgLoaded, setImgLoaded] = useState(false)
 
@@ -48,14 +51,17 @@ export default function CoverThumb({ thumbnail, coverArt, slug, category }: Prop
     <div className={`thumb ${art.thumb}`}>
       {hasThumbnail ? (
         <>
-          {!imgLoaded && <ThumbSkeleton />}
+          {!priority && !imgLoaded && <ThumbSkeleton />}
           <img
             src={thumbnail}
             alt=""
+            // Priority images: always visible from SSR HTML, no JS needed.
+            // Non-priority images: lazy-load to save bandwidth below fold.
+            {...(priority ? { fetchPriority: 'high' } : { loading: 'lazy' })}
             style={{
               filter: 'saturate(60%) brightness(85%) contrast(105%)',
-              opacity: imgLoaded ? 1 : 0,
-              transition: 'opacity 0.3s ease',
+              opacity: priority || imgLoaded ? 1 : 0,
+              transition: priority ? 'none' : 'opacity 0.3s ease',
             }}
             onLoad={() => setImgLoaded(true)}
             onError={() => setImgFailed(true)}

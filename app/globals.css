@@ -605,24 +605,219 @@ html[data-theme="dark"] .post-card:hover {
   25%            { transform: translateY(-10px) scale(1.15); }
 }
 
-/* Hide search form by default before styled-jsx hydrates */
-.search-form {
-  visibility: hidden;
-  opacity: 0;
-  width: 0;
-  overflow: hidden;
+/* ── Nav search — all styles here so layout is correct before JS hydration.
+   Previously these lived in <style jsx> in Nav.tsx and caused a layout shift
+   because styled-jsx injects after hydration, not at first paint. */
+.search-expand {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-/* Navigation search expand */
+.search-form {
+  position: absolute;
+  right: 0;
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(8px);
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s ease,
+              visibility 0.2s ease,
+              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-expand.open .search-form {
+  width: 220px;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.search-form input {
+  width: 100%;
+  height: 36px;
+  padding: 0 16px;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.search-form input:hover {
+  border-color: rgba(var(--video-r), var(--video-g), var(--video-b), 0.5);
+}
+
+.search-form input:focus {
+  border-color: var(--video-tint);
+  box-shadow: 0 0 0 2px rgba(var(--video-r), var(--video-g), var(--video-b), 0.15);
+}
+
+.search-form input::placeholder {
+  color: var(--ink-3);
+}
+
+.search-toggle {
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--glass-inner-light);
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-toggle:hover {
+  background: var(--bg-elev);
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.search-toggle:active {
+  transform: scale(0.95);
+}
+
+.search-toggle svg {
+  flex-shrink: 0;
+}
+
 @media (max-width: 680px) {
   .search-expand.open .search-form {
-    width: 160px;
+    width: 180px;
+  }
+  .search-form input {
+    height: 40px;
+    font-size: 16px; /* Prevent iOS zoom on focus */
+    padding: 0 14px;
+  }
+  .search-toggle {
+    width: 40px;
+    height: 40px;
   }
 }
 
-@media (max-width: 520px) {
-  .search-expand.open .search-form {
-    width: 140px;
+/* Hide search in nav on mobile - use floating button instead */
+@media (max-width: 680px) {
+  .nav .search-expand {
+    display: none;
+  }
+}
+
+/* Mobile floating search button */
+.mobile-search-fab {
+  display: none;
+}
+@media (max-width: 680px) {
+  .mobile-search-fab {
+    display: flex;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--glass-bg-strong);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--ink);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 90;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.4) inset,
+      0 4px 20px -4px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .mobile-search-fab:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.4) inset,
+      0 8px 24px -4px rgba(0,0,0,0.25);
+  }
+  .mobile-search-fab:active {
+    transform: scale(0.95);
+  }
+  .mobile-search-fab svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* Mobile search overlay */
+.mobile-search-overlay {
+  display: none;
+}
+@media (max-width: 680px) {
+  .mobile-search-overlay.open {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 200;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 80px;
+    animation: mob-srch-fade 0.2s ease;
+  }
+  @keyframes mob-srch-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .mobile-search-box {
+    width: calc(100% - 40px);
+    max-width: 400px;
+    background: var(--glass-bg-strong);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 20px 60px -20px rgba(0,0,0,0.3);
+  }
+  .mobile-search-box input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    outline: none;
+  }
+  .mobile-search-box input:focus {
+    border-color: var(--video-tint);
+  }
+  .mobile-search-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--glass-bg-strong);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   }
 }
 
@@ -844,6 +1039,49 @@ html[data-theme="dark"] .post-card:hover {
   100% { opacity: 0; transform: translate(-50%,-50%) translate(var(--dx),var(--dy)) scale(0) rotate(200deg); }
 }
 
+/* ── Hero Skeleton - match real hero responsive behavior ── */
+.hero-skeleton {
+  min-height: 640px;
+}
+@media (max-width: 680px) {
+  .hero-skeleton {
+    min-height: 520px;
+    margin: 8px 0 32px;
+    border-radius: 20px;
+  }
+  .hero-skeleton .hero-content {
+    padding: 24px 20px 28px;
+  }
+  .hero-skeleton .hero-text {
+    width: 100%;
+  }
+  .hero-skeleton .skeleton-title {
+    height: 1.1em !important;
+    margin-bottom: 14px !important;
+  }
+  .hero-skeleton .skeleton-text {
+    margin-bottom: 6px !important;
+  }
+  .hero-skeleton .hero-meta {
+    margin-top: 20px !important;
+    flex-wrap: wrap;
+  }
+  .hero-skeleton .skeleton-button {
+    height: 36px !important;
+  }
+}
+@media (max-width: 520px) {
+  .hero-skeleton {
+    min-height: 480px;
+  }
+  .hero-skeleton .hero-content {
+    padding: 20px 16px 24px;
+  }
+  .hero-skeleton .skeleton-title {
+    width: 100% !important;
+  }
+}
+
 /* ── Skeleton Loading Shimmers ─────────────────────────── */
 .skeleton-text,
 .skeleton-title,
@@ -933,7 +1171,7 @@ html[data-theme="dark"] .post-card:hover {
   }
 }
 
-/* < 520px: 1 column */
+/* < 520px: 1 column - improved mobile shimmer */
 @media (max-width: 520px) {
   .skeleton-posts {
     gap: 10px;
@@ -950,6 +1188,33 @@ html[data-theme="dark"] .post-card:hover {
   }
   .post-skeleton {
     margin-bottom: 10px;
+    border-radius: 12px;
+  }
+  /* Better mobile skeleton proportions */
+  .post-skeleton .skeleton-thumb {
+    aspect-ratio: 16/10;
+    min-height: auto;
+    border-radius: 12px 12px 0 0;
+  }
+  .post-skeleton > div {
+    padding: 12px 14px 14px !important;
+  }
+  .post-skeleton .skeleton-text {
+    height: 0.85em;
+    border-radius: 3px;
+  }
+  .post-skeleton .skeleton-title {
+    height: 1.2em;
+    margin-top: 8px !important;
+    margin-bottom: 12px !important;
+    border-radius: 4px;
+  }
+  /* Smoother shimmer for mobile */
+  .skeleton-text,
+  .skeleton-title,
+  .skeleton-thumb,
+  .skeleton-button {
+    animation-duration: 1.2s;
   }
 }
 

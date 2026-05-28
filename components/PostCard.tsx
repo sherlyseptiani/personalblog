@@ -15,7 +15,7 @@ function ReadChip() {
   )
 }
 
-export default function PostCard({ post, className, isRead }: { post: Post; className?: string; isRead?: boolean }) {
+export default function PostCard({ post, className, isRead, priority }: { post: Post; className?: string; isRead?: boolean; priority?: boolean }) {
   const cat = CATEGORIES[post.category]
   const href = `/posts/${post.slug}`
   const date = formatDate(post.published_at)
@@ -54,6 +54,7 @@ export default function PostCard({ post, className, isRead }: { post: Post; clas
         coverArt={post.cover_art}
         slug={post.slug}
         category={post.category}
+        priority={priority}
       />
       <div className="card-body">
         <div className="meta-row">

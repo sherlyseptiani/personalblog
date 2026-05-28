@@ -104,9 +104,15 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
     }
   }
 
+  const handleBrandClick = useCallback((e: React.MouseEvent) => {
+    handleGlitter(e)
+    // Always scroll to top when clicking brand, even on homepage
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [handleGlitter])
+
   return (
     <nav className="nav glass" aria-label="Primary">
-      <Link href="/" className="brand" onClick={handleGlitter}>
+      <Link href="/" className="brand" onClick={handleBrandClick}>
         <span className="mark"></span>
         <span className="brand-text">A Curious Note</span>
       </Link>
@@ -158,103 +164,6 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
         </Link>
       </div>
 
-      <style jsx>{`
-        .search-expand {
-          position: relative;
-          display: flex;
-          align-items: center;
-        }
-
-        .search-form {
-          position: absolute;
-          right: 0;
-          width: 0;
-          overflow: hidden;
-          opacity: 0;
-          visibility: hidden;
-          transform: translateX(8px);
-          transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                      opacity 0.2s ease,
-                      visibility 0.2s ease,
-                      transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .search-expand.open .search-form {
-          width: 220px;
-          opacity: 1;
-          visibility: visible;
-          transform: translateX(0);
-        }
-
-        .search-form input {
-          width: 100%;
-          height: 36px;
-          padding: 0 16px;
-          background: var(--glass-bg-strong);
-          border: 1px solid var(--line);
-          border-radius: 999px;
-          color: var(--ink);
-          font-family: var(--font-mono);
-          font-size: 13px;
-          outline: none;
-          transition: border-color 0.2s ease, box-shadow 0.2s ease;
-          box-sizing: border-box;
-        }
-
-        .search-form input:hover {
-          border-color: rgba(var(--video-r), var(--video-g), var(--video-b), 0.5);
-        }
-
-        .search-form input:focus {
-          border-color: var(--video-tint);
-          box-shadow: 0 0 0 2px rgba(var(--video-r), var(--video-g), var(--video-b), 0.15);
-        }
-
-        .search-form input::placeholder {
-          color: var(--ink-3);
-        }
-
-        .search-toggle {
-          z-index: 2;
-          width: 36px;
-          height: 36px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 50%;
-          border: 1px solid var(--line);
-          background: var(--glass-inner-light);
-          color: var(--ink-2);
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-
-        .search-toggle:hover {
-          background: var(--bg-elev);
-          color: var(--ink);
-          transform: translateY(-1px);
-        }
-
-        .search-toggle:active {
-          transform: scale(0.95);
-        }
-
-        .search-toggle svg {
-          flex-shrink: 0;
-        }
-
-        @media (max-width: 680px) {
-          .search-expand.open .search-form {
-            width: 160px;
-          }
-        }
-
-        @media (max-width: 520px) {
-          .search-expand.open .search-form {
-            width: 140px;
-          }
-        }
-      `}</style>
     </nav>
   )
 }

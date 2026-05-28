@@ -2,7 +2,7 @@ export default function HomeLoading() {
   return (
     <main className="wrap">
       {/* Hero skeleton */}
-      <section className="hero" data-screen-label="hero" style={{ minHeight: '640px' }}>
+      <section className="hero hero-skeleton" data-screen-label="hero">
         <div className="hero-video-bg" aria-hidden="true">
           <div className="tint" style={{ background: 'var(--bg)' }} />
           <div className="scrim" />
