@@ -245,6 +245,7 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
       launchBurst()
 
       function animate() {
+        if (!ctx) return
         ctx.clearRect(0, 0, rect.width, rect.height)
         for (let i = particles.length - 1; i >= 0; i--) {
           const p = particles[i]
