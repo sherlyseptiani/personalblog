@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     title: 'A Curious Note — Notes from a curious mind',
     description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages.',
     images: [{
-      url: '/og-image.png',
+      url: 'https://acuriousnote.com/og-image.png',
       width: 1200,
       height: 630,
       alt: 'A Curious Note — A slow blog by Sherly',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'A Curious Note — Notes from a curious mind',
     description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages.',
-    images: ['/og-image.png'],
+    images: ['https://acuriousnote.com/og-image.png'],
   },
   icons: {
     icon: '/favicon.svg',

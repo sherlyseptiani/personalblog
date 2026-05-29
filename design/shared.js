@@ -190,4 +190,74 @@
     const dur = (opts && opts.duration) || 3200;
     toastTimer = setTimeout(() => t.classList.remove('show'), dur);
   };
+
+  // === Thumbnail SVG color variables (theme-aware) ===
+  function updateThumbColors() {
+    const theme = root.getAttribute('data-theme') || 'light';
+    const colors = {
+      light: {
+        '--thumb-purple': '#9869D3',
+        '--thumb-purple-dark': '#7048B0',
+        '--thumb-lavender': '#C4A8E8',
+        '--thumb-lav-light': '#E0D4F8',
+        '--thumb-pink': '#E8A0C0',
+        '--thumb-pink-light': '#F4D0E4',
+        '--thumb-blue': '#8CA8D8',
+        '--thumb-blue-light': '#C4D8F4',
+        '--thumb-teal': '#6BA39A',
+        '--thumb-amber': '#C08A64',
+        '--thumb-ink': 'rgba(15,10,40,0.75)',
+        '--thumb-ink-light': 'rgba(15,10,40,0.45)',
+        '--thumb-white': 'rgba(255,255,255,0.9)',
+        '--thumb-white-mid': 'rgba(255,255,255,0.5)',
+        '--thumb-white-subtle': 'rgba(255,255,255,0.2)'
+      },
+      dark: {
+        '--thumb-purple': '#7a5eb0',
+        '--thumb-purple-dark': '#5a4490',
+        '--thumb-lavender': '#8a7ab8',
+        '--thumb-lav-light': '#5a5080',
+        '--thumb-pink': '#a08098',
+        '--thumb-pink-light': '#705868',
+        '--thumb-blue': '#6a88a8',
+        '--thumb-blue-light': '#4a6888',
+        '--thumb-teal': '#5a8a82',
+        '--thumb-amber': '#a08060',
+        '--thumb-ink': 'rgba(200,200,220,0.8)',
+        '--thumb-ink-light': 'rgba(180,180,200,0.5)',
+        '--thumb-white': 'rgba(40,45,60,0.9)',
+        '--thumb-white-mid': 'rgba(50,55,70,0.6)',
+        '--thumb-white-subtle': 'rgba(60,65,80,0.3)'
+      },
+      sepia: {
+        '--thumb-purple': '#8a7a60',
+        '--thumb-purple-dark': '#6a5a40',
+        '--thumb-lavender': '#a09078',
+        '--thumb-lav-light': '#c0b098',
+        '--thumb-pink': '#b09080',
+        '--thumb-pink-light': '#d0b0a0',
+        '--thumb-blue': '#7a90a0',
+        '--thumb-blue-light': '#9ab0c0',
+        '--thumb-teal': '#6a8a7a',
+        '--thumb-amber': '#a08050',
+        '--thumb-ink': 'rgba(60,45,30,0.8)',
+        '--thumb-ink-light': 'rgba(80,65,50,0.5)',
+        '--thumb-white': 'rgba(250,245,235,0.9)',
+        '--thumb-white-mid': 'rgba(240,235,225,0.6)',
+        '--thumb-white-subtle': 'rgba(230,225,215,0.4)'
+      }
+    };
+    const vars = colors[theme] || colors.light;
+    Object.entries(vars).forEach(([key, val]) => {
+      root.style.setProperty(key, val);
+    });
+  }
+
+  // Update thumbnail colors on theme change
+  const originalSetTheme = window.setTheme;
+  window.setTheme = function(theme) {
+    originalSetTheme(theme);
+    updateThumbColors();
+  };
+  updateThumbColors();
 })();

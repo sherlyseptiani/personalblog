@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>404 — Page Not Found · A Curious Note</title>
+<meta name="description" content="Page not found. While you're here — try not to hit the question marks." />
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://acuriousnote.com/404" />
+<meta property="og:site_name" content="A Curious Note" />
+<meta property="og:title" content="404 — Page Not Found · A Curious Note" />
+<meta property="og:description" content="Page not found. While you're here — try not to hit the question marks." />
+<meta property="og:image" content="https://acuriousnote.com/og-image.png" />
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="404 — Page Not Found · A Curious Note" />
+<meta name="twitter:description" content="Page not found. While you're here — try not to hit the question marks." />
+<meta name="twitter:image" content="https://acuriousnote.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+/* 404 page specific styles */
+.nf-root {
+  position: relative;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 40px 24px 60px;
+}
+
+/* Multi-hue colorful orbs */
+.nf-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: 0;
+}
+.nf-orb-a { width:380px;height:380px;top:-60px;right:-60px;opacity:.45;background:radial-gradient(circle,rgba(198,181,224,.7),transparent 65%);animation:nf-fa 11s ease-in-out infinite; }
+.nf-orb-b { width:300px;height:300px;bottom:-40px;left:-40px;opacity:.4;background:radial-gradient(circle,rgba(167,216,197,.7),transparent 65%);animation:nf-fb 14s ease-in-out infinite; }
+.nf-orb-c { width:200px;height:200px;top:25%;left:5%;opacity:.35;background:radial-gradient(circle,rgba(245,184,199,.8),transparent 65%);animation:nf-fc 8s ease-in-out infinite; }
+.nf-orb-d { width:160px;height:160px;bottom:20%;right:8%;opacity:.35;background:radial-gradient(circle,rgba(246,199,163,.8),transparent 65%);animation:nf-fd 9s ease-in-out infinite; }
+@keyframes nf-fa { 0%,100%{transform:translate(0,0)} 40%{transform:translate(-24px,32px)} 70%{transform:translate(16px,-12px)} }
+@keyframes nf-fb { 0%,100%{transform:translate(0,0)} 50%{transform:translate(28px,-28px)} }
+@keyframes nf-fc { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(18px,22px) scale(1.12)} }
+@keyframes nf-fd { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-20px,-16px) scale(1.08)} }
+
+/* Stacked layout */
+.nf-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  animation: nf-appear .7s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes nf-appear { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+/* Big colorful 404 */
+.nf-digits {
+  display: flex;
+  gap: .04em;
+  line-height: .85;
+  margin-bottom: -18px;
+  user-select: none;
+  pointer-events: none;
+  position: relative;
+  z-index: 2;
+}
+.nf-d {
+  font-family: var(--font-serif);
+  font-size: clamp(96px, 18vw, 168px);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -.03em;
+}
+.nf-d1 { color:#c6b5e0; text-shadow:0 0 60px rgba(198,181,224,.55),0 2px 20px rgba(198,181,224,.3); animation:nf-b1 6s ease-in-out infinite; }
+.nf-d0 { color:#a7d8c5; text-shadow:0 0 60px rgba(167,216,197,.55),0 2px 20px rgba(167,216,197,.3); animation:nf-b0 5s ease-in-out infinite .4s; }
+.nf-d2 { color:#f6c7a3; text-shadow:0 0 60px rgba(246,199,163,.55),0 2px 20px rgba(246,199,163,.3); animation:nf-b2 7s ease-in-out infinite .8s; }
+@keyframes nf-b1 { 0%,100%{transform:translateY(0) rotate(-1.5deg)} 50%{transform:translateY(-10px) rotate(1deg)} }
+@keyframes nf-b0 { 0%,100%{transform:translateY(-4px)} 50%{transform:translateY(6px)} }
+@keyframes nf-b2 { 0%,100%{transform:translateY(0) rotate(1deg)} 50%{transform:translateY(-8px) rotate(-1.5deg)} }
+
+/* Card */
+.nf-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 36px 40px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  text-align: center;
+}
+
+.nf-mark-row { display:flex;align-items:center;gap:10px; }
+.nf-mark { width:18px;height:18px;border-radius:5px;flex-shrink:0;animation:nf-hue 10s linear infinite; }
+@keyframes nf-hue { from{filter:hue-rotate(0deg)} to{filter:hue-rotate(360deg)} }
+
+.nf-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 3.5vw, 28px);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.nf-body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-3);
+  margin: 0;
+}
+
+/* Game container */
+.nf-game {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: rgba(10,15,26,.55);
+  margin: 20px 0;
+}
+html[data-theme="light"] .nf-game { background: rgba(10,15,26,.06); }
+html[data-theme="sepia"]  .nf-game { background: rgba(59,42,24,.06); }
+
+.nf-game-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px 6px;
+  border-bottom: 1px solid var(--line);
+}
+.nf-game-score { font-family:var(--font-mono);font-size:13px;font-weight:500;color:#a7d8c5;letter-spacing:.08em; }
+.nf-game-best  { font-family:var(--font-mono);font-size:11px;color:var(--ink-3);letter-spacing:.06em; }
+
+.nf-canvas { display:block;width:100%;height:auto;cursor:pointer;touch-action:none; }
+
+/* Buttons */
+.nf-actions { display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px; }
+.nf-btn-primary {
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-sans);font-size:13.5px;font-weight:500;
+  color:var(--bg);background:var(--ink);
+  padding:10px 20px;border-radius:var(--radius-pill);
+  text-decoration:none;transition:opacity .18s,transform .18s;
+}
+.nf-btn-primary:hover { opacity:.9;transform:translateY(-1px); }
+.nf-btn-ghost {
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-sans);font-size:13.5px;font-weight:500;
+  color:var(--ink-2);background:transparent;
+  padding:10px 20px;border-radius:var(--radius-pill);
+  text-decoration:none;transition:color .18s,background .18s;
+}
+.nf-btn-ghost:hover { color:var(--ink);background:rgba(var(--video-r),var(--video-g),var(--video-b),.08); }
+
+@media (max-width: 520px) {
+  .nf-card { padding: 28px 24px 24px; }
+  .nf-d { font-size: 80px; }
+}
+</style>
+</head>
+<body data-screen-label="05 404 Not Found">
+
+<!-- Ambient background -->
+<div class="ambient" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="nf-root">
+  <div class="nf-orb nf-orb-a" aria-hidden="true"></div>
+  <div class="nf-orb nf-orb-b" aria-hidden="true"></div>
+  <div class="nf-orb nf-orb-c" aria-hidden="true"></div>
+  <div class="nf-orb nf-orb-d" aria-hidden="true"></div>
+
+  <div class="nf-wrap">
+    <div class="nf-digits" aria-label="404">
+      <span class="nf-d nf-d1">4</span>
+      <span class="nf-d nf-d0">0</span>
+      <span class="nf-d nf-d2">4</span>
+    </div>
+
+    <div class="glass nf-card">
+      <div class="nf-mark-row">
+        <span class="mark nf-mark"></span>
+        <span class="eyebrow">page not found</span>
+      </div>
+
+      <h1 class="nf-heading">Lost? So is this page.</h1>
+      <p class="nf-body">
+        While you're here — try not to hit the question marks.
+      </p>
+
+      <!-- Mini Game -->
+      <div class="nf-game">
+        <div class="nf-game-bar">
+          <span class="nf-game-score" id="gameScore">00000</span>
+          <span class="nf-game-best" id="gameBest" style="display:none;">best 00000</span>
+        </div>
+        <canvas id="gameCanvas" class="nf-canvas" width="640" height="160"></canvas>
+      </div>
+
+      <div class="nf-actions">
+        <a href="A Curious Note - Homepage.html" class="nf-btn-primary">← Back to the blog</a>
+        <a href="A Curious Note - About.html" class="nf-btn-ghost">Who writes this?</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+// Simple 404 mini-game (Flappy Bird style)
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const scoreEl = document.getElementById('gameScore');
+const bestEl = document.getElementById('gameBest');
+
+const W = 640, H = 160;
+const GROUND = H - 20;
+const CW = 24, CH = 24;
+const CX = 80;
+const GRAVITY = 0.55;
+const JUMP_V = -12.5;
+const SPEED_BASE = 5.2;
+
+let gameState = 'idle'; // idle, running, dead
+let cy = GROUND - CH;
+let cvy = 0;
+let grounded = true;
+let obstacles = [];
+let score = 0;
+let best = 0;
+let frame = 0;
+let speed = SPEED_BASE;
+
+const COLORS = ['#7c8db5','#c08a64','#6ba39a','#a07ab5','#6f9bd1','#f5b8c7','#a7d8c5','#f6c7a3'];
+
+function jump() {
+  if (gameState === 'idle') {
+    gameState = 'running';
+  } else if (gameState === 'running' && grounded) {
+    cvy = JUMP_V;
+    grounded = false;
+  } else if (gameState === 'dead') {
+    reset();
+  }
+}
+
+function reset() {
+  cy = GROUND - CH;
+  cvy = 0;
+  grounded = true;
+  obstacles = [];
+  score = 0;
+  frame = 0;
+  speed = SPEED_BASE;
+  gameState = 'running';
+  updateScore();
+}
+
+function updateScore() {
+  scoreEl.textContent = score.toString().padStart(5, '0');
+  if (best > 0) {
+    bestEl.style.display = 'block';
+    bestEl.textContent = 'best ' + best.toString().padStart(5, '0');
+  }
+}
+
+// Input handling
+canvas.addEventListener('click', jump);
+canvas.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); });
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space' || e.code === 'ArrowUp') {
+    e.preventDefault();
+    jump();
+  }
+});
+
+// Draw functions
+function drawChar() {
+  const x = CX;
+  const y = cy;
+
+  // Body
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(x, y, CW, CH, 6);
+  const g = ctx.createLinearGradient(x, y, x + CW, y + CH);
+  g.addColorStop(0, 'rgba(245,184,199,0.95)');
+  g.addColorStop(0.25, 'rgba(198,181,224,0.95)');
+  g.addColorStop(0.5, 'rgba(179,208,232,0.95)');
+  g.addColorStop(0.75, 'rgba(167,216,197,0.95)');
+  g.addColorStop(1, 'rgba(246,199,163,0.95)');
+  ctx.fillStyle = g;
+  if (gameState !== 'dead') {
+    ctx.shadowColor = 'rgba(179,208,232,0.7)';
+    ctx.shadowBlur = 12;
+  }
+  ctx.fill();
+  ctx.restore();
+
+  // Eyes
+  if (gameState !== 'dead') {
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.beginPath();
+    ctx.ellipse(x + 8, y + 9, 3, 3.5, 0, 0, Math.PI * 2);
+    ctx.ellipse(x + 16, y + 9, 3, 3.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#0a0f1a';
+    ctx.beginPath();
+    ctx.arc(x + 8.5, y + 9.5, 1.5, 0, Math.PI * 2);
+    ctx.arc(x + 16.5, y + 9.5, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  } else {
+    // X eyes when dead
+    ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+    ctx.lineWidth = 1.8;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x + 6, y + 8); ctx.lineTo(x + 10, y + 12);
+    ctx.moveTo(x + 10, y + 8); ctx.lineTo(x + 6, y + 12);
+    ctx.moveTo(x + 14, y + 8); ctx.lineTo(x + 18, y + 12);
+    ctx.moveTo(x + 18, y + 8); ctx.lineTo(x + 14, y + 12);
+    ctx.stroke();
+  }
+}
+
+function drawObs(o) {
+  const oy = GROUND - o.h;
+  const grad = ctx.createLinearGradient(o.x, oy, o.x, GROUND);
+  grad.addColorStop(0, o.color + 'ff');
+  grad.addColorStop(1, o.color + '55');
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(o.x, oy, 20, o.h, [5, 5, 0, 0]);
+  ctx.fillStyle = grad;
+  ctx.shadowColor = o.color;
+  ctx.shadowBlur = 10;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.font = 'bold 13px "Geist Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('?', o.x + 10, oy + o.h * 0.65);
+  ctx.restore();
+}
+
+function drawGround() {
+  const g = ctx.createLinearGradient(0, 0, W, 0);
+  g.addColorStop(0, 'rgba(167,216,197,0)');
+  g.addColorStop(0.15, 'rgba(167,216,197,0.45)');
+  g.addColorStop(0.85, 'rgba(179,208,232,0.45)');
+  g.addColorStop(1, 'rgba(179,208,232,0)');
+  ctx.save();
+  ctx.strokeStyle = g;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(0, GROUND);
+  ctx.lineTo(W, GROUND);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawHint(text) {
+  ctx.save();
+  ctx.fillStyle = 'rgba(179,208,232,0.45)';
+  ctx.font = '11px "Geist Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(text, W / 2, GROUND - 6);
+  ctx.restore();
+}
+
+// Game loop
+function loop() {
+  ctx.clearRect(0, 0, W, H);
+
+  if (gameState === 'running') {
+    frame++;
+    speed += 0.0009;
+
+    // Physics
+    cvy += GRAVITY;
+    cy += cvy;
+    if (cy >= GROUND - CH) {
+      cy = GROUND - CH;
+      cvy = 0;
+      grounded = true;
+    }
+
+    // Spawn obstacles
+    const last = obstacles[obstacles.length - 1];
+    const minGap = Math.max(140, 260 - frame * 0.04);
+    if (!last || last.x < W - minGap) {
+      if (Math.random() < 0.02) {
+        obstacles.push({
+          x: W + 10,
+          h: 20 + Math.random() * 44,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)]
+        });
+      }
+    }
+
+    // Move obstacles
+    obstacles = obstacles.map(o => ({ ...o, x: o.x - speed })).filter(o => o.x > -30);
+
+    // Score
+    if (frame % 6 === 0) {
+      score++;
+      updateScore();
+    }
+
+    // Collision
+    for (const o of obstacles) {
+      if (CX + 5 < o.x + 18 && CX + CW - 5 > o.x + 2 && cy + 5 < GROUND && cy + CH > GROUND - o.h) {
+        gameState = 'dead';
+        if (score > best) best = score;
+        updateScore();
+        break;
+      }
+    }
+  }
+
+  drawGround();
+  obstacles.forEach(drawObs);
+  drawChar();
+
+  if (gameState === 'idle') drawHint('SPACE  ·  ↑  ·  tap  to  start');
+  if (gameState === 'dead') drawHint('SPACE  ·  ↑  ·  tap  to  try again');
+
+  requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+
+</body>
+</html>

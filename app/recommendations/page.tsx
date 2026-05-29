@@ -14,11 +14,18 @@ export const metadata: Metadata = {
     siteName: 'A Curious Note',
     title: 'Recommendations — A Curious Note',
     description: 'Things I quietly love and actually use — skincare, snacks, bags, and more.',
+    images: [{
+      url: 'https://acuriousnote.com/og-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'Recommendations — A Curious Note',
+    }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Recommendations — A Curious Note',
     description: 'Things I quietly love and actually use — skincare, snacks, bags, and more.',
+    images: ['https://acuriousnote.com/og-image.png'],
   },
   alternates: {
     canonical: 'https://acuriousnote.com/recommendations',
