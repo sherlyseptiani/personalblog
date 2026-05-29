@@ -87,7 +87,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const post = await getPost(params.slug)
   if (!post) return {}
 
-  const ogImage = post.post_thumbnail || 'https://acuriousnote.com/og-image.svg'
+  // Ensure OG image is absolute URL
+  const ogImage = post.post_thumbnail
+    ? (post.post_thumbnail.startsWith('http') ? post.post_thumbnail : `https://acuriousnote.com${post.post_thumbnail}`)
+    : 'https://acuriousnote.com/og-image.jpg'
 
   const postUrl = `https://acuriousnote.com/posts/${post.slug}`
 
@@ -100,10 +103,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     description: post.excerpt ?? undefined,
     modifiedTime: post.updated_at,
     authors: ['Sherly'],
-    tags: post.category,
+    tags: post.tags?.length ? post.tags : [post.category],
     images: [
       {
         url: ogImage,
+        width: 1200,
+        height: 630,
         alt: post.title,
       },
     ],

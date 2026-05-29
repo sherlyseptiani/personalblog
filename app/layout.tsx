@@ -71,6 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:site_name" content="A Curious Note" />
+        <meta property="og:logo" content="https://acuriousnote.com/favicon.svg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="A Curious Note — Notes from a curious mind" />
         <meta name="twitter:description" content="A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages." />

@@ -51,23 +51,42 @@ export default function CoverThumb({ thumbnail, coverArt, slug, category, priori
   const imageUrl = coverArt?.svg_url ?? coverArt?.image_url ?? thumbnail
   const hasThumbnail = imageUrl && !imgFailed
 
+  // Check if this is an SVG thumbnail that should have dark mode support
+  const isSvg = imageUrl?.endsWith('.svg')
+
   return (
     <div className={`thumb ${art.thumb}`}>
       {hasThumbnail ? (
         <>
-          {!priority && !imgLoaded && <ThumbSkeleton />}
-          <img
-            ref={imgRef}
-            src={imageUrl}
-            alt=""
-            loading={priority ? 'eager' : 'lazy'}
-            style={{
-              opacity: priority || imgLoaded ? 1 : 0,
-              transition: priority ? 'none' : 'opacity 0.3s ease',
-            }}
-            onLoad={() => setImgLoaded(true)}
-            onError={() => setImgFailed(true)}
-          />
+          {!priority && !imgLoaded && !isSvg && <ThumbSkeleton />}
+          {isSvg ? (
+            <img
+              ref={imgRef}
+              src={imageUrl}
+              alt=""
+              loading={priority ? 'eager' : 'lazy'}
+              className="svg-thumb"
+              style={{
+                opacity: priority || imgLoaded ? 1 : 0,
+                transition: priority ? 'none' : 'opacity 0.3s ease',
+              }}
+              onLoad={() => setImgLoaded(true)}
+              onError={() => setImgFailed(true)}
+            />
+          ) : (
+            <img
+              ref={imgRef}
+              src={imageUrl}
+              alt=""
+              loading={priority ? 'eager' : 'lazy'}
+              style={{
+                opacity: priority || imgLoaded ? 1 : 0,
+                transition: priority ? 'none' : 'opacity 0.3s ease',
+              }}
+              onLoad={() => setImgLoaded(true)}
+              onError={() => setImgFailed(true)}
+            />
+          )}
         </>
       ) : (
         <div
