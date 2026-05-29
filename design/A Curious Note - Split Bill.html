@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Split Bill — A Curious Note</title>
+<meta name="description" content="A calm little tool for dividing shared expenses fairly, quickly, and clearly." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="splitbill.css" />
+</head>
+<body data-screen-label="05 Split Bill">
+
+<div class="ambient" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- Nav -->
+<nav class="nav glass" aria-label="Primary">
+  <a href="A Curious Note - Homepage.html" class="brand">
+    <span class="mark"></span>
+    <span style="font-family: Nunito; font-size: 20px">A Curious Note</span>
+  </a>
+  <div class="nav-links" role="navigation">
+    <a href="A Curious Note - Homepage.html#latest">Writing</a>
+    <a href="#">Notes</a>
+    <a href="#">Reading</a>
+    <a href="A Curious Note - About.html">About</a>
+    <a href="#">Subscribe</a>
+  </div>
+  <div class="nav-actions">
+    <button class="icon-btn" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    </button>
+    <button class="icon-btn" aria-label="Toggle theme" data-theme-toggle onclick="toggleTheme()"></button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- Header -->
+  <header class="sb-header" data-screen-label="header">
+    <div class="eyebrow"><span class="dot"></span><span>A small tool</span></div>
+    <h1>Split <em>Bill</em>.</h1>
+    <p class="lede">Divide shared expenses fairly, quickly, and clearly.</p>
+    <p class="helper">Add a bill, list the people, choose a split method, and see everyone&rsquo;s share instantly. Changes are saved locally on this device &mdash; no account, no fuss.</p>
+  </header>
+
+  <div class="sb-layout">
+
+    <!-- ============ MAIN WORKFLOW ============ -->
+    <div class="sb-main">
+
+      <!-- 1. Bill details -->
+      <section class="sb-card glass" data-screen-label="bill-details" aria-labelledby="billHead">
+        <div class="sb-card-head">
+          <div class="titles">
+            <span class="sb-eyebrow" style="--sig1:#f5b8c7;--sig2:#a07ab5;">The bill</span>
+            <h2 id="billHead">What are we splitting?</h2>
+          </div>
+        </div>
+
+        <div class="sb-grid cols-2">
+          <div class="sb-field col-span-2">
+            <label class="sb-label" for="billName">Bill name <span class="opt">or merchant</span></label>
+            <input class="sb-input" id="billName" type="text" placeholder="e.g. Dinner at Sushi House" autocomplete="off" />
+          </div>
+
+          <div class="sb-field">
+            <label class="sb-label" for="billTotal">Subtotal</label>
+            <div class="sb-amount lg">
+              <span class="cur" id="curPrefix">Rp</span>
+              <input class="sb-input num" id="billTotal" type="text" inputmode="decimal" placeholder="0" aria-describedby="totalHint" />
+            </div>
+            <span class="sb-hint" id="totalHint">Before tax, tip &amp; service.</span>
+          </div>
+
+          <div class="sb-field">
+            <label class="sb-label" for="billCurrency">Currency</label>
+            <select class="sb-select" id="billCurrency">
+              <option value="IDR">IDR · Rupiah (Rp)</option>
+              <option value="USD">USD · Dollar ($)</option>
+              <option value="EUR">EUR · Euro (€)</option>
+              <option value="GBP">GBP · Pound (£)</option>
+              <option value="JPY">JPY · Yen (¥)</option>
+              <option value="SGD">SGD · Dollar (S$)</option>
+              <option value="AUD">AUD · Dollar (A$)</option>
+              <option value="INR">INR · Rupee (₹)</option>
+            </select>
+            <span class="sb-hint">Used for formatting only.</span>
+          </div>
+
+          <div class="sb-field">
+            <label class="sb-label" for="billDate">Date <span class="opt">optional</span></label>
+            <input class="sb-input" id="billDate" type="date" />
+          </div>
+          <div class="sb-field">
+            <label class="sb-label" for="billNote">Note <span class="opt">optional</span></label>
+            <input class="sb-input" id="billNote" type="text" placeholder="e.g. Team dinner" autocomplete="off" />
+          </div>
+        </div>
+
+        <!-- Adjustments -->
+        <div class="sb-adjust">
+          <button class="sb-adjust-toggle" id="adjustToggle" aria-expanded="false" aria-controls="adjustBody" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+            Tax, tip, service &amp; discount
+          </button>
+          <div class="sb-adjust-body" id="adjustBody" hidden>
+            <div class="sb-grid cols-2">
+              <div class="sb-field">
+                <label class="sb-label" for="adjTax">Tax</label>
+                <div class="sb-amount"><span class="cur sb-cur">Rp</span><input class="sb-input num" id="adjTax" type="text" inputmode="decimal" placeholder="0" /></div>
+              </div>
+              <div class="sb-field">
+                <label class="sb-label" for="adjTip">Tip</label>
+                <div class="sb-amount"><span class="cur sb-cur">Rp</span><input class="sb-input num" id="adjTip" type="text" inputmode="decimal" placeholder="0" /></div>
+              </div>
+              <div class="sb-field">
+                <label class="sb-label" for="adjService">Service charge</label>
+                <div class="sb-amount"><span class="cur sb-cur">Rp</span><input class="sb-input num" id="adjService" type="text" inputmode="decimal" placeholder="0" /></div>
+              </div>
+              <div class="sb-field">
+                <label class="sb-label" for="adjDiscount">Discount</label>
+                <div class="sb-amount"><span class="cur sb-cur">Rp</span><input class="sb-input num" id="adjDiscount" type="text" inputmode="decimal" placeholder="0" aria-describedby="discHint" /></div>
+                <span class="sb-hint" id="discHint">Subtracted from the total.</span>
+              </div>
+            </div>
+            <div id="adjWarn" class="sb-status warn" style="margin-top:14px; display:none;" role="status"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Participants -->
+      <section class="sb-card glass" data-screen-label="participants" aria-labelledby="peopleHead">
+        <div class="sb-card-head">
+          <div class="titles">
+            <span class="sb-eyebrow" style="--sig1:#a7d8c5;--sig2:#6f9bd1;">Who&rsquo;s in</span>
+            <h2 id="peopleHead">People splitting this bill</h2>
+            <p class="sb-sub" id="peopleSub">2 people included</p>
+          </div>
+        </div>
+
+        <div class="sb-people" id="peopleList" role="list"></div>
+
+        <div class="sb-people-actions">
+          <button class="sb-pill" id="addPerson" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Add person</button>
+          <button class="sb-pill ghost" id="invitePerson" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>Invite via link</button>
+          <button class="sb-pill ghost danger" id="clearPeople" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>Clear all</button>
+        </div>
+      </section>
+
+      <!-- 3. Split method -->
+      <section class="sb-card glass" data-screen-label="split-method" aria-labelledby="methodHead">
+        <div class="sb-card-head">
+          <div class="titles">
+            <span class="sb-eyebrow" style="--sig1:#f6c7a3;--sig2:#d96b8a;">How to divide it</span>
+            <h2 id="methodHead">Split method</h2>
+          </div>
+        </div>
+
+        <div class="sb-modes" id="modeTabs" role="tablist" aria-label="Split method">
+          <button class="sb-mode active" data-mode="equal" role="tab" aria-selected="true" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>
+            <span class="lbl">Equal</span>
+          </button>
+          <button class="sb-mode" data-mode="custom" role="tab" aria-selected="false" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h10M4 17h7"/></svg>
+            <span class="lbl">Custom</span>
+          </button>
+          <button class="sb-mode" data-mode="percentage" role="tab" aria-selected="false" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 5 5 19"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>
+            <span class="lbl">Percentage</span>
+          </button>
+          <button class="sb-mode" data-mode="itemized" role="tab" aria-selected="false" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>
+            <span class="lbl">Itemized</span>
+          </button>
+        </div>
+        <p class="sb-mode-desc" id="modeDesc"></p>
+
+        <!-- Per-mode panel (rendered by JS) -->
+        <div id="modePanel" role="tabpanel" style="margin-top: 6px;"></div>
+      </section>
+
+      <!-- 4. Items (itemized only) -->
+      <section class="sb-card glass" id="itemsCard" data-screen-label="items" aria-labelledby="itemsHead" style="display:none;">
+        <div class="sb-card-head">
+          <div class="titles">
+            <span class="sb-eyebrow" style="--sig1:#c6b5e0;--sig2:#6f9bd1;">The receipt</span>
+            <h2 id="itemsHead">Items</h2>
+            <p class="sb-sub">Assign each item to whoever shared it. Items split equally among the people you tap.</p>
+          </div>
+        </div>
+        <div class="sb-items" id="itemsList"></div>
+        <div class="sb-people-actions">
+          <button class="sb-pill" id="addItem" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Add item</button>
+        </div>
+        <div class="sb-taxtip-row">
+          <span class="lbl">Distribute tax, tip &amp; service</span>
+          <div class="sb-seg-sm" id="taxtipMode" role="group" aria-label="Tax and tip distribution">
+            <button data-tt="proportional" class="active" type="button">Proportional</button>
+            <button data-tt="equal" type="button">Equally</button>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /.sb-main -->
+
+    <!-- ============ SIDE: SUMMARY + SETTLEMENT ============ -->
+    <aside class="sb-side" data-screen-label="summary" aria-label="Summary and settlement">
+
+      <div class="sb-summary glass" id="summaryPanel">
+        <h3>Summary</h3>
+        <div class="meta" id="summaryMeta">Equal split</div>
+
+        <div class="sb-sumrow total"><span class="k">Total to split</span><span class="v" id="sumTotal">Rp 0</span></div>
+        <div class="sb-sumrow"><span class="k">Allocated</span><span class="v" id="sumAllocated">Rp 0</span></div>
+        <div class="sb-sumrow"><span class="k">Remaining</span><span class="v" id="sumRemaining">Rp 0</span></div>
+        <div class="sb-sumrow"><span class="k">People included</span><span class="v" id="sumPeople">0</span></div>
+
+        <div class="sb-progress" id="sumProgress"><span></span></div>
+        <div class="sb-status neutral" id="sumStatus" role="status" aria-live="polite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
+          <span id="sumStatusText">Add a total to begin.</span>
+        </div>
+
+        <div class="sb-summary-actions">
+          <button class="btn btn-primary" id="createSummary" type="button">
+            Create split summary
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <button class="sb-pill ghost" id="copyResults" type="button" style="justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy results</button>
+        </div>
+      </div>
+
+      <!-- Settlement -->
+      <section class="sb-card glass" id="settleCard" data-screen-label="settlement" aria-labelledby="settleHead">
+        <div class="sb-card-head">
+          <div class="titles">
+            <span class="sb-eyebrow" style="--sig1:#6f9bd1;--sig2:#6ba39a;">Who pays whom</span>
+            <h3 id="settleHead">Settlement</h3>
+          </div>
+        </div>
+        <div class="sb-paidby">
+          <span class="lbl" id="paidByLabel">Paid upfront by</span>
+          <select class="sb-select" id="paidBy" aria-labelledby="paidByLabel" style="width:auto; min-width:150px;"></select>
+        </div>
+        <div class="sb-settle-list" id="settleList"></div>
+        <div class="sb-summary-actions" style="margin-top:16px;">
+          <button class="sb-pill ghost" id="shareLink" type="button" style="justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Share link</button>
+          <button class="sb-pill ghost" id="downloadSummary" type="button" style="justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>Download summary</button>
+          <button class="sb-pill ghost danger" id="resetAll" type="button" style="justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 4v4h4"/></svg>Reset</button>
+        </div>
+      </section>
+
+    </aside>
+  </div><!-- /.sb-layout -->
+
+  <!-- Footer -->
+  <footer class="footer-section" data-screen-label="footer">
+    <div class="footer-grid glass">
+      <div class="identity">
+        <div class="logo"><span class="mark"></span><span style="font-family: Nunito;">A Curious Note</span></div>
+        <p>A quiet personal corner. Written and tended by hand. This little tool runs entirely on your device.</p>
+      </div>
+      <div class="socials-col">
+        <div class="col-title">Elsewhere</div>
+        <div class="socials">
+          <a href="https://github.com/sherlyseptiani" target="_blank" rel="noopener"><span class="label">GitHub</span><span class="handle">sherlyseptiani</span></a>
+          <a href="https://x.com/shrlys" target="_blank" rel="noopener"><span class="label">X · Twitter</span><span class="handle">@shrlys</span></a>
+          <a href="https://instagram.com/sherlyseptiani" target="_blank" rel="noopener"><span class="label">Instagram</span><span class="handle">@sherlyseptiani</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="copyline">
+      <span>© 2026 A Curious Note · Written by Sherly Septiani</span>
+    </div>
+  </footer>
+
+</main>
+
+<!-- Mobile sticky summary bar -->
+<div class="sb-mobilebar" id="mobileBar" aria-label="Summary">
+  <div class="sb-mobilebar-peek">
+    <button class="grab" id="mobileBarToggle" aria-expanded="false" aria-controls="mobileBarBody" type="button">
+      <span class="k"><span class="dotstatus neutral" id="mbDot"></span><span id="mbStatusText">Add a total</span></span>
+      <span class="v"><span id="mbAllocated">Rp 0</span> <small>of <span id="mbTotal">Rp 0</span></small></span>
+    </button>
+    <button class="btn btn-primary" id="mbCreate" type="button" style="padding:11px 16px;">Summary</button>
+    <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><path d="M18 15l-6-6-6 6"/></svg></span>
+  </div>
+  <div class="sb-mobilebar-body" id="mobileBarBody">
+    <div class="sb-mobilebar-body-inner" id="mobileBarInner"></div>
+  </div>
+</div>
+
+<!-- Reset confirmation modal -->
+<div class="sb-modal" id="resetModal" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
+  <div class="sb-modal-scrim" data-reset-close></div>
+  <div class="sb-modal-card glass">
+    <h3 id="resetTitle">Start over?</h3>
+    <p>This clears the bill, everyone in it, and all amounts on this device. It can&rsquo;t be undone.</p>
+    <div class="row">
+      <button class="sb-pill ghost" data-reset-close type="button" style="justify-content:center;">Keep editing</button>
+      <button class="btn btn-primary" id="resetConfirm" type="button" style="background:linear-gradient(180deg, color-mix(in oklab, var(--sb-bad), white 8%), var(--sb-bad)); box-shadow:none;">Reset everything</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script src="splitbill.js"></script>
+</body>
+</html>

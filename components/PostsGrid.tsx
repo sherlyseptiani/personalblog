@@ -169,6 +169,18 @@ export default function PostsGrid({ initialPosts, initialTotal, initialCategorie
     spawnGlitter(e.clientX, e.clientY)
   }
 
+  const handleClearSearch = (e: React.MouseEvent) => {
+    setSearch('')
+    setActiveFilter('all')
+    setPage(1)
+    fetchPosts('all', '', 1, false)
+    spawnGlitter(e.clientX, e.clientY)
+    // Clear URL search param
+    const url = new URL(window.location.href)
+    url.searchParams.delete('search')
+    window.history.pushState({}, '', url.toString())
+  }
+
   const handleLoadMore = () => {
     const next = page + 1
     setPage(next)
@@ -188,7 +200,40 @@ export default function PostsGrid({ initialPosts, initialTotal, initialCategorie
         <div className="titles">
           <span className="eyebrow">{search ? `Search: "${search}"` : 'The archive'}</span>
           <h2>{search ? `Found ${total} post${total !== 1 ? 's' : ''}` : 'Recent writing.'}</h2>
-          {!search && (
+          {search ? (
+            <button
+              className="clear-search-btn"
+              onClick={handleClearSearch}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '8px 14px',
+                borderRadius: '20px',
+                border: '1px solid var(--line)',
+                background: 'var(--glass-bg)',
+                color: 'var(--ink-2)',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '12px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                marginTop: '8px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--video-tint)'
+                e.currentTarget.style.color = 'var(--video-tint)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--line)'
+                e.currentTarget.style.color = 'var(--ink-2)'
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+              Clear search
+            </button>
+          ) : (
             <p>
               New entries will arrive most Sundays - quiet weeks are part of the practice. I will write more often!
             </p>
@@ -234,7 +279,12 @@ export default function PostsGrid({ initialPosts, initialTotal, initialCategorie
           }
         }}
       >
-        {posts.length === 0 && !loading ? (
+        {loading && posts.length === 0 ? (
+          <div className="posts-loader" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', minHeight: '300px' }}>
+            <div className="loader-shimmer" style={{ width: '100%', maxWidth: '600px', height: '200px', borderRadius: '16px', marginBottom: '24px', background: 'linear-gradient(90deg, var(--surface-1) 25%, var(--surface-2) 50%, var(--surface-1) 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite' }} />
+            <div className="loader-shimmer" style={{ width: '100%', maxWidth: '600px', height: '200px', borderRadius: '16px', background: 'linear-gradient(90deg, var(--surface-1) 25%, var(--surface-2) 50%, var(--surface-1) 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite', animationDelay: '0.2s' }} />
+          </div>
+        ) : posts.length === 0 ? (
           <p style={{ color: 'var(--ink-2)', fontFamily: 'var(--font-serif)', padding: '40px 0' }}>
             No posts found.
           </p>
@@ -259,6 +309,10 @@ export default function PostsGrid({ initialPosts, initialTotal, initialCategorie
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(20px); }
           to   { opacity: 1; transform: translateY(0);    }
+        }
+        @keyframes shimmer {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
         }
         .post-anim-new {
           animation: fadeInUp 0.45s ease-out forwards;

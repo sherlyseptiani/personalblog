@@ -261,3 +261,279 @@
   };
   updateThumbColors();
 })();
+
+/* =====================================================================
+   Search — glass "spotlight" overlay, shared across every page.
+   Wires any nav button with aria-label="Search"; also opens on ⌘K / /.
+   ===================================================================== */
+(function() {
+  const POST_PAGE = 'A Curious Note - Post.html';
+
+  // Two-tone gradients per category (echoes the about-page sigils)
+  const CAT = {
+    essay:   { label: 'Essay',      c: ['#7c8db5', '#3d4d75'] },
+    craft:   { label: 'Craft',      c: ['#f6c7a3', '#c08a64'] },
+    field:   { label: 'Field note', c: ['#a7d8c5', '#6ba39a'] },
+    reading: { label: 'Reading',    c: ['#c6b5e0', '#a07ab5'] },
+    systems: { label: 'Systems',    c: ['#b3d0e8', '#3f7a8c'] },
+    page:    { label: 'Page',       c: ['#f5b8c7', '#d96b8a'] }
+  };
+
+  // Searchable index (curated from the archive + section pages)
+  const INDEX = [
+    { t: 'The case for quiet software', cat: 'essay', read: '12 min', date: 'Apr 4', id: 'quiet-software', kw: 'notifications interface attention tools whisper' },
+    { t: 'Why I still bookmark', cat: 'essay', read: '7 min', date: 'Mar 28', id: 'why-i-bookmark', kw: 'bookmarks web personal corner saving' },
+    { t: 'Editor feels: friction is a feature', cat: 'craft', read: '9 min', date: 'Mar 21', id: 'editor-feels', kw: 'markdown writing tools drag intentional' },
+    { t: 'On letting drafts age', cat: 'essay', read: '4 min', date: 'Mar 14', id: 'aging-drafts', kw: 'drafts weather waiting writing' },
+    { t: 'The weather of attention', cat: 'field', read: '11 min', date: 'Mar 7', id: 'attention-weather', kw: 'focus mind field guide morning' },
+    { t: 'Glassy UIs and the long history of seeing through', cat: 'craft', read: '14 min', date: 'Feb 29', id: 'glassy-uis', kw: 'glass translucency liquid design history icons' },
+    { t: 'What I read in February', cat: 'reading', read: '6 min', date: 'Feb 25', id: 'reading-stack', kw: 'books reading stack month' },
+    { t: 'Systems are sentences', cat: 'systems', read: '10 min', date: 'Feb 18', id: 'systems-thinking', kw: 'software prose structure thinking' },
+    { t: "Walks I take when I'm stuck", cat: 'field', read: '5 min', date: 'Feb 11', id: 'walks', kw: 'walking block loop geography' },
+    { t: 'A taxonomy of restlessness', cat: 'essay', read: '8 min', date: 'Feb 4', id: 'taxonomy-restless', kw: 'restlessness work focus' },
+    { t: 'Tiny tools and the maintenance of joy', cat: 'craft', read: '9 min', date: 'Jan 28', id: 'tiny-tools', kw: 'tools notes rewrite joy software' },
+    { t: 'What the room knows', cat: 'field', read: '7 min', date: 'Jan 21', id: 'what-the-room-knows', kw: 'environment desk memory room' },
+    // Section pages
+    { t: 'About — Sherly Septiani', cat: 'page', read: 'The writer', date: '', url: 'A Curious Note - About.html', kw: 'about bio writer brooklyn dog mochi contact say hi' },
+    { t: 'Recommendations', cat: 'page', read: 'Honest picks', date: '', url: 'A Curious Note - Recommendations.html', kw: 'recommendations products skincare snacks bag shopee picks' }
+  ];
+
+  const SUGGESTED = ['quiet software', 'reading', 'craft', 'bookmark'];
+  const RECENT_KEY = 'acn-recent-searches';
+  const PAGE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/></svg>';
+  const POST_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h7M9 13h7M9 17h4"/></svg>';
+
+  function getRecent() {
+    try { return JSON.parse(localStorage.getItem(RECENT_KEY)) || []; } catch(e) { return []; }
+  }
+  function pushRecent(q) {
+    q = q.trim(); if (!q) return;
+    let list = getRecent().filter(x => x.toLowerCase() !== q.toLowerCase());
+    list.unshift(q); list = list.slice(0, 5);
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify(list)); } catch(e) {}
+  }
+  function clearRecent() { try { localStorage.removeItem(RECENT_KEY); } catch(e) {} }
+  function delRecent(q) {
+    const list = getRecent().filter(x => x !== q);
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify(list)); } catch(e) {}
+  }
+
+  function esc(s) { return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+  function highlight(title, q) {
+    if (!q) return esc(title);
+    const i = title.toLowerCase().indexOf(q.toLowerCase());
+    if (i < 0) return esc(title);
+    return esc(title.slice(0, i)) + '<mark>' + esc(title.slice(i, i + q.length)) + '</mark>' + esc(title.slice(i + q.length));
+  }
+  function hrefFor(item) { return item.url || (POST_PAGE + '?id=' + encodeURIComponent(item.id)); }
+
+  let root, dialog, input, field, chipsWrap, body, activeCat = 'all', activeIdx = -1, navItems = [];
+
+  function build() {
+    root = document.createElement('div');
+    root.className = 'acn-search-root';
+    root.setAttribute('role', 'dialog');
+    root.setAttribute('aria-modal', 'true');
+    root.setAttribute('aria-label', 'Search');
+    const cats = ['all'].concat(Object.keys(CAT));
+    root.innerHTML =
+      '<div class="acn-search-scrim" data-close></div>' +
+      '<div class="acn-search-dialog">' +
+        '<div class="acn-search-field">' +
+          '<svg class="si" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>' +
+          '<input type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Search essays, notes & pages\u2026" aria-label="Search" />' +
+          '<span class="acn-search-kbd"><kbd>esc</kbd> to close</span>' +
+          '<button class="acn-search-clear" aria-label="Clear search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>' +
+        '</div>' +
+        '<div class="acn-search-chips">' +
+          cats.map(c => '<button class="acn-chip' + (c === 'all' ? ' active' : '') + '" data-cat="' + c + '">' +
+            (c === 'all' ? 'All' : CAT[c].label) + '</button>').join('') +
+        '</div>' +
+        '<div class="acn-search-body"></div>' +
+        '<div class="acn-search-foot">' +
+          '<span class="hint"><kbd>\u2191</kbd><kbd>\u2193</kbd> navigate</span>' +
+          '<span class="hint"><kbd>\u21B5</kbd> open</span>' +
+          '<span class="spacer"></span>' +
+          '<span class="hint"><kbd>\u2318</kbd><kbd>K</kbd> search</span>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(root);
+
+    dialog = root.querySelector('.acn-search-dialog');
+    input = root.querySelector('input');
+    field = root.querySelector('.acn-search-field');
+    chipsWrap = root.querySelector('.acn-search-chips');
+    body = root.querySelector('.acn-search-body');
+
+    root.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+    input.addEventListener('input', () => { syncClear(); render(); });
+    root.querySelector('.acn-search-clear').addEventListener('click', () => {
+      input.value = ''; syncClear(); render(); input.focus();
+    });
+    chipsWrap.addEventListener('click', e => {
+      const b = e.target.closest('.acn-chip'); if (!b) return;
+      activeCat = b.dataset.cat;
+      chipsWrap.querySelectorAll('.acn-chip').forEach(x => x.classList.toggle('active', x === b));
+      render();
+    });
+    body.addEventListener('mousemove', e => {
+      const r = e.target.closest('[data-idx]'); if (!r) return;
+      setActive(parseInt(r.dataset.idx, 10));
+    });
+    input.addEventListener('keydown', onKeys);
+  }
+
+  function syncClear() { field.classList.toggle('has-text', input.value.trim().length > 0); }
+
+  function results(q) {
+    const ql = q.toLowerCase();
+    return INDEX.filter(it => {
+      if (activeCat !== 'all' && it.cat !== activeCat) return false;
+      if (!ql) return true;
+      return (it.t + ' ' + (CAT[it.cat] ? CAT[it.cat].label : '') + ' ' + (it.kw || '')).toLowerCase().includes(ql);
+    });
+  }
+
+  function render() {
+    const q = input.value.trim();
+    navItems = [];
+    let html = '';
+
+    if (!q && activeCat === 'all') {
+      const recent = getRecent();
+      if (recent.length) {
+        html += '<div class="acn-search-secthead">Recent<button data-clear>Clear</button></div>';
+        recent.forEach(r => {
+          html += '<div class="acn-recent" data-q="' + esc(r) + '">' +
+            '<svg class="rc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' +
+            '<span class="rc-text">' + esc(r) + '</span>' +
+            '<button class="rc-del" data-del="' + esc(r) + '" aria-label="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>' +
+          '</div>';
+        });
+      }
+      html += '<div class="acn-search-secthead">' + (recent.length ? 'Try' : 'Suggested') + '</div>';
+      SUGGESTED.forEach(s => {
+        html += '<div class="acn-recent" data-q="' + esc(s) + '">' +
+          '<svg class="rc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>' +
+          '<span class="rc-text">' + esc(s) + '</span></div>';
+      });
+      body.innerHTML = html;
+      wireBody();
+      return;
+    }
+
+    const res = results(q);
+    if (!res.length) {
+      body.innerHTML =
+        '<div class="acn-search-empty">' +
+          '<div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div>' +
+          '<h4>Nothing here yet</h4>' +
+          '<p>No notes match \u201c' + esc(q) + '\u201d. Try a different word, or browse by category above.</p>' +
+        '</div>';
+      return;
+    }
+
+    html += '<div class="acn-search-secthead">' + res.length + ' result' + (res.length > 1 ? 's' : '') + '</div>';
+    res.forEach((it, i) => {
+      const cat = CAT[it.cat] || CAT.essay;
+      const sub = it.cat === 'page'
+        ? (it.read || '')
+        : cat.label + '<span class="sep"></span>' + it.read + (it.date ? '<span class="sep"></span>' + it.date : '');
+      html +=
+        '<a class="acn-result" href="' + hrefFor(it) + '" data-idx="' + i + '" style="--rc1:' + cat.c[0] + ';--rc2:' + cat.c[1] + ';">' +
+          '<span class="r-dot">' + (it.cat === 'page' ? PAGE_ICON : POST_ICON) + '</span>' +
+          '<span class="r-main"><span class="r-title">' + highlight(it.t, q) + '</span><span class="r-sub">' + sub + '</span></span>' +
+          '<svg class="r-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+        '</a>';
+    });
+    body.innerHTML = html;
+    navItems = Array.from(body.querySelectorAll('.acn-result'));
+    activeIdx = -1;
+    if (navItems.length) setActive(0);
+  }
+
+  function wireBody() {
+    body.querySelectorAll('.acn-recent[data-q]').forEach(el => {
+      el.addEventListener('click', e => {
+        if (e.target.closest('[data-del]')) return;
+        input.value = el.dataset.q; syncClear(); render(); input.focus();
+      });
+    });
+    body.querySelectorAll('[data-del]').forEach(b => {
+      b.addEventListener('click', e => { e.stopPropagation(); delRecent(b.dataset.del); render(); });
+    });
+    const clr = body.querySelector('[data-clear]');
+    if (clr) clr.addEventListener('click', () => { clearRecent(); render(); });
+    navItems = Array.from(body.querySelectorAll('.acn-recent'));
+    activeIdx = -1;
+  }
+
+  function setActive(i) {
+    if (!navItems.length) return;
+    activeIdx = (i + navItems.length) % navItems.length;
+    navItems.forEach((el, n) => el.classList.toggle('active', n === activeIdx));
+  }
+
+  function go(el) {
+    if (!el) return;
+    if (el.dataset.q !== undefined) { input.value = el.dataset.q; syncClear(); render(); input.focus(); return; }
+    pushRecent(input.value);
+    const href = el.getAttribute('href');
+    if (href) window.location.href = href;
+  }
+
+  function onKeys(e) {
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActive(activeIdx + 1); ensureVisible(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(activeIdx - 1); ensureVisible(); }
+    else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIdx >= 0 && navItems[activeIdx]) go(navItems[activeIdx]);
+      else if (navItems[0]) go(navItems[0]);
+    } else if (e.key === 'Escape') { e.preventDefault(); close(); }
+  }
+  function ensureVisible() {
+    const el = navItems[activeIdx]; if (!el) return;
+    const r = el.getBoundingClientRect(), br = body.getBoundingClientRect();
+    if (r.bottom > br.bottom) body.scrollTop += r.bottom - br.bottom + 8;
+    else if (r.top < br.top) body.scrollTop -= br.top - r.top + 8;
+  }
+
+  let lastFocus = null;
+  function open() {
+    if (!root) build();
+    lastFocus = document.activeElement;
+    activeCat = 'all';
+    chipsWrap.querySelectorAll('.acn-chip').forEach(x => x.classList.toggle('active', x.dataset.cat === 'all'));
+    input.value = ''; syncClear(); render();
+    root.classList.add('open');
+    document.documentElement.style.overflow = 'hidden';
+    requestAnimationFrame(() => setTimeout(() => input.focus(), 60));
+  }
+  function close() {
+    if (!root) return;
+    root.classList.remove('open');
+    document.documentElement.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  window.openSearch = open;
+  window.closeSearch = close;
+
+  function init() {
+    document.querySelectorAll('[aria-label="Search"]').forEach(btn => {
+      if (btn.closest('.acn-search-root')) return;
+      btn.addEventListener('click', e => { e.preventDefault(); open(); });
+    });
+    document.addEventListener('keydown', e => {
+      const open_ = root && root.classList.contains('open');
+      if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) { e.preventDefault(); open_ ? close() : open(); return; }
+      if (e.key === '/' && !open_) {
+        const t = e.target, tag = t && t.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || (t && t.isContentEditable)) return;
+        e.preventDefault(); open();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();

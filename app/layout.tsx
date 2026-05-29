@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     title: 'A Curious Note — Notes from a curious mind',
     description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages.',
     images: [{
-      url: 'https://acuriousnote.com/og-image.png',
+      url: 'https://acuriousnote.com/og-image.jpg',
       width: 1200,
       height: 630,
       alt: 'A Curious Note — A slow blog by Sherly',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'A Curious Note — Notes from a curious mind',
     description: 'A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages.',
-    images: ['https://acuriousnote.com/og-image.png'],
+    images: ['https://acuriousnote.com/og-image.jpg'],
   },
   icons: {
     icon: '/favicon.svg',
@@ -62,6 +62,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" data-theme="light">
       <head>
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:url" content="https://acuriousnote.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="A Curious Note — Notes from a curious mind" />
+        <meta property="og:description" content="A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages." />
+        <meta property="og:image" content="https://acuriousnote.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="A Curious Note" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="A Curious Note — Notes from a curious mind" />
+        <meta name="twitter:description" content="A slow blog about the things I find fascinating — animals, history, astrophysics, science, technology, and languages." />
+        <meta name="twitter:image" content="https://acuriousnote.com/og-image.jpg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link

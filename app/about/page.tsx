@@ -237,99 +237,30 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="about-card glass reveal in">
+          <a className="about-card glass reveal in recs-teaser" href="/recommendations" style={{ textDecoration: 'none', color: 'inherit' } as React.CSSProperties}>
             <div className="card-eyebrow">
               <span className="sigil" style={{ '--sigil-a': '#f5b8c7', '--sigil-b': '#c6b5e0' } as React.CSSProperties}></span>
-              <span className="eyebrow">Recommended · For humans</span>
+              <span className="eyebrow">Recommended</span>
             </div>
-            <div className="rec-card-heading-row">
-              <h3>Things I quietly love.</h3>
-              <a href="/recommendations" className="rec-expand-btn" title="See all recommendations" aria-label="See all recommendations">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M7 17 17 7M9 7h8v8" />
-                </svg>
-              </a>
-            </div>
-            <p style={{ fontFamily: 'var(--font-serif)', color: 'var(--ink-2)', fontSize: '14.5px', margin: '-4px 0 16px' }}>
-              A few small luxuries I&apos;ve kept around long enough to recommend.
+            <h3>Things I quietly love.</h3>
+            <p style={{ fontFamily: 'var(--font-serif)', color: 'var(--ink-2)', fontSize: '14.5px', margin: '-4px 0 18px' }}>
+              A few small luxuries I&apos;ve kept around long enough to recommend &mdash;
+              skincare, snacks, bags, and more.
             </p>
-            <div className="recs-list">
-              {[
-                { color1: '#f5b8c7', color2: '#d96b8a', name: 'La Roche Posay Cicaplast', desc: 'Best moisturiser, bangun2 kulit sehat bgt + plump', url: 'https://s.shopee.co.id/8pixjeQ6o2' },
-                { color1: '#c6b5e0', color2: '#a07ab5', name: 'Celimax Retinal Shot', desc: 'Texture dan kulit kusam improvement, langsung glowing!', url: 'https://s.shopee.co.id/1gFnCZkV2J' },
-                { color1: '#b3d0e8', color2: '#6f9bd1', name: 'Popcorn Caramel', desc: 'Murah dan sama persis kaya popcorn XXI', url: 'https://s.shopee.co.id/qggEPOH15' },
-                { color1: '#a7d8c5', color2: '#6ba39a', name: 'Monorow Blanc', desc: 'Tas kantor muat laptop paling cakep menurut sayaaa', url: 'https://s.shopee.co.id/7VDaAnzWL5' },
-                { color1: '#f6c7a3', color2: '#c08a64', name: '3CE Lip Tint', desc: 'Lip tint paling smooth, ga bikin kering dan warnanya bagus', url: 'https://s.shopee.co.id/BQzRr5Vxv' },
-              ].map(item => (
-                <a key={item.name} className="rec-item" href={item.url} target="_blank" rel="noopener" style={{ '--ra': item.color1, '--rb': item.color2 } as React.CSSProperties}>
-                  <span className="rec-thumb">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z" />
-                    </svg>
-                  </span>
-                  <span className="rec-info">
-                    <span className="rec-name">{item.name}</span>
-                    <span className="rec-desc">{item.desc}</span>
-                  </span>
-                  <span className="rec-cta">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-                      <path d="M7 17 17 7M9 7h8v8" />
-                    </svg>
-                  </span>
-                </a>
-              ))}
+            <div className="recs-teaser-swatches" aria-hidden="true">
+              <span style={{ background: 'linear-gradient(140deg,#f5b8c7,#d96b8a)' } as React.CSSProperties}></span>
+              <span style={{ background: 'linear-gradient(140deg,#c6b5e0,#a07ab5)' } as React.CSSProperties}></span>
+              <span style={{ background: 'linear-gradient(140deg,#f6c7a3,#c08a64)' } as React.CSSProperties}></span>
+              <span style={{ background: 'linear-gradient(140deg,#a7d8c5,#6ba39a)' } as React.CSSProperties}></span>
+              <span style={{ background: 'linear-gradient(140deg,#b3d0e8,#6f9bd1)' } as React.CSSProperties}></span>
             </div>
-            <div className="rec-disclosure">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" />
+            <span className="recs-teaser-cta">
+              See all recommendations
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
-              Affiliate links — I only recommend things I actually use.
-            </div>
-          </div>
-
-          <div className="about-card glass reveal in r-d1">
-            <div className="card-eyebrow">
-              <span className="sigil" style={{ '--sigil-a': '#f6c7a3', '--sigil-b': '#a7d8c5' } as React.CSSProperties}></span>
-              <span className="eyebrow">Recommended · For dogs</span>
-            </div>
-            <h3>The dog&apos;s wishlist.</h3>
-            <p style={{ fontFamily: 'var(--font-serif)', color: 'var(--ink-2)', fontSize: '14.5px', margin: '-4px 0 16px' }}>
-              Approved by my 30-pound co-editor. She is a tough critic.
-            </p>
-            <div className="recs-list">
-              {[
-                { color1: '#f6c7a3', color2: '#d96b8a', name: 'KONG Classic — medium', desc: 'The toy she has not destroyed. Stuff with peanut butter.' },
-                { color1: '#a7d8c5', color2: '#6ba39a', name: 'Ruffwear Front Range Harness', desc: 'Reflective, padded, survived a year of subway escalators.' },
-                { color1: '#f5b8c7', color2: '#a07ab5', name: 'Stewart Freeze-Dried Liver Treats', desc: 'One ingredient. One very motivated dog.' },
-                { color1: '#b3d0e8', color2: '#6f9bd1', name: 'LickiMat Soother', desc: '15 minutes of peace, delivered via yogurt and silicone.' },
-                { color1: '#c6b5e0', color2: '#d96b8a', name: 'Highwave AutoDogMug', desc: 'Travel water bottle. Press a button, dog drinks.' },
-              ].map(item => (
-                <a key={item.name} className="rec-item" href="#" target="_blank" rel="noopener" style={{ '--ra': item.color1, '--rb': item.color2 } as React.CSSProperties}>
-                  <span className="rec-thumb">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                      <ellipse cx="12" cy="14" rx="7" ry="6" />
-                      <path d="M5 14V9a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v5" />
-                    </svg>
-                  </span>
-                  <span className="rec-info">
-                    <span className="rec-name">{item.name}</span>
-                    <span className="rec-desc">{item.desc}</span>
-                  </span>
-                  <span className="rec-cta">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-                      <path d="M7 17 17 7M9 7h8v8" />
-                    </svg>
-                  </span>
-                </a>
-              ))}
-            </div>
-            <div className="rec-disclosure">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" />
-              </svg>
-              Affiliate links — Glory gets a treat, I get a small commission.
-            </div>
-          </div>
+            </span>
+          </a>
 
         </div>
       </section>

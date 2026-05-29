@@ -206,34 +206,37 @@ function showFireworks() {
   ctx.scale(dpr, dpr);
 
   const particles = [];
-  const colors = ['#c6b5e0', '#a7d8c5', '#f5b8c7', '#f6c7a3', '#b3d0e8', '#fff'];
+  const colors = ['#ff4d8d', '#ff8f3f', '#ffd43b', '#43d17a', '#3fa9ff', '#b388ff', '#ff6ec7', '#ffffff'];
 
   function createBurst(x, y) {
-    const count = 24 + Math.random() * 16;
+    const count = 34 + Math.random() * 22;
+    const hue = colors[Math.floor(Math.random() * colors.length)];
     for (let i = 0; i < count; i++) {
       const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
-      const speed = 2 + Math.random() * 3;
+      const speed = 2.5 + Math.random() * 4.5;
+      // ~70% share the burst's hue, the rest are random sparkles for a colorful pop
+      const color = Math.random() < 0.7 ? hue : colors[Math.floor(Math.random() * colors.length)];
       particles.push({
         x, y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         alpha: 1,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        size: 1.5 + Math.random() * 2,
-        decay: 0.015 + Math.random() * 0.01
+        color,
+        size: 1.5 + Math.random() * 2.8,
+        decay: 0.012 + Math.random() * 0.01
       });
     }
   }
 
   let burstCount = 0;
-  const maxBursts = 4;
+  const maxBursts = 8;
   function launchBurst() {
     if (burstCount >= maxBursts) return;
     const x = (0.2 + Math.random() * 0.6) * rect.width;
     const y = (0.3 + Math.random() * 0.4) * rect.height;
     createBurst(x, y);
     burstCount++;
-    setTimeout(launchBurst, 300 + Math.random() * 400);
+    setTimeout(launchBurst, 220 + Math.random() * 280);
   }
   launchBurst();
 
@@ -253,6 +256,8 @@ function showFireworks() {
       ctx.save();
       ctx.globalAlpha = p.alpha;
       ctx.fillStyle = p.color;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 8;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
       ctx.fill();
@@ -273,16 +278,18 @@ function showThankYouModal() {
   modal.className = 'thank-you-modal';
   modal.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(var(--video-r),var(--video-g),var(--video-b),0.15);backdrop-filter:blur(8px);z-index:1001;animation:fadeIn 0.4s ease-out;padding:20px;';
   modal.innerHTML = `
-    <div class="thank-you-content" style="background:var(--surface-1);border-radius:20px;padding:40px 48px;text-align:center;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,0.15);border:1px solid rgba(var(--video-r),var(--video-g),var(--video-b),0.2);animation:slideUp 0.5s cubic-bezier(0.16,1,0.3,1);">
-      <div class="thank-you-icon" style="width:64px;height:64px;margin:0 auto 20px;color:var(--video-tint);animation:starPop 0.6s cubic-bezier(0.34,1.56,0.64,1);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:100%;height:100%;fill:rgba(var(--video-r),var(--video-g),var(--video-b),0.15);">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+    <div class="thank-you-content glass" style="position:relative;overflow:hidden;border-radius:24px;padding:44px 48px;text-align:center;max-width:380px;width:100%;animation:slideUp 0.55s cubic-bezier(0.16,1,0.3,1);">
+      <div class="thank-you-icon" style="width:62px;height:62px;margin:0 auto 18px;animation:starPop 0.6s cubic-bezier(0.34,1.56,0.64,1);">
+        <svg viewBox="0 0 24 24" style="width:100%;height:100%;filter:drop-shadow(0 4px 12px rgba(177,136,255,0.5));">
+          <defs><linearGradient id="tyStar" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ff4d8d"/><stop offset="0.5" stop-color="#b388ff"/><stop offset="1" stop-color="#3fa9ff"/>
+          </linearGradient></defs>
+          <path fill="url(#tyStar)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
         </svg>
       </div>
-      <h3 style="font-family:var(--font-serif);font-size:24px;margin:0 0 12px;color:var(--ink-1);font-weight:500;">Thank you for reading</h3>
-      <p style="font-family:var(--font-serif);font-size:16px;font-style:italic;color:var(--ink-2);margin:0 0 20px;opacity:0.8;">The case for quiet software</p>
-      <p style="font-size:14px;color:var(--ink-2);margin:0 0 28px;line-height:1.6;">You've reached the end. Hope you enjoyed the journey.</p>
-      <button onclick="this.closest('.thank-you-modal').remove()" class="btn btn-primary" style="min-width:160px;">Continue exploring</button>
+      <h3 style="font-family:var(--font-serif);font-size:27px;letter-spacing:-0.02em;margin:0 0 8px;color:var(--ink);font-weight:400;">Thank you for reading</h3>
+      <p style="font-family:var(--font-serif);font-size:15px;font-style:italic;color:var(--ink-2);margin:0 0 26px;">The case for quiet software</p>
+      <button onclick="this.closest('.thank-you-modal').remove()" class="btn btn-primary" style="white-space:nowrap;padding-left:22px;padding-right:22px;">Continue exploring</button>
     </div>
   `;
   modal.addEventListener('click', (e) => {
