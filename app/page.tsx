@@ -4,6 +4,20 @@ import PostsGrid from '@/components/PostsGrid'
 import Footer from '@/components/Footer'
 import NotifyButton from '@/components/NotifyButton'
 import VideoColorSync from '@/components/VideoColorSync'
+
+// Skeleton component defined outside to avoid hydration mismatch
+function PostsGridSkeleton() {
+  return (
+    <div className="posts" style={{ minHeight: '400px' }}>
+      <div className="skeleton-posts">
+        <div className="skeleton-col skeleton-col-4"><div className="post-skeleton"><div className="skeleton-thumb" style={{ aspectRatio: '1/1' }} /></div><div className="post-skeleton"><div className="skeleton-thumb" style={{ aspectRatio: '3/4' }} /></div></div>
+        <div className="skeleton-col skeleton-col-4"><div className="post-skeleton"><div className="skeleton-thumb" style={{ aspectRatio: '4/3' }} /></div><div className="post-skeleton"><div className="skeleton-thumb" style={{ aspectRatio: '1/1' }} /></div></div>
+        <div className="skeleton-col skeleton-col-4"><div className="post-skeleton"><div className="skeleton-thumb" style={{ aspectRatio: '3/4' }} /></div><div className="post-skeleton"><div className="skeleton-thumb" style={{ aspectRatio: '1/1' }} /></div></div>
+        <div className="skeleton-col skeleton-col-4"><div className="post-skeleton"><div className="skeleton-thumb" style={{ aspectRatio: '1/1' }} /></div><div className="post-skeleton"><div className="skeleton-thumb" style={{ aspectRatio: '4/3' }} /></div></div>
+      </div>
+    </div>
+  )
+}
 import { createServerClient } from '@/lib/supabase'
 import type { Post } from '@/lib/types'
 
@@ -128,7 +142,7 @@ export default async function HomePage() {
       {/* ============ POSTS ============ */}
       <section className="posts-section" id="latest" data-screen-label="posts">
         <div className="dotgrid" aria-hidden="true"></div>
-        <Suspense fallback={<div className="posts" style={{ minHeight: '400px' }} />}>
+        <Suspense fallback={<PostsGridSkeleton />}>
           <PostsGrid initialPosts={posts} initialTotal={total} initialCategories={categories} />
         </Suspense>
       </section>

@@ -151,13 +151,25 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
     window.addEventListener('scroll', updateToc, { passive: true })
     updateToc()
 
-    // Mark as read when reaching the end of the article
+    // Mark as read + reading celebration when reaching the end of the article
     const postEndEl = document.querySelector('.post-end')
+    let celebrated = false
     let readObserver: IntersectionObserver | null = null
     if (postEndEl) {
       readObserver = new IntersectionObserver(
         ([entry]) => {
-          if (!entry.isIntersecting) return
+          if (!entry?.isIntersecting) return
+          // Show celebration if not already shown
+          if (!celebrated) {
+            celebrated = true
+            try {
+              showFireworks?.()
+              showThankYouModal?.(post.title)
+            } catch (e) {
+              console.error('Celebration error:', e)
+            }
+          }
+          // Mark as read in localStorage
           try {
             const stored = localStorage.getItem('acn-read')
             const readList: string[] = stored ? JSON.parse(stored) : []
@@ -172,6 +184,127 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
         { threshold: 0.5 }
       )
       readObserver.observe(postEndEl)
+    }
+
+    // Fireworks celebration
+    function showFireworks() {
+      const canvas = document.createElement('canvas')
+      canvas.className = 'fireworks-canvas'
+      canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1000;'
+      document.body.appendChild(canvas)
+
+      const dpr = window.devicePixelRatio || 1
+      const rect = canvas.getBoundingClientRect()
+      canvas.width = rect.width * dpr
+      canvas.height = rect.height * dpr
+      const ctx = canvas.getContext('2d')
+      if (!ctx) return
+      ctx.scale(dpr, dpr)
+
+      const particles: Array<{
+        x: number
+        y: number
+        vx: number
+        vy: number
+        alpha: number
+        color: string
+        size: number
+        decay: number
+      }> = []
+      const colors = ['#ff4d8d', '#ff8f3f', '#ffd43b', '#43d17a', '#3fa9ff', '#b388ff', '#ff6ec7', '#ffffff']
+
+      function createBurst(x: number, y: number) {
+        const count = 34 + Math.random() * 22
+        const hue = colors[Math.floor(Math.random() * colors.length)]
+        for (let i = 0; i < count; i++) {
+          const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5
+          const speed = 2.5 + Math.random() * 4.5
+          const color = Math.random() < 0.7 ? hue : colors[Math.floor(Math.random() * colors.length)]
+          particles.push({
+            x, y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            alpha: 1,
+            color,
+            size: 1.5 + Math.random() * 2.8,
+            decay: 0.012 + Math.random() * 0.01
+          })
+        }
+      }
+
+      let burstCount = 0
+      const maxBursts = 8
+      function launchBurst() {
+        if (burstCount >= maxBursts) return
+        const x = (0.2 + Math.random() * 0.6) * rect.width
+        const y = (0.3 + Math.random() * 0.4) * rect.height
+        createBurst(x, y)
+        burstCount++
+        setTimeout(launchBurst, 220 + Math.random() * 280)
+      }
+      launchBurst()
+
+      function animate() {
+        ctx.clearRect(0, 0, rect.width, rect.height)
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i]
+          p.x += p.vx
+          p.y += p.vy
+          p.vy += 0.05
+          p.vx *= 0.98
+          p.alpha -= p.decay
+          if (p.alpha <= 0) {
+            particles.splice(i, 1)
+            continue
+          }
+          ctx.save()
+          ctx.globalAlpha = p.alpha
+          ctx.fillStyle = p.color
+          ctx.shadowColor = p.color
+          ctx.shadowBlur = 8
+          ctx.beginPath()
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+          ctx.fill()
+          ctx.restore()
+        }
+        if (particles.length > 0 || burstCount < maxBursts) {
+          requestAnimationFrame(animate)
+        } else {
+          setTimeout(() => canvas.remove(), 500)
+        }
+      }
+      animate()
+    }
+
+    // Thank you modal
+    function showThankYouModal(postTitle: string) {
+      // Check if already shown this session
+      const sessionKey = `celebrated-${post.slug}`
+      if (sessionStorage.getItem(sessionKey)) return
+      sessionStorage.setItem(sessionKey, 'true')
+
+      const modal = document.createElement('div')
+      modal.className = 'thank-you-modal'
+      modal.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(var(--video-r),var(--video-g),var(--video-b),0.15);backdrop-filter:blur(8px);z-index:1001;animation:fadeIn 0.4s ease-out;padding:20px;'
+      modal.innerHTML = `
+        <div class="thank-you-content glass" style="position:relative;overflow:hidden;border-radius:24px;padding:44px 48px;text-align:center;max-width:380px;width:100%;animation:slideUp 0.55s cubic-bezier(0.16,1,0.3,1);">
+          <div class="thank-you-icon" style="width:62px;height:62px;margin:0 auto 18px;animation:starPop 0.6s cubic-bezier(0.34,1.56,0.64,1);">
+            <svg viewBox="0 0 24 24" style="width:100%;height:100%;filter:drop-shadow(0 4px 12px rgba(177,136,255,0.5));">
+              <defs><linearGradient id="tyStar" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ff4d8d"/><stop offset="0.5" stop-color="#b388ff"/><stop offset="1" stop-color="#3fa9ff"/>
+              </linearGradient></defs>
+              <path fill="url(#tyStar)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h3 style="font-family:var(--font-serif);font-size:27px;letter-spacing:-0.02em;margin:0 0 8px;color:var(--ink);font-weight:400;">Thank you for reading</h3>
+          <p style="font-family:var(--font-serif);font-size:15px;font-style:italic;color:var(--ink-2);margin:0 0 26px;">${postTitle}</p>
+          <button class="btn btn-primary" style="white-space:nowrap;padding-left:22px;padding-right:22px;">Continue exploring</button>
+        </div>
+      `
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal || (e.target as HTMLElement).tagName === 'BUTTON') modal.remove()
+      })
+      document.body.appendChild(modal)
     }
 
     // Reactions
