@@ -164,7 +164,6 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
             celebrated = true
             try {
               showFireworks?.()
-              showThankYouModal?.(post.title)
             } catch (e) {
               console.error('Celebration error:', e)
             }
@@ -275,37 +274,6 @@ export default function PostPageUI({ post, nextPost, tocItems }: Props) {
         }
       }
       animate()
-    }
-
-    // Thank you modal
-    function showThankYouModal(postTitle: string) {
-      // Check if already shown this session
-      const sessionKey = `celebrated-${post.slug}`
-      if (sessionStorage.getItem(sessionKey)) return
-      sessionStorage.setItem(sessionKey, 'true')
-
-      const modal = document.createElement('div')
-      modal.className = 'thank-you-modal'
-      modal.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(var(--video-r),var(--video-g),var(--video-b),0.15);backdrop-filter:blur(8px);z-index:1001;animation:fadeIn 0.4s ease-out;padding:20px;'
-      modal.innerHTML = `
-        <div class="thank-you-content glass" style="position:relative;overflow:hidden;border-radius:24px;padding:44px 48px;text-align:center;max-width:380px;width:100%;animation:slideUp 0.55s cubic-bezier(0.16,1,0.3,1);">
-          <div class="thank-you-icon" style="width:62px;height:62px;margin:0 auto 18px;animation:starPop 0.6s cubic-bezier(0.34,1.56,0.64,1);">
-            <svg viewBox="0 0 24 24" style="width:100%;height:100%;filter:drop-shadow(0 4px 12px rgba(177,136,255,0.5));">
-              <defs><linearGradient id="tyStar" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#ff4d8d"/><stop offset="0.5" stop-color="#b388ff"/><stop offset="1" stop-color="#3fa9ff"/>
-              </linearGradient></defs>
-              <path fill="url(#tyStar)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
-          </div>
-          <h3 style="font-family:var(--font-serif);font-size:27px;letter-spacing:-0.02em;margin:0 0 8px;color:var(--ink);font-weight:400;">Thank you for reading</h3>
-          <p style="font-family:var(--font-serif);font-size:15px;font-style:italic;color:var(--ink-2);margin:0 0 26px;">${postTitle}</p>
-          <button class="btn btn-primary" style="white-space:nowrap;padding-left:22px;padding-right:22px;">Continue exploring</button>
-        </div>
-      `
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal || (e.target as HTMLElement).tagName === 'BUTTON') modal.remove()
-      })
-      document.body.appendChild(modal)
     }
 
     // Reactions

@@ -2217,78 +2217,7 @@ html[data-theme="dark"] .acn-search-dialog::before {
   .acn-search-root.open .acn-search-dialog { transform: translateY(0); }
 }
 
-/* ── Reading Celebration Modal ──────────────────────────── */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes starPop {
-  0% { transform: scale(0) rotate(-20deg); }
-  70% { transform: scale(1.1) rotate(5deg); }
-  100% { transform: scale(1) rotate(0); }
-}
-
-.thank-you-modal {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(var(--video-r), var(--video-g), var(--video-b), 0.15);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 1001;
-  animation: fadeIn 0.4s ease-out;
-  padding: 20px;
-}
-
-.thank-you-content {
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-  padding: 44px 48px;
-  text-align: center;
-  max-width: 380px;
-  width: 100%;
-  animation: slideUp 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.thank-you-icon {
-  width: 62px;
-  height: 62px;
-  margin: 0 auto 18px;
-  animation: starPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.thank-you-icon svg {
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 4px 12px rgba(177, 136, 255, 0.5));
-}
-
-.thank-you-content h3 {
-  font-family: var(--font-serif);
-  font-size: 27px;
-  letter-spacing: -0.02em;
-  margin: 0 0 8px;
-  color: var(--ink);
-  font-weight: 400;
-}
-
-.thank-you-content p {
-  font-family: var(--font-serif);
-  font-size: 15px;
-  font-style: italic;
-  color: var(--ink-2);
-  margin: 0 0 26px;
-}
-
+/* ── Reading Celebration ──────────────────────────── */
 .fireworks-canvas {
   position: fixed;
   inset: 0;
@@ -2296,26 +2225,4 @@ html[data-theme="dark"] .acn-search-dialog::before {
   height: 100%;
   pointer-events: none;
   z-index: 1000;
-}
-
-/* Mobile adjustments for celebration modal */
-@media (max-width: 520px) {
-  .thank-you-content {
-    padding: 36px 28px;
-    max-width: calc(100vw - 40px);
-  }
-
-  .thank-you-icon {
-    width: 52px;
-    height: 52px;
-  }
-
-  .thank-you-content h3 {
-    font-size: 24px;
-  }
-
-  .thank-you-content p {
-    font-size: 14px;
-    margin-bottom: 22px;
-  }
 }
