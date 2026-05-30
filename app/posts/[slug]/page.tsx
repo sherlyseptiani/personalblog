@@ -83,9 +83,30 @@ function extractTocItems(content: string) {
     })
 }
 
+function stripToPlainText(content: string) {
+  const noHtml = content.replace(/<[^>]+>/g, ' ')
+  return noHtml
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/!\[[^\]]*\]\([^\)]*\)/g, ' ')
+    .replace(/\[[^\]]*\]\([^\)]*\)/g, '$1')
+    .replace(/[#>*_~|]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function buildMetaDescription(post: Post) {
+  if (post.excerpt) return post.excerpt
+  const text = stripToPlainText(post.content || '')
+  if (!text) return undefined
+  return text.length > 160 ? `${text.slice(0, 157).trim()}...` : text
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getPost(params.slug)
   if (!post) return {}
+
+  const description = buildMetaDescription(post)
 
   // Ensure OG image is absolute URL
   const ogImage = post.post_thumbnail
@@ -100,7 +121,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     url: postUrl,
     siteName: 'A Curious Note',
     title: post.title,
-    description: post.excerpt ?? undefined,
+    description,
     modifiedTime: post.updated_at,
     authors: ['Sherly'],
     tags: post.tags?.length ? post.tags : [post.category],
@@ -120,12 +141,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   return {
     title: `${post.title} — A Curious Note`,
-    description: post.excerpt ?? undefined,
+    description,
     openGraph: og,
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.excerpt ?? undefined,
+      description,
       images: [ogImage],
     },
     alternates: {
