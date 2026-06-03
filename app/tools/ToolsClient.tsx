@@ -584,7 +584,7 @@ export default function ToolsClient() {
                 Live now · free
               </span>
               <h3>Reading Time Calculator</h3>
-              <p className="desc">Paste any text and get a calmer estimate of how long it takes to read — for casual, average, and careful readers.</p>
+              <p className="desc">Paste any text or URL and get a calmer estimate of how long it takes to read — for casual, average, and careful readers.</p>
               <div className="tl-feat-list">
                 <div className="row">
                   <span className="tick">

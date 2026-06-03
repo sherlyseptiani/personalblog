@@ -46,6 +46,10 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
       setActivePalette(saved)
       applyPalette(saved)
     }
+    // Reset palette on unmount (when leaving tools pages)
+    return () => {
+      resetPalette()
+    }
   }, [])
 
   const applyPalette = useCallback((id: PaletteId) => {
@@ -58,6 +62,17 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
     // For split-bill specific variables
     r.style.setProperty('--sb2-pal-1', p.p1)
     r.style.setProperty('--sb2-pal-2', p.p2)
+  }, [])
+
+  const resetPalette = useCallback(() => {
+    const r = document.documentElement
+    // Remove the inline styles to let the homepage video adaptive color take over
+    r.style.removeProperty('--video-r')
+    r.style.removeProperty('--video-g')
+    r.style.removeProperty('--video-b')
+    r.style.removeProperty('--video-tint')
+    r.style.removeProperty('--sb2-pal-1')
+    r.style.removeProperty('--sb2-pal-2')
   }, [])
 
   const setPalette = useCallback((id: PaletteId) => {
