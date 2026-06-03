@@ -356,17 +356,6 @@ export default function ToolsClient() {
               <span className="tk-name">Split Bill</span>
               <span className="tk-tag">Live now</span>
             </Link>
-
-            <div className="tl-token ghost g1" onClick={() => showSoonToast('Reading Timer')} style={{'--tok': '160,122,181'} as React.CSSProperties}>
-              <span className="ico">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
-                  <circle cx="12" cy="13" r="8"/>
-                  <path d="M12 9v4l2.5 2.5M9 2h6"/>
-                </svg>
-              </span>
-              <span className="tk-name">Reading Timer</span>
-              <span className="tk-tag">Soon</span>
-            </div>
             <div className="tl-token ghost g2" onClick={() => showSoonToast('Currency Notes')} style={{'--tok': '107,163,154'} as React.CSSProperties}>
               <span className="ico">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
