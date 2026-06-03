@@ -236,7 +236,7 @@ export default function Search({ isOpen, onClose }: SearchProps) {
       >
         {/* Search input */}
         <form onSubmit={handleSubmit} className={`acn-search-field ${query ? 'has-text' : ''}`}>
-          <svg className="si" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg className="si" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="7" />
             <path d="m21 21-4.35-4.35" />
           </svg>
@@ -257,7 +257,7 @@ export default function Search({ isOpen, onClose }: SearchProps) {
             onClick={() => setQuery('')}
             aria-label="Clear search"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
@@ -310,7 +310,7 @@ export default function Search({ isOpen, onClose }: SearchProps) {
                         className="r-dot"
                         style={{ '--rc1': c1, '--rc2': c2 } as React.CSSProperties}
                       >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                           <polyline points="14 2 14 8 20 8" />
                         </svg>
@@ -323,7 +323,7 @@ export default function Search({ isOpen, onClose }: SearchProps) {
                           {post.read_time ? `${post.read_time} min read` : 'Essay'}
                         </span>
                       </span>
-                      <svg className="r-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <svg className="r-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M5 12h14M13 6l6 6-6 6" />
                       </svg>
                     </div>
@@ -332,7 +332,7 @@ export default function Search({ isOpen, onClose }: SearchProps) {
               ) : (
                 <div className="acn-search-empty">
                   <div className="ico">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <circle cx="11" cy="11" r="7" />
                       <path d="m21 21-4.35-4.35" />
                     </svg>
@@ -357,7 +357,7 @@ export default function Search({ isOpen, onClose }: SearchProps) {
                   className="acn-recent"
                   onClick={() => handleRecentClick(term)}
                 >
-                  <svg className="rc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <svg className="rc-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <circle cx="12" cy="12" r="10" />
                     <polyline points="12 6 12 12 16 14" />
                   </svg>
@@ -367,7 +367,7 @@ export default function Search({ isOpen, onClose }: SearchProps) {
                     onClick={e => removeRecentSearch(term, e)}
                     aria-label={`Remove ${term}`}
                   >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M18 6L6 18M6 6l12 12" />
                     </svg>
                   </button>
@@ -380,7 +380,7 @@ export default function Search({ isOpen, onClose }: SearchProps) {
           {!query.trim() && recentSearches.length === 0 && (
             <div className="acn-search-empty">
               <div className="ico">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <circle cx="11" cy="11" r="7" />
                   <path d="m21 21-4.35-4.35" />
                 </svg>

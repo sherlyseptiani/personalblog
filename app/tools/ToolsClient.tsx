@@ -54,6 +54,8 @@ export default function ToolsClient() {
   const [shown, setShown] = useState([250000, 250000])
   const [isLit, setIsLit] = useState(false)
   const featureRef = useRef<HTMLDivElement>(null)
+  const feature2Ref = useRef<HTMLDivElement>(null)
+  const feature3Ref = useRef<HTMLDivElement>(null)
   const heroRef = useRef<HTMLElement>(null)
   const cloudRef = useRef<HTMLDivElement>(null)
   const wiresRef = useRef<SVGSVGElement>(null)
@@ -201,10 +203,10 @@ export default function ToolsClient() {
 
   // Feature glow
   const handleFeaturePointerMove = (e: React.PointerEvent) => {
-    if (!featureRef.current) return
-    const r = featureRef.current.getBoundingClientRect()
-    featureRef.current.style.setProperty('--fmx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%')
-    featureRef.current.style.setProperty('--fmy', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%')
+    const target = e.currentTarget as HTMLDivElement
+    const r = target.getBoundingClientRect()
+    target.style.setProperty('--fmx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%')
+    target.style.setProperty('--fmy', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%')
   }
 
   // Cloud pointer drift
@@ -298,13 +300,13 @@ export default function ToolsClient() {
             <span className="eyebrow">The workshop</span>
           </div>
           <h1>Small tools,<br />quietly <em>useful</em>.</h1>
-          <p className="lede">Little instruments I build for myself and leave out for you — no sign-ups, no tracking, nothing phoning home. They run entirely in your browser and remember their place on your device.</p>
+          <p className="lede">Little instruments I build for myself and leave out for you — no sign-ups, no tracking. They run entirely in your browser and remember their place on your device.</p>
           <div className="tl-hero-cta">
             <Link href="/split-bill" className="btn btn-primary" id="heroOpen">
               Open Split Bill
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                <path d="M5 12h14M13 6l6 6-6 6"/>
-              </svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M5 12h14M13 6l6 6-6 6"/>
+                </svg>
             </Link>
             <a href="#workshop" className="btn btn-ghost-bordered">See what&apos;s next</a>
           </div>
@@ -320,11 +322,11 @@ export default function ToolsClient() {
             onPointerMove={handleCloudPointerMove}
             onPointerLeave={handleCloudPointerLeave}
           >
-            <svg className="tl-wires" id="wires" ref={wiresRef}></svg>
+             <svg className="tl-wires" id="wires" ref={wiresRef} width="100%" height="100%"></svg>
 
             <Link href="/split-bill" className="tl-token live" id="liveToken" style={{'--tok': 'var(--tl-itemized)'} as React.CSSProperties} aria-label="Open Split Bill">
               <span className="ico">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
                   <path d="M12 3v18"/>
                   <path d="M17 6H9.5a2.5 2.5 0 0 0 0 5h5a2.5 2.5 0 0 1 0 5H6"/>
                 </svg>
@@ -335,7 +337,7 @@ export default function ToolsClient() {
 
             <div className="tl-token ghost g1" onClick={() => showSoonToast('Reading Timer')} style={{'--tok': '160,122,181'} as React.CSSProperties}>
               <span className="ico">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
                   <circle cx="12" cy="13" r="8"/>
                   <path d="M12 9v4l2.5 2.5M9 2h6"/>
                 </svg>
@@ -345,7 +347,7 @@ export default function ToolsClient() {
             </div>
             <div className="tl-token ghost g2" onClick={() => showSoonToast('Currency Notes')} style={{'--tok': '107,163,154'} as React.CSSProperties}>
               <span className="ico">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
                   <path d="M4 7h13l-3-3M20 17H7l3 3"/>
                 </svg>
               </span>
@@ -354,7 +356,7 @@ export default function ToolsClient() {
             </div>
             <div className="tl-token ghost g3" onClick={() => showSoonToast('Quiet Pomodoro')} style={{'--tok': '192,138,100'} as React.CSSProperties}>
               <span className="ico">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
                   <circle cx="12" cy="13" r="8"/>
                   <path d="M12 13l3-2"/>
                   <path d="M10 2h4"/>
@@ -365,7 +367,7 @@ export default function ToolsClient() {
             </div>
             <div className="tl-token ghost g4" onClick={() => showSoonToast('Color Memory')} style={{'--tok': '111,155,209'} as React.CSSProperties}>
               <span className="ico">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
                   <circle cx="13.5" cy="6.5" r="2.5"/>
                   <circle cx="17.5" cy="13" r="2.5"/>
                   <circle cx="8.5" cy="7.5" r="2.5"/>
@@ -375,6 +377,27 @@ export default function ToolsClient() {
               <span className="tk-name">Color Memory</span>
               <span className="tk-tag">Soon</span>
             </div>
+            <Link href="/decision-coin" className="tl-token live dc-live" style={{'--tok': '111,155,209'} as React.CSSProperties} aria-label="Open Decision Coin">
+              <span className="ico">
+                <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 8v8M8 12h8"/>
+                </svg>
+              </span>
+              <span className="tk-name">Decision Coin</span>
+              <span className="tk-tag">Live now</span>
+            </Link>
+
+            <Link href="/reading-time-calc" className="tl-token live rtc-live" style={{'--tok': '160,122,181'} as React.CSSProperties} aria-label="Open Reading Time Calculator">
+              <span className="ico">
+                <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+              </span>
+              <span className="tk-name">Reading Time</span>
+              <span className="tk-tag">Live now</span>
+            </Link>
           </div>
         </div>
       </header>
@@ -386,126 +409,193 @@ export default function ToolsClient() {
             <span className="sig" style={{'--s1': '#f5b8c7', '--s2': '#d96b8a'} as React.CSSProperties}></span>
             Featured
           </span>
-          <h2>The one that&apos;s ready.</h2>
-          <p>Try it right here — switch how the bill is split and watch everyone&apos;s share settle.</p>
+          <h2>The ones that are ready.</h2>
+          <p>Try them right here — little tools that work quietly and honestly.</p>
         </div>
 
-        <div
-          className="tl-feature glass reveal r-d1"
-          id="feature"
-          ref={featureRef}
-          onPointerMove={handleFeaturePointerMove}
-          style={{'--acc': current.acc} as React.CSSProperties}
-        >
-          <div className="tl-feat-info">
-            <span className="tl-feat-eyebrow">
-              <span className="live-dot"></span>
-              Live now · free
-            </span>
-            <h3>Split Bill</h3>
-            <p className="desc">Divide a shared bill fairly — equally, by custom amounts, by percentage, or item by item. The math settles instantly, and it handles the awkward parts: rounding, who paid upfront, someone sitting out.</p>
-            <div className="tl-feat-list">
-              <div className="row">
-                <span className="tick">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
-                    <path d="M20 6 9 17l-5-5"/>
-                  </svg>
-                </span>
-                Four ways to split, one tap apart
-              </div>
-              <div className="row">
-                <span className="tick">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
-                    <path d="M20 6 9 17l-5-5"/>
-                  </svg>
-                </span>
-                Honest rounding — no lost rupiah
-              </div>
-              <div className="row">
-                <span className="tick">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
-                    <path d="M20 6 9 17l-5-5"/>
-                  </svg>
-                </span>
-                Works offline, saves on your device
-              </div>
-            </div>
-            <div className="tl-feat-cta">
-              <Link href="/split-bill" className="btn btn-primary">
-                Open the tool
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                  <path d="M5 12h14M13 6l6 6-6 6"/>
+        <div className="tl-featured-grid">
+          {/* Split Bill Feature */}
+          <div
+            className="tl-feature glass reveal r-d1"
+            ref={featureRef}
+            onPointerMove={handleFeaturePointerMove}
+            style={{'--acc': '217,107,138'} as React.CSSProperties}
+          >
+            <div className="tl-tool-visual">
+              <div className="tl-visual-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                  <path d="M12 3v18"/>
+                  <path d="M17 6H9.5a2.5 2.5 0 0 0 0 5h5a2.5 2.5 0 0 1 0 5H6"/>
                 </svg>
-              </Link>
-              <span className="tl-demo-hint" style={{fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--ink-3)', letterSpacing: '0.04em'}}>
-                a live preview, not a screenshot
+              </div>
+              <span className="tl-visual-label">Split Bill</span>
+            </div>
+            <div className="tl-feat-info">
+              <span className="tl-feat-eyebrow">
+                <span className="live-dot"></span>
+                Live now · free
               </span>
-            </div>
-          </div>
-
-          {/* Live demo */}
-          <div className="tl-feat-demo" id="demo">
-            <div className="tl-demo-card">
-              <div className="tl-demo-top">
-                <span className="name">Dinner at Sushi House</span>
-                <span className="total">Rp 500.000</span>
-              </div>
-              <div className="tl-demo-sub" id="demoSub">{current.sub}</div>
-
-              <div
-                className="tl-seg"
-                id="demoSeg"
-                role="tablist"
-                aria-label="Split method preview"
-                onClick={handleSegClick}
-                onKeyDown={handleSegKeyDown}
-              >
-                <button data-mode="equal" className={currentMode === 'equal' ? 'active' : ''} role="tab" aria-selected={currentMode === 'equal'}>Equal</button>
-                <button data-mode="custom" className={currentMode === 'custom' ? 'active' : ''} role="tab" aria-selected={currentMode === 'custom'}>Custom</button>
-                <button data-mode="percentage" className={currentMode === 'percentage' ? 'active' : ''} role="tab" aria-selected={currentMode === 'percentage'}>%</button>
-                <button data-mode="itemized" className={currentMode === 'itemized' ? 'active' : ''} role="tab" aria-selected={currentMode === 'itemized'}>Items</button>
-              </div>
-
-              <div className="tl-rows">
-                <div className={`tl-person ${current.pct ? 'show-pct' : ''}`} data-p="0">
-                  <span className="av" style={{'--a1': '#f5b8c7', '--a2': '#d96b8a'} as React.CSSProperties}>S</span>
-                  <div className="body">
-                    <div className="pn">
-                      Sherly <span className="pct" data-pct>{current.pct ? current.pct[0] + '%' : ''}</span>
-                    </div>
-                    <div className="tl-bar">
-                      <span data-bar style={{width: `${(current.shares[0] / TOTAL * 100)}%`}}></span>
-                    </div>
-                  </div>
-                  <span className="amt" data-amt>{rp(current.shares[0])}</span>
+              <h3>Split Bill</h3>
+              <p className="desc">Divide a shared bill fairly — equally, by custom amounts, by percentage, or item by item.</p>
+              <div className="tl-feat-list">
+                <div className="row">
+                  <span className="tick">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
+                      <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                  </span>
+                  Several ways to split
                 </div>
-                <div className={`tl-person ${current.pct ? 'show-pct' : ''}`} data-p="1">
-                  <span className="av" style={{'--a1': '#b3d0e8', '--a2': '#6f9bd1'} as React.CSSProperties}>K</span>
-                  <div className="body">
-                    <div className="pn">
-                      Kris <span className="pct" data-pct>{current.pct ? current.pct[1] + '%' : ''}</span>
-                    </div>
-                    <div className="tl-bar">
-                      <span data-bar style={{width: `${(current.shares[1] / TOTAL * 100)}%`}}></span>
-                    </div>
-                  </div>
-                  <span className="amt" data-amt>{rp(current.shares[1])}</span>
+                <div className="row">
+                  <span className="tick">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
+                      <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                  </span>
+                  Honest rounding
+                </div>
+                <div className="row">
+                  <span className="tick">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
+                      <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                  </span>
+                  Save & share
                 </div>
               </div>
-
-              <div className="tl-demo-foot">
-                <span className="st">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
-                    <path d="M20 6 9 17l-5-5"/>
+              <div className="tl-feat-cta">
+                <Link href="/split-bill" className="btn btn-primary">
+                  Open the tool
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                    <path d="M5 12h14M13 6l6 6-6 6"/>
                   </svg>
-                  <span id="demoStatus">{current.status}</span>
-                </span>
-                <span className="spacer"></span>
-                <span className="hint">tap a mode</span>
+                </Link>
               </div>
             </div>
           </div>
-        </div>
+
+          {/* Featured Tool 2: Decision Coin */}
+          <div
+            className="tl-feature glass reveal r-d2"
+            ref={feature2Ref}
+            onPointerMove={handleFeaturePointerMove}
+            style={{'--acc': '111,155,209'} as React.CSSProperties}
+          >
+            <div className="tl-tool-visual">
+              <div className="tl-visual-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 8v8M8 12h8"/>
+                </svg>
+              </div>
+              <span className="tl-visual-label">Decision Coin</span>
+            </div>
+
+            <div className="tl-feat-info">
+              <span className="tl-feat-eyebrow">
+                <span className="live-dot"></span>
+                Live now · free
+              </span>
+              <h3>Decision Coin</h3>
+              <p className="desc">Flip a coin for difficult choices, then notice how you feel about the result.</p>
+              <div className="tl-feat-list">
+                <div className="row">
+                  <span className="tick">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
+                      <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                  </span>
+                  Two choices, one moment
+                </div>
+                <div className="row">
+                  <span className="tick">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
+                      <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                  </span>
+                  Reflect on your reaction
+                </div>
+                <div className="row">
+                  <span className="tick">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
+                      <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                  </span>
+                  Share with a link
+                </div>
+              </div>
+              <div className="tl-feat-cta">
+                <Link href="/decision-coin" className="btn btn-primary">
+                  Open the tool
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                    <path d="M5 12h14M13 6l6 6-6 6"/>
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Featured Tool 3: Reading Time Calculator */}
+          <div
+            className="tl-feature glass reveal r-d3"
+            ref={feature3Ref}
+            onPointerMove={handleFeaturePointerMove}
+            style={{'--acc': '160,122,181'} as React.CSSProperties}
+          >
+            <div className="tl-tool-visual">
+              <div className="tl-visual-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+              </div>
+              <span className="tl-visual-label">Reading Time</span>
+            </div>
+
+            <div className="tl-feat-info">
+              <span className="tl-feat-eyebrow">
+                <span className="live-dot"></span>
+                Live now · free
+              </span>
+              <h3>Reading Time Calculator</h3>
+              <p className="desc">Paste any text and get a calmer estimate of how long it takes to read — for casual, average, and careful readers.</p>
+              <div className="tl-feat-list">
+                <div className="row">
+                  <span className="tick">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
+                      <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                  </span>
+                  Multiple reading speeds
+                </div>
+                <div className="row">
+                  <span className="tick">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
+                      <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                  </span>
+                  Aloud reading time
+                </div>
+                <div className="row">
+                  <span className="tick">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}>
+                      <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                  </span>
+                  Reading level estimate
+                </div>
+              </div>
+              <div className="tl-feat-cta">
+                <Link href="/reading-time-calc" className="btn btn-primary">
+                  Open the tool
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                    <path d="M5 12h14M13 6l6 6-6 6"/>
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+      </div>
       </section>
 
       {/* Workshop Section */}
@@ -522,7 +612,7 @@ export default function ToolsClient() {
         <div className="tl-workshop-grid">
           <div className="tl-soon reveal r-d1" onClick={() => showSoonToast('Reading Timer')} style={{'--sc': '160,122,181'} as React.CSSProperties}>
             <span className="s-ico">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
                 <circle cx="12" cy="13" r="8"/>
                 <path d="M12 9v4l2.5 2.5M9 2h6"/>
               </svg>
@@ -533,7 +623,7 @@ export default function ToolsClient() {
           </div>
           <div className="tl-soon reveal r-d2" onClick={() => showSoonToast('Currency Notes')} style={{'--sc': '107,163,154'} as React.CSSProperties}>
             <span className="s-ico">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
                 <path d="M4 7h13l-3-3M20 17H7l3 3"/>
               </svg>
             </span>
@@ -543,7 +633,7 @@ export default function ToolsClient() {
           </div>
           <div className="tl-soon reveal r-d3" onClick={() => showSoonToast('Quiet Pomodoro')} style={{'--sc': '192,138,100'} as React.CSSProperties}>
             <span className="s-ico">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
                 <circle cx="12" cy="13" r="8"/>
                 <path d="M12 13l3-2"/>
                 <path d="M10 2h4"/>
@@ -564,7 +654,7 @@ export default function ToolsClient() {
             <input type="text" id="suggestInput" placeholder="e.g. a splitwise for recurring rent…" aria-label="Suggest a tool" autoComplete="off" />
             <button type="submit" className="btn btn-primary">
               Send
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                 <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/>
               </svg>
             </button>

@@ -2249,3 +2249,13 @@ html[data-theme="dark"] .acn-search-dialog::before {
     transition: none;
   }
 }
+
+/* ── Theme toggle icons ──────────────────────────── */
+.icon-btn[data-theme-toggle] .theme-icon-sun,
+.icon-btn[data-theme-toggle][data-is-dark="true"] .theme-icon-moon {
+  display: none !important;
+}
+.icon-btn[data-theme-toggle][data-is-dark="true"] .theme-icon-sun,
+.icon-btn[data-theme-toggle] .theme-icon-moon {
+  display: block !important;
+}

@@ -16,8 +16,10 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
   const isPostPage = pathname?.startsWith('/posts/')
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isDark, setIsDark] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     const sync = () => setIsDark(document.documentElement.getAttribute('data-theme') === 'dark')
     sync()
     const observer = new MutationObserver(sync)
@@ -25,11 +27,6 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
     return () => observer.disconnect()
   }, [])
 
-  const [isThemeReady, setIsThemeReady] = useState(false)
-
-  useEffect(() => {
-    setIsThemeReady(true)
-  }, [])
   const brandTapCount = useRef(0)
   const brandTapTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -86,7 +83,7 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
               aria-label="Search"
               onClick={handleOpenSearch}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="7" />
                 <path d="m21 21-4.35-4.35" />
               </svg>
@@ -97,19 +94,19 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
             className="icon-btn"
             aria-label="Toggle theme"
             data-theme-toggle=""
+            data-is-dark={mounted ? (isDark ? 'true' : 'false') : 'false'}
             onClick={(e) => { handleGlitter(e); (window as any).toggleTheme?.() }}
           >
-            {isThemeReady ? (
-              isDark ? (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="18" height="18">
+            {mounted ? (
+              <>
+                <svg className="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="18" height="18">
                   <circle cx="12" cy="12" r="4"/>
                   <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
                 </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="18" height="18">
+                <svg className="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="18" height="18">
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                 </svg>
-              )
+              </>
             ) : (
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="18" height="18">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>

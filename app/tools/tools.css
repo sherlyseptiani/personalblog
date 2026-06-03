@@ -87,7 +87,7 @@
 
 /* the live, hero token */
 .tl-token.live {
-  width: 172px; height: 172px; left: 50%; top: 50%; margin: -86px 0 0 -86px; z-index: 3;
+  width: 172px; height: 172px; left: 50%; top: 55%; margin: -86px 0 0 -86px; z-index: 3;
   cursor: pointer; gap: 12px; padding: 16px;
   animation: tlFloat 9s ease-in-out infinite;
 }
@@ -101,6 +101,36 @@
   opacity: 0.6; animation: tlRing 3.2s ease-in-out infinite;
 }
 .tl-token.live:hover { transform: translateY(-4px) scale(1.03); }
+
+/* Second live token (Decision Coin) - positioned at top-right, away from center */
+.tl-token.live.dc-live {
+  width: 140px;
+  height: 140px;
+  left: auto;
+  right: 5%;
+  top: 5%;
+  margin: 0;
+  animation: tlFloat 11s ease-in-out infinite 1.2s;
+}
+.tl-token.live.dc-live .ico { width: 44px; height: 44px; border-radius: 14px; }
+.tl-token.live.dc-live .ico svg { width: 22px; height: 22px; }
+.tl-token.live.dc-live .tk-name { font-size: 18px; }
+.tl-token.live.dc-live .tk-tag { color: rgb(111,155,209); }
+
+/* Third live token (Reading Time) - positioned at bottom-left */
+.tl-token.live.rtc-live {
+  width: 140px;
+  height: 140px;
+  left: 8%;
+  top: auto;
+  bottom: 5%;
+  margin: 0;
+  animation: tlFloat 12s ease-in-out infinite 0.8s;
+}
+.tl-token.live.rtc-live .ico { width: 44px; height: 44px; border-radius: 14px; }
+.tl-token.live.rtc-live .ico svg { width: 22px; height: 22px; }
+.tl-token.live.rtc-live .tk-name { font-size: 18px; }
+.tl-token.live.rtc-live .tk-tag { color: rgb(160,122,181); }
 
 /* ghost tokens (in the workshop) */
 .tl-token.ghost {
@@ -131,39 +161,113 @@
 .tl-sec-head h2 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(30px, 4vw, 44px); letter-spacing: -0.025em; line-height: 1.05; margin: 0 0 10px; }
 .tl-sec-head p { font-family: var(--font-serif); font-size: 17px; color: var(--ink-2); margin: 0; line-height: 1.55; text-wrap: pretty; }
 
-/* ---------- Featured tool ---------- */
+/* ---------- Featured tools (masonry grid) ---------- */
+.tl-featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+@media (max-width: 1100px) {
+  .tl-featured-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .tl-featured-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .tl-feature {
   --acc: var(--tl-itemized);
-  display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  display: flex; flex-direction: row;
   gap: 0; border-radius: var(--radius-xl); overflow: hidden; position: relative;
+  break-inside: avoid;
+  min-height: 200px;
+}
+
+@media (max-width: 700px) {
+  .tl-feature {
+    flex-direction: column;
+  }
 }
 .tl-feature::after {
   content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
-  background: radial-gradient(600px 300px at var(--fmx, 80%) var(--fmy, 0%), rgba(var(--acc),0.10), transparent 60%);
+  background: radial-gradient(600px 300px at var(--fmx, 50%) var(--fmy, 50%), rgba(var(--acc),0.10), transparent 60%);
   transition: background 0.3s ease, opacity 0.4s; z-index: 0;
 }
-.tl-feat-info { padding: 40px; position: relative; z-index: 1; display: flex; flex-direction: column; }
-.tl-feat-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(var(--acc)); font-weight: 500; margin-bottom: 18px; }
-.tl-feat-eyebrow .live-dot { width: 7px; height: 7px; border-radius: 50%; background: rgb(var(--acc)); box-shadow: 0 0 0 4px rgba(var(--acc),0.18); animation: pulse-status 2s ease-in-out infinite; }
-.tl-feat-info h3 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(30px, 3.4vw, 40px); letter-spacing: -0.025em; line-height: 1.04; margin: 0 0 14px; color: var(--ink); }
-.tl-feat-info .desc { font-family: var(--font-serif); font-size: 17px; line-height: 1.6; color: var(--ink-2); margin: 0 0 22px; text-wrap: pretty; }
-.tl-feat-list { display: flex; flex-direction: column; gap: 11px; margin: 0 0 28px; }
-.tl-feat-list .row { display: flex; align-items: center; gap: 11px; font-size: 14.5px; color: var(--ink-2); }
-.tl-feat-list .row .tick { width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(var(--acc),0.13); color: rgb(var(--acc)); }
-.tl-feat-list .row .tick svg { width: 13px; height: 13px; }
-.tl-feat-cta { margin-top: auto; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+/* Tool visual side */
+.tl-tool-visual {
+  width: 160px;
+  min-height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(160deg, rgba(var(--acc),0.15), rgba(var(--acc),0.05));
+  border-right: 1px solid rgba(var(--acc),0.15);
+}
+
+@media (max-width: 700px) {
+  .tl-tool-visual {
+    width: 100%;
+    height: auto;
+    padding: 32px 24px;
+    border-right: none;
+    border-bottom: 1px solid rgba(var(--acc),0.15);
+  }
+}
+
+.tl-visual-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, rgba(var(--acc),0.9), rgba(var(--acc),0.7));
+  box-shadow:
+    0 8px 32px -8px rgba(var(--acc),0.5),
+    0 2px 4px rgba(0,0,0,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.tl-visual-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.tl-visual-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgb(var(--acc));
+  opacity: 0.8;
+}
+
+.tl-feat-info { padding: 20px; position: relative; z-index: 1; display: flex; flex-direction: column; flex: 1; }
+.tl-feat-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(var(--acc)); font-weight: 500; margin-bottom: 10px; }
+.tl-feat-eyebrow .live-dot { width: 6px; height: 6px; border-radius: 50%; background: rgb(var(--acc)); box-shadow: 0 0 0 3px rgba(var(--acc),0.18); animation: pulse-status 2s ease-in-out infinite; }
+.tl-feat-info h3 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(20px, 2.2vw, 26px); letter-spacing: -0.025em; line-height: 1.1; margin: 0 0 8px; color: var(--ink); }
+.tl-feat-info .desc { font-family: var(--font-serif); font-size: 13px; line-height: 1.5; color: var(--ink-2); margin: 0 0 14px; text-wrap: pretty; }
+.tl-feat-list { display: flex; flex-direction: column; gap: 6px; margin: 0 0 16px; }
+.tl-feat-list .row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-2); }
+.tl-feat-list .row .tick { width: 16px; height: 16px; border-radius: 5px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(var(--acc),0.13); color: rgb(var(--acc)); }
+.tl-feat-list .row .tick svg { width: 10px; height: 10px; }
+.tl-feat-cta { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .tl-feat-cta .btn-primary { background: linear-gradient(180deg, rgba(var(--acc),0.92), rgb(var(--acc))); box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset, 0 10px 26px -10px rgba(var(--acc),0.5); }
 .tl-feat-cta .btn-primary:hover { transform: translateY(-1px); }
-
-/* demo side */
-.tl-feat-demo {
-  padding: 34px; position: relative; z-index: 1;
-  background: linear-gradient(150deg, rgba(var(--acc),0.07), rgba(var(--acc),0.015));
-  border-left: 1px solid var(--line);
-  display: flex; flex-direction: column; justify-content: center; gap: 18px;
-  transition: background 0.5s ease;
-}
-.tl-demo-card { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 20px; padding: 22px; box-shadow: 0 18px 40px -24px rgba(15,23,42,0.25); }
 .tl-demo-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
 .tl-demo-top .name { font-family: var(--font-serif); font-size: 18px; color: var(--ink); letter-spacing: -0.01em; }
 .tl-demo-top .total { font-family: var(--font-mono); font-size: 13px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
