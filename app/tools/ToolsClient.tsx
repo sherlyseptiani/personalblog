@@ -284,7 +284,8 @@ export default function ToolsClient() {
   }
 
   // Handle suggest form
-  const handleSuggestSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const handleSuggestSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const input = document.getElementById('suggestInput') as HTMLInputElement
     const v = input.value.trim()
@@ -295,11 +296,34 @@ export default function ToolsClient() {
       input.focus()
       return
     }
-    if (typeof window !== 'undefined' && (window as any).showToast) {
-      (window as any).showToast('Noted — thank you for the nudge. ')
+
+    setIsSubmitting(true)
+    try {
+      const response = await fetch('/api/tool-ideas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: v }),
+      })
+
+      if (response.ok) {
+        if (typeof window !== 'undefined' && (window as any).showToast) {
+          (window as any).showToast('Noted — thank you for the nudge.')
+        }
+        input.value = ''
+        input.blur()
+      } else {
+        const data = await response.json()
+        if (typeof window !== 'undefined' && (window as any).showToast) {
+          (window as any).showToast(data.error || 'Something went wrong. Try again?')
+        }
+      }
+    } catch {
+      if (typeof window !== 'undefined' && (window as any).showToast) {
+        (window as any).showToast('Could not save. Try again?')
+      }
+    } finally {
+      setIsSubmitting(false)
     }
-    input.value = ''
-    input.blur()
   }
 
   return (
@@ -678,8 +702,8 @@ export default function ToolsClient() {
           </div>
           <form id="suggestForm" onSubmit={handleSuggestSubmit}>
             <input type="text" id="suggestInput" placeholder="e.g. a splitwise for recurring rent…" aria-label="Suggest a tool" autoComplete="off" />
-            <button type="submit" className="btn btn-primary">
-              Send
+            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+              {isSubmitting ? 'Sending...' : 'Send'}
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                 <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/>
               </svg>

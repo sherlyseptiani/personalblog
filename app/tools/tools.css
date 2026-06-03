@@ -124,23 +124,27 @@
   right: 5%;
   top: 32%;
   margin: 0;
+  padding: 24px 16px 16px;
+  gap: 10px;
   animation: tlFloat 11s ease-in-out infinite 1.2s;
 }
 
 @media (max-width: 520px) {
   .tl-token.live.dc-live {
-    width: 90px;
-    height: 90px;
-    right: 5%;
-    top: 30%;
+    width: 90px !important;
+    height: 90px !important;
+    right: 5% !important;
+    top: 30% !important;
+    padding: 20px 10px 10px !important;
+    gap: 6px !important;
   }
-  .tl-token.live.dc-live .ico { width: 32px; height: 32px; border-radius: 10px; }
-  .tl-token.live.dc-live .ico svg { width: 16px; height: 16px; }
-  .tl-token.live.dc-live .tk-name { font-size: 12px; }
+  .tl-token.live.dc-live .ico { width: 28px !important; height: 28px !important; border-radius: 8px !important; }
+  .tl-token.live.dc-live .ico svg { width: 15px !important; height: 15px !important; }
+  .tl-token.live.dc-live .tk-name { font-size: 11px !important; }
 }
-.tl-token.live.dc-live .ico { width: 40px; height: 40px; border-radius: 12px; }
-.tl-token.live.dc-live .ico svg { width: 20px; height: 20px; }
-.tl-token.live.dc-live .tk-name { font-size: 16px; }
+.tl-token.live.dc-live .ico { width: 36px; height: 36px; border-radius: 10px; }
+.tl-token.live.dc-live .ico svg { width: 18px; height: 18px; }
+.tl-token.live.dc-live .tk-name { font-size: 14px; }
 .tl-token.live.dc-live .tk-tag { color: rgb(111,155,209); }
 
 /* Third live token (Reading Time) - positioned at mid-left */
@@ -150,23 +154,27 @@
   left: 5%;
   top: 32%;
   margin: 0;
+  padding: 24px 16px 16px;
+  gap: 10px;
   animation: tlFloat 12s ease-in-out infinite 0.8s;
 }
 
 @media (max-width: 520px) {
   .tl-token.live.rtc-live {
-    width: 90px;
-    height: 90px;
-    left: 5%;
-    top: 30%;
+    width: 90px !important;
+    height: 90px !important;
+    left: 5% !important;
+    top: 30% !important;
+    padding: 20px 10px 10px !important;
+    gap: 6px !important;
   }
-  .tl-token.live.rtc-live .ico { width: 32px; height: 32px; border-radius: 10px; }
-  .tl-token.live.rtc-live .ico svg { width: 16px; height: 16px; }
-  .tl-token.live.rtc-live .tk-name { font-size: 12px; }
+  .tl-token.live.rtc-live .ico { width: 28px !important; height: 28px !important; border-radius: 8px !important; }
+  .tl-token.live.rtc-live .ico svg { width: 15px !important; height: 15px !important; }
+  .tl-token.live.rtc-live .tk-name { font-size: 11px !important; }
 }
-.tl-token.live.rtc-live .ico { width: 40px; height: 40px; border-radius: 12px; }
-.tl-token.live.rtc-live .ico svg { width: 20px; height: 20px; }
-.tl-token.live.rtc-live .tk-name { font-size: 16px; }
+.tl-token.live.rtc-live .ico { width: 36px; height: 36px; border-radius: 10px; }
+.tl-token.live.rtc-live .ico svg { width: 18px; height: 18px; }
+.tl-token.live.rtc-live .tk-name { font-size: 14px; }
 .tl-token.live.rtc-live .tk-tag { color: rgb(160,122,181); }
 
 /* ghost tokens (in the workshop) */
