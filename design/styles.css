@@ -243,7 +243,14 @@ html[data-theme="dark"] .hero {
   pointer-events: none;
   mix-blend-mode: multiply;
 }
-html[data-theme="dark"] .hero-video-bg .tint { mix-blend-mode: screen; opacity: 0.6; }
+html[data-theme="dark"] .hero-video-bg .tint {
+  mix-blend-mode: normal;
+  opacity: 0.35;
+  background: radial-gradient(120% 100% at 70% 50%,
+    transparent 20%,
+    rgba(var(--video-r), var(--video-g), var(--video-b), 0.12) 60%,
+    rgba(var(--video-r), var(--video-g), var(--video-b), 0.22) 100%);
+}
 
 .hero-content {
   position: relative;

@@ -104,7 +104,14 @@ function buildMetaDescription(post: Post) {
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getPost(params.slug)
-  if (!post) return {}
+
+  // Return default metadata for not found posts (will show 404 page)
+  if (!post) {
+    return {
+      title: 'Not Found — A Curious Note',
+      description: 'The post you are looking for could not be found.',
+    }
+  }
 
   const description = buildMetaDescription(post)
 
@@ -115,34 +122,44 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   const postUrl = `https://acuriousnote.com/posts/${post.slug}`
 
-  const og: Metadata['openGraph'] = {
-    type: 'article',
-    locale: 'en_US',
-    url: postUrl,
-    siteName: 'A Curious Note',
-    title: post.title,
-    description,
-    modifiedTime: post.updated_at,
-    authors: ['Sherly'],
-    tags: post.tags?.length ? post.tags : [post.category],
-    images: [
-      {
-        url: ogImage,
-        width: 1200,
-        height: 630,
-        alt: post.title,
-      },
-    ],
-  }
-
-  if (post.published_at) {
-    og.publishedTime = post.published_at
-  }
-
+  // Build complete metadata object
   return {
     title: `${post.title} — A Curious Note`,
     description,
-    openGraph: og,
+    authors: [{ name: 'Sherly' }],
+    creator: 'Sherly',
+    publisher: 'A Curious Note',
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    openGraph: {
+      type: 'article',
+      locale: 'en_US',
+      url: postUrl,
+      siteName: 'A Curious Note',
+      title: post.title,
+      description,
+      publishedTime: post.published_at || undefined,
+      modifiedTime: post.updated_at || undefined,
+      authors: ['Sherly'],
+      tags: post.tags?.length ? post.tags : [post.category],
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
     twitter: {
       card: 'summary_large_image',
       title: post.title,

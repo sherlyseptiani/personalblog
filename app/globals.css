@@ -40,12 +40,13 @@ html[data-theme="dark"] .hero-video-bg .scrim {
   background:
     linear-gradient(90deg,
       var(--bg) 0%,
-      color-mix(in oklab, var(--bg), transparent 15%) 45%,
-      color-mix(in oklab, var(--bg), transparent 55%) 70%,
-      color-mix(in oklab, var(--bg), transparent 85%) 100%),
+      color-mix(in oklab, var(--bg), transparent 5%) 25%,
+      color-mix(in oklab, var(--bg), transparent 35%) 55%,
+      color-mix(in oklab, var(--bg), transparent 70%) 80%,
+      transparent 100%),
     linear-gradient(180deg,
-      transparent 40%,
-      rgba(var(--video-r), var(--video-g), var(--video-b), 0.25) 100%);
+      transparent 50%,
+      rgba(var(--video-r), var(--video-g), var(--video-b), 0.15) 100%);
 }
 
 
