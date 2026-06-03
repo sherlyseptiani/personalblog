@@ -1824,9 +1824,8 @@ export default function SplitBillContent() {
         </div>
       </main>
 
-      <footer className="sb2-footer">
-        <p>We'll handle the math, you handle the memories.<br/>No data stored, no account needed.</p>
-        <p style={{ marginTop: '6px', opacity: 0.6 }}>
+      <footer className="sb2-footer" style={{ textAlign: 'center', padding: '40px 20px', fontSize: '13px', color: 'var(--ink-3)' }}>
+        <p>
           A tool by <a href="https://acuriousnote.com" target="_blank" rel="noopener" style={{ color: 'inherit', textDecoration: 'underline' }}>acuriousnote.com</a>
         </p>
       </footer>

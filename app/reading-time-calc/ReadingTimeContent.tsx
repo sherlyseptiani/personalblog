@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import './reading-time-calc.css'
-import Footer from '@/components/Footer'
 import PaletteSwitcher from '../tools/shared/PaletteSwitcher'
 
 // Reading speeds (words per minute)
@@ -514,14 +513,13 @@ Reading level: ${stats.readingLevel.level}`
         )}
 
         {/* Footer */}
-        <footer className="rtc-footer">
+        <footer className="rtc-footer" style={{ textAlign: 'center', padding: '40px 20px', fontSize: '13px', color: 'var(--ink-3)' }}>
           <p>
-            Reading time depends on attention, topic, and whether your phone is nearby, unfortunately.
+            A tool by <a href="https://acuriousnote.com" target="_blank" rel="noopener" style={{ color: 'inherit', textDecoration: 'underline' }}>acuriousnote.com</a>
           </p>
         </footer>
       </div>
 
-      <Footer sourcePage="reading-time-calc" />
       <PaletteSwitcher />
     </main>
   )

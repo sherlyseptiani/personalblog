@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import './decision-coin.css'
-import Footer from '@/components/Footer'
 import PaletteSwitcher from '../tools/shared/PaletteSwitcher'
 
 type Step = 'input' | 'flipping' | 'result' | 'reflection' | 'response'
@@ -256,13 +255,13 @@ export default function DecisionCoinContent() {
         )}
 
         {/* Footer */}
-        <footer className="dc-footer">
-          <p>A surprisingly useful trick for a piece of metal.</p>
-          <p className="dc-quote">"Sometimes the answer appears before the coin lands."</p>
+        <footer className="dc-footer" style={{ textAlign: 'center', padding: '40px 20px', fontSize: '13px', color: 'var(--ink-3)' }}>
+          <p>
+            A tool by <a href="https://acuriousnote.com" target="_blank" rel="noopener" style={{ color: 'inherit', textDecoration: 'underline' }}>acuriousnote.com</a>
+          </p>
         </footer>
       </div>
 
-      <Footer sourcePage="decision-coin" />
       <PaletteSwitcher />
     </>
   )

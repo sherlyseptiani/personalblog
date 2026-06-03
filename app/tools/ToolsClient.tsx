@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import Footer from '@/components/Footer'
 import PaletteSwitcher from './shared/PaletteSwitcher'
 import './tools.css'
 
@@ -56,6 +55,7 @@ export default function ToolsClient() {
   const [currentMode, setCurrentMode] = useState('itemized')
   const [shown, setShown] = useState([250000, 250000])
   const [isLit, setIsLit] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const featureRef = useRef<HTMLDivElement>(null)
   const feature2Ref = useRef<HTMLDivElement>(null)
   const feature3Ref = useRef<HTMLDivElement>(null)
@@ -67,6 +67,7 @@ export default function ToolsClient() {
   const [reduceMotion, setReduceMotion] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     setReduceMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   }, [])
 
@@ -331,7 +332,10 @@ export default function ToolsClient() {
         </div>
 
         {/* Interactive token cloud */}
-        <div className="tl-cloud" aria-hidden="true"
+        <div
+          className="tl-cloud"
+          aria-hidden="true"
+          style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.3s ease' }}
         >
           <div
             className="tl-cloud-inner"
@@ -695,7 +699,12 @@ export default function ToolsClient() {
         </div>
       </section>
 
-      <Footer sourcePage="tools" />
+      {/* Footer */}
+      <footer style={{ textAlign: 'center', padding: '40px 20px', fontSize: '13px', color: 'var(--ink-3)' }}>
+        <p>
+          A tool by <a href="https://acuriousnote.com" target="_blank" rel="noopener" style={{ color: 'inherit', textDecoration: 'underline' }}>acuriousnote.com</a>
+        </p>
+      </footer>
       <PaletteSwitcher />
     </main>
   )
