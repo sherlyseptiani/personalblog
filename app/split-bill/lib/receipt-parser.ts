@@ -377,7 +377,7 @@ function detectCurrency(text: string): string {
 }
 
 // Parse a single line to extract item information
-function parseItemLine(line: string, currency: string): { name: string; quantity: number; price: number } | null {
+function parseItemLine(line: string, currency: string): { name: string; quantity: number; price: number; lineTotal?: number } | null {
   const trimmed = line.trim()
   if (!trimmed || trimmed.length < 3) return null
 

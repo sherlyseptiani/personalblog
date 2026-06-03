@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { filterReceiptText, parseReceiptText } from '../../split-bill2/lib/receipt-parser'
+import { filterReceiptText, parseReceiptText } from '../../split-bill/lib/receipt-parser'
 
 // Google Vision API endpoint
 const GOOGLE_VISION_API_URL = 'https://vision.googleapis.com/v1/images:annotate'
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
     // Parse the receipt text
     const parsedReceipt = parseReceiptText(filteredText)
 
-    // Convert to the format expected by split-bill2
+    // Convert to the format expected by split-bill
     const result = {
       items: parsedReceipt.items.map((item, index) => ({
         id: `item-${Date.now()}-${index}`,

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { filterReceiptText, parseReceiptText } from '../../split-bill2/lib/receipt-parser'
+import { filterReceiptText, parseReceiptText } from '../../split-bill/lib/receipt-parser'
 
 export async function POST(request: NextRequest) {
   try {

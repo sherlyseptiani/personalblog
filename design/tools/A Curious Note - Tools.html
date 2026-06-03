@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tools — A Curious Note</title>
+<meta name="description" content="A small, growing workshop of quietly useful tools. Built by hand, free to use, working entirely on your device." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="tools.css" />
+</head>
+<body data-screen-label="07 Tools">
+
+<div class="ambient" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- Nav -->
+<nav class="nav glass" aria-label="Primary">
+  <a href="A Curious Note - Homepage.html" class="brand">
+    <span class="mark"></span>
+    <span style="font-family: Nunito; font-size: 20px">A Curious Note</span>
+  </a>
+  <div class="nav-links" role="navigation">
+    <a href="A Curious Note - Homepage.html#latest">Writing</a>
+    <a href="#">Notes</a>
+    <a href="#">Reading</a>
+    <a href="A Curious Note - Tools.html" class="active">Tools</a>
+    <a href="A Curious Note - About.html">About</a>
+  </div>
+  <div class="nav-actions">
+    <button class="icon-btn" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    </button>
+    <button class="icon-btn" aria-label="Toggle theme" data-theme-toggle onclick="toggleTheme()"></button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <header class="tl-hero" id="hero" data-screen-label="hero">
+    <div class="tl-hero-copy">
+      <div class="tl-eyebrow"><span class="dot"></span><span class="eyebrow">The workshop</span></div>
+      <h1>Small tools,<br />quietly <em>useful</em>.</h1>
+      <p class="lede">Little instruments I build for myself and leave out for you &mdash; no sign-ups, no tracking, nothing phoning home. They run entirely in your browser and remember their place on your device.</p>
+      <div class="tl-hero-cta">
+        <a href="A Curious Note - Split Bill.html" class="btn btn-primary" id="heroOpen">
+          Open Split Bill
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#workshop" class="btn btn-ghost-bordered">See what&rsquo;s next</a>
+      </div>
+    </div>
+
+    <!-- interactive token cloud -->
+    <div class="tl-cloud" aria-hidden="true">
+      <div class="tl-cloud-inner" id="cloud">
+        <svg class="tl-wires" id="wires"></svg>
+
+        <button class="tl-token live" id="liveToken" style="--tok: var(--tl-itemized);" aria-label="Open Split Bill">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v18"/><path d="M17 6H9.5a2.5 2.5 0 0 0 0 5h5a2.5 2.5 0 0 1 0 5H6"/></svg></span>
+          <span class="tk-name">Split Bill</span>
+          <span class="tk-tag">Live now</span>
+        </button>
+
+        <div class="tl-token ghost g1" data-soon="Reading Timer" style="--tok: 160,122,181;">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg></span>
+          <span class="tk-name">Reading Timer</span>
+          <span class="tk-tag">Soon</span>
+        </div>
+        <div class="tl-token ghost g2" data-soon="Currency Notes" style="--tok: 107,163,154;">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg></span>
+          <span class="tk-name">Currency Notes</span>
+          <span class="tk-tag">Soon</span>
+        </div>
+        <div class="tl-token ghost g3" data-soon="Quiet Pomodoro" style="--tok: 192,138,100;">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="13" r="8"/><path d="M12 13l3-2"/><path d="M10 2h4"/></svg></span>
+          <span class="tk-name">Quiet Pomodoro</span>
+          <span class="tk-tag">Soon</span>
+        </div>
+        <div class="tl-token ghost g4" data-soon="Color Memory" style="--tok: 111,155,209;">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="13" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><path d="M3 12a9 9 0 1 0 9-9c-2 0-1 3-3 3"/></svg></span>
+          <span class="tk-name">Color Memory</span>
+          <span class="tk-tag">Soon</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ FEATURED ============ -->
+  <section class="tl-sec" data-screen-label="featured">
+    <div class="tl-sec-head reveal">
+      <span class="eyebrow"><span class="sig" style="--s1:#f5b8c7;--s2:#d96b8a;"></span>Featured</span>
+      <h2>The one that&rsquo;s ready.</h2>
+      <p>Try it right here &mdash; switch how the bill is split and watch everyone&rsquo;s share settle.</p>
+    </div>
+
+    <div class="tl-feature glass reveal r-d1" id="feature">
+      <div class="tl-feat-info">
+        <span class="tl-feat-eyebrow"><span class="live-dot"></span>Live now · free</span>
+        <h3>Split Bill</h3>
+        <p class="desc">Divide a shared bill fairly &mdash; equally, by custom amounts, by percentage, or item by item. The math settles instantly, and it handles the awkward parts: rounding, who paid upfront, someone sitting out.</p>
+        <div class="tl-feat-list">
+          <div class="row"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg></span>Four ways to split, one tap apart</div>
+          <div class="row"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg></span>Honest rounding &mdash; no lost rupiah</div>
+          <div class="row"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg></span>Works offline, saves on your device</div>
+        </div>
+        <div class="tl-feat-cta">
+          <a href="A Curious Note - Split Bill.html" class="btn btn-primary">
+            Open the tool
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <span class="tl-demo-hint" style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.04em;">↙ a live preview, not a screenshot</span>
+        </div>
+      </div>
+
+      <!-- live demo -->
+      <div class="tl-feat-demo" id="demo">
+        <div class="tl-demo-card">
+          <div class="tl-demo-top">
+            <span class="name">Dinner at Sushi House</span>
+            <span class="total">Rp 500.000</span>
+          </div>
+          <div class="tl-demo-sub" id="demoSub">Everyone included pays the same share.</div>
+
+          <div class="tl-seg" id="demoSeg" role="tablist" aria-label="Split method preview">
+            <button data-mode="equal" class="active" role="tab" aria-selected="true">Equal</button>
+            <button data-mode="custom" role="tab" aria-selected="false">Custom</button>
+            <button data-mode="percentage" role="tab" aria-selected="false">%</button>
+            <button data-mode="itemized" role="tab" aria-selected="false">Items</button>
+          </div>
+
+          <div class="tl-rows">
+            <div class="tl-person" data-p="0">
+              <span class="av" style="--a1:#f5b8c7;--a2:#d96b8a;">S</span>
+              <div class="body">
+                <div class="pn">Sherly <span class="pct" data-pct>50%</span></div>
+                <div class="tl-bar"><span data-bar></span></div>
+              </div>
+              <span class="amt" data-amt>Rp 250.000</span>
+            </div>
+            <div class="tl-person" data-p="1">
+              <span class="av" style="--a1:#b3d0e8;--a2:#6f9bd1;">K</span>
+              <div class="body">
+                <div class="pn">Kris <span class="pct" data-pct>50%</span></div>
+                <div class="tl-bar"><span data-bar></span></div>
+              </div>
+              <span class="amt" data-amt>Rp 250.000</span>
+            </div>
+          </div>
+
+          <div class="tl-demo-foot">
+            <span class="st"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg><span id="demoStatus">Fully allocated</span></span>
+            <span class="spacer"></span>
+            <span class="hint">tap a mode ↑</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORKSHOP ============ -->
+  <section class="tl-sec" id="workshop" data-screen-label="workshop">
+    <div class="tl-sec-head reveal">
+      <span class="eyebrow"><span class="sig" style="--s1:#c6b5e0;--s2:#6f9bd1;"></span>In the workshop</span>
+      <h2>What I&rsquo;m tinkering with.</h2>
+      <p>Sketches on the bench &mdash; half-built, no promises on timing. They&rsquo;ll appear here when they&rsquo;re honestly ready.</p>
+    </div>
+
+    <div class="tl-workshop-grid">
+      <div class="tl-soon reveal r-d1" data-soon="Reading Timer" style="--sc: 160,122,181;">
+        <span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg></span>
+        <h4>Reading Timer</h4>
+        <p>Paste any text and get an honest minutes-to-read &mdash; tuned to a calm pace, not a speed-reading boast.</p>
+        <span class="s-tag"><span class="d"></span>Sketching</span>
+      </div>
+      <div class="tl-soon reveal r-d2" data-soon="Currency Notes" style="--sc: 107,163,154;">
+        <span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg></span>
+        <h4>Currency Notes</h4>
+        <p>A tiny converter that remembers the handful of rates you actually use, so you&rsquo;re not re-typing them every trip.</p>
+        <span class="s-tag"><span class="d"></span>Sketching</span>
+      </div>
+      <div class="tl-soon reveal r-d3" data-soon="Quiet Pomodoro" style="--sc: 192,138,100;">
+        <span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="13" r="8"/><path d="M12 13l3-2"/><path d="M10 2h4"/></svg></span>
+        <h4>Quiet Pomodoro</h4>
+        <p>A focus timer with no streaks, no badges, no guilt &mdash; just a soft chime and a clean count of the work you did.</p>
+        <span class="s-tag"><span class="d"></span>Sketching</span>
+      </div>
+    </div>
+
+    <div class="tl-suggest glass reveal">
+      <div class="copy">
+        <h4>Something you wish existed?</h4>
+        <p>Tell me the small, annoying task you&rsquo;d love a calm little tool for.</p>
+      </div>
+      <form id="suggestForm">
+        <input type="text" id="suggestInput" placeholder="e.g. a splitwise for recurring rent…" aria-label="Suggest a tool" autocomplete="off" />
+        <button type="submit" class="btn btn-primary">
+          Send
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer-section" data-screen-label="footer">
+    <div class="footer-grid glass">
+      <div class="identity">
+        <div class="logo"><span class="mark"></span><span style="font-family: Nunito;">A Curious Note</span></div>
+        <p>A quiet personal corner. Written and tended by hand. These little tools run entirely on your device &mdash; nothing leaves your browser.</p>
+      </div>
+      <div class="socials-col">
+        <div class="col-title">Elsewhere</div>
+        <div class="socials">
+          <a href="https://github.com/sherlyseptiani" target="_blank" rel="noopener"><span class="label">GitHub</span><span class="handle">sherlyseptiani</span></a>
+          <a href="https://x.com/shrlys" target="_blank" rel="noopener"><span class="label">X · Twitter</span><span class="handle">@shrlys</span></a>
+          <a href="https://instagram.com/sherlyseptiani" target="_blank" rel="noopener"><span class="label">Instagram</span><span class="handle">@sherlyseptiani</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="copyline">
+      <span>© 2026 A Curious Note · Written by Sherly Septiani</span>
+    </div>
+  </footer>
+
+</main>
+
+<script src="shared.js"></script>
+<script src="tools.js"></script>
+</body>
+</html>

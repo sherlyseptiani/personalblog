@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
-import './split-bill2.css'
+import './split-bill.css'
 import { ParsedReceipt } from './lib/receipt-parser'
 
 interface BillItem {
