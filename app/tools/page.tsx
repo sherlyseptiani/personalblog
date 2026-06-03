@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import ToolsClient from './ToolsClient'
+import { PaletteProvider } from './shared/PaletteContext'
 
 export const metadata: Metadata = {
   title: 'Tools — A Curious Note',
@@ -33,5 +34,9 @@ export const metadata: Metadata = {
 }
 
 export default function ToolsPage() {
-  return <ToolsClient />
+  return (
+    <PaletteProvider>
+      <ToolsClient />
+    </PaletteProvider>
+  )
 }

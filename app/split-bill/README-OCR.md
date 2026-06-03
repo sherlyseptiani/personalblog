@@ -63,9 +63,9 @@ The parser supports multiple receipt formats:
 ## File Structure
 
 ```
-app/split-bill2/
+app/split-bill/
 ├── page.tsx              # Main component with upload UI
-├── split-bill2.css       # Styles including preview card
+├── split-bill.css       # Styles including preview card
 ├── lib/
 │   └── receipt-parser.ts # OCR text parsing logic
 └── README-OCR.md         # This file

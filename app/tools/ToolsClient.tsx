@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import Footer from '@/components/Footer'
+import PaletteSwitcher from './shared/PaletteSwitcher'
 import './tools.css'
 
 // IDR formatting
@@ -50,6 +52,7 @@ const MODES: Record<string, {
 }
 
 export default function ToolsClient() {
+  const router = useRouter()
   const [currentMode, setCurrentMode] = useState('itemized')
   const [shown, setShown] = useState([250000, 250000])
   const [isLit, setIsLit] = useState(false)
@@ -61,8 +64,11 @@ export default function ToolsClient() {
   const wiresRef = useRef<SVGSVGElement>(null)
   const tweensRef = useRef<number[]>([0, 0])
   const userTouchedRef = useRef(false)
-  const reduceMotion = typeof window !== 'undefined'
-    && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const [reduceMotion, setReduceMotion] = useState(false)
+
+  useEffect(() => {
+    setReduceMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  }, [])
 
   const current = MODES[currentMode]
 
@@ -207,6 +213,18 @@ export default function ToolsClient() {
     const r = target.getBoundingClientRect()
     target.style.setProperty('--fmx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%')
     target.style.setProperty('--fmy', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%')
+  }
+
+  const handleFeatureClick = (e: React.MouseEvent, href: string) => {
+    const target = e.target as HTMLElement
+    if (target.closest('a')) return
+    router.push(href)
+  }
+
+  const handleFeatureKeyDown = (e: React.KeyboardEvent, href: string) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return
+    e.preventDefault()
+    router.push(href)
   }
 
   // Cloud pointer drift
@@ -410,7 +428,7 @@ export default function ToolsClient() {
             Featured
           </span>
           <h2>The ones that are ready.</h2>
-          <p>Try them right here — little tools that work quietly and honestly.</p>
+          <p>Try them right here — no account or payment needed.</p>
         </div>
 
         <div className="tl-featured-grid">
@@ -419,6 +437,11 @@ export default function ToolsClient() {
             className="tl-feature glass reveal r-d1"
             ref={featureRef}
             onPointerMove={handleFeaturePointerMove}
+            onClick={(e) => handleFeatureClick(e, '/split-bill')}
+            onKeyDown={(e) => handleFeatureKeyDown(e, '/split-bill')}
+            role="link"
+            tabIndex={0}
+            aria-label="Open Split Bill"
             style={{'--acc': '217,107,138'} as React.CSSProperties}
           >
             <div className="tl-tool-visual">
@@ -479,6 +502,11 @@ export default function ToolsClient() {
             className="tl-feature glass reveal r-d2"
             ref={feature2Ref}
             onPointerMove={handleFeaturePointerMove}
+            onClick={(e) => handleFeatureClick(e, '/decision-coin')}
+            onKeyDown={(e) => handleFeatureKeyDown(e, '/decision-coin')}
+            role="link"
+            tabIndex={0}
+            aria-label="Open Decision Coin"
             style={{'--acc': '111,155,209'} as React.CSSProperties}
           >
             <div className="tl-tool-visual">
@@ -540,6 +568,11 @@ export default function ToolsClient() {
             className="tl-feature glass reveal r-d3"
             ref={feature3Ref}
             onPointerMove={handleFeaturePointerMove}
+            onClick={(e) => handleFeatureClick(e, '/reading-time-calc')}
+            onKeyDown={(e) => handleFeatureKeyDown(e, '/reading-time-calc')}
+            role="link"
+            tabIndex={0}
+            aria-label="Open Reading Time Calculator"
             style={{'--acc': '160,122,181'} as React.CSSProperties}
           >
             <div className="tl-tool-visual">
@@ -617,8 +650,8 @@ export default function ToolsClient() {
                 <path d="M12 9v4l2.5 2.5M9 2h6"/>
               </svg>
             </span>
-            <h4>Reading Timer</h4>
-            <p>Paste any text and get an honest minutes-to-read — tuned to a calm pace, not a speed-reading boast.</p>
+            <h4>Tea Timer</h4>
+            <p>A quiet timer for brewing tea properly. Choose your tea type, get a sensible steeping time, and let a soft chime remind you before the leaves overstay their welcome.</p>
             <span className="s-tag"><span className="d"></span>Sketching</span>
           </div>
           <div className="tl-soon reveal r-d2" onClick={() => showSoonToast('Currency Notes')} style={{'--sc': '107,163,154'} as React.CSSProperties}>
@@ -663,6 +696,7 @@ export default function ToolsClient() {
       </section>
 
       <Footer sourcePage="tools" />
+      <PaletteSwitcher />
     </main>
   )
 }
