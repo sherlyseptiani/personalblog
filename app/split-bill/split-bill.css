@@ -331,6 +331,20 @@ html[data-theme="dark"] {
   color: var(--ink-3);
 }
 
+.sb2-beta-badge {
+  font-family: var(--font-mono, 'Geist Mono', monospace);
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sb2-primary);
+  background: rgba(var(--video-r), var(--video-g), var(--video-b), 0.12);
+  padding: 2px 6px;
+  border-radius: var(--sb2-radius-sm);
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
 .sb2-option-cta {
   font-family: var(--font-mono, 'Geist Mono', monospace);
   font-size: 11px;

@@ -238,7 +238,6 @@ function Step1BillStart({
           ref={fileInputRef}
           type="file"
           accept="image/*"
-          capture="environment"
           onChange={handleFileChange}
           style={{ display: 'none' }}
         />
@@ -286,7 +285,7 @@ function Step1BillStart({
           </svg>
         </div>
         <div className="sb2-upload-card-body">
-          <span className="sb2-option-title">Upload bill photo</span>
+          <span className="sb2-option-title">Upload bill photo <span className="sb2-beta-badge">Beta</span></span>
           <span className="sb2-option-sub">Scan a receipt to auto-fill items</span>
         </div>
       </button>
@@ -313,7 +312,6 @@ function Step1BillStart({
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        capture="environment"
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
