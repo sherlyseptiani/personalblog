@@ -36,11 +36,9 @@ const PaletteContext = createContext<PaletteContextType | undefined>(undefined)
 
 export function PaletteProvider({ children }: { children: ReactNode }) {
   const [activePalette, setActivePalette] = useState<PaletteId>(DEFAULT_PALETTE)
-  const [mounted, setMounted] = useState(false)
 
   // Load from localStorage on mount
   useEffect(() => {
-    setMounted(true)
     const saved = localStorage.getItem(STORAGE_KEY) as PaletteId | null
     if (saved && PALETTES.find(p => p.id === saved)) {
       setActivePalette(saved)
@@ -82,11 +80,6 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
   }, [applyPalette])
 
   const palette = PALETTES.find(p => p.id === activePalette) || PALETTES[0]
-
-  // Don't render children until mounted to prevent hydration mismatch
-  if (!mounted) {
-    return <>{children}</>
-  }
 
   return (
     <PaletteContext.Provider value={{ activePalette, palette, setPalette }}>
