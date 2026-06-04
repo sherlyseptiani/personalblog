@@ -1575,11 +1575,6 @@ export default function SplitBillContent() {
   const [step, setStep] = useState(1)
   const totalSteps = 5
   const { palette } = usePalette()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const [billData, setBillData] = useState<BillData>({
     title: '',
@@ -1795,7 +1790,7 @@ export default function SplitBillContent() {
   }
 
   return (
-    <div className="sb2-page" style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.2s ease' }}>
+    <div className="sb2-page">
       <main className="sb2-main">
         {step === 1 && (
           <header className="sb2-header">
