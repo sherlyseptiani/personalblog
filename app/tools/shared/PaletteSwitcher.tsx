@@ -1,11 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { usePalette, PALETTES } from './PaletteContext'
 
 export default function PaletteSwitcher() {
   const { activePalette, setPalette } = usePalette()
   const [open, setOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const active = PALETTES.find(p => p.id === activePalette) || PALETTES[0]
 
@@ -32,7 +37,8 @@ export default function PaletteSwitcher() {
         type="button"
         aria-label="Change colour palette"
         title="Change colour palette"
-        style={{ '--active-gradient': `linear-gradient(135deg, ${active.p1}, ${active.p2})` } as React.CSSProperties}
+        data-active-gradient={mounted ? `linear-gradient(135deg, ${active.p1}, ${active.p2})` : undefined}
+        style={mounted ? { '--active-gradient': `linear-gradient(135deg, ${active.p1}, ${active.p2})` } as React.CSSProperties : undefined}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="18" height="18">
           <path d="M12 2v8" />

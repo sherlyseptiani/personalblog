@@ -3,5 +3,12 @@ export default function SplitBillLayout({
 }: {
   children: React.ReactNode
 }) {
-  return children
+  return (
+    <div style={{
+      minHeight: '100dvh',
+      backgroundColor: 'var(--bg, #faf8f7)'
+    }}>
+      {children}
+    </div>
+  )
 }
