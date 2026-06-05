@@ -1,3 +1,5 @@
+import '../tools/tools.css'
+
 export default function SplitBillLayout({
   children,
 }: {
