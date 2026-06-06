@@ -194,6 +194,10 @@ export default function PostsGrid({ initialPosts, initialTotal, initialCategorie
     return CATEGORIES[key as keyof typeof CATEGORIES]?.label || key
   }
 
+  // Separate featured posts from regular posts
+  const featuredPosts = posts.filter(post => post.featured)
+  const regularPosts = posts.filter(post => !post.featured)
+
   return (
     <>
       <header className="section-head" style={{ position: 'relative', zIndex: 1 }}>
@@ -272,7 +276,7 @@ export default function PostsGrid({ initialPosts, initialTotal, initialCategorie
       </header>
 
       <div className="posts" id="postsGrid" ref={postsGridRef}
-        style={{ position: 'relative', zIndex: 1, display: 'flex', gap: colCount === 1 ? '10px' : '24px', alignItems: 'flex-start' }}
+        style={{ position: 'relative', zIndex: 1, columnCount: 'initial' }}
         onClick={(e) => {
           if ((e.target as HTMLElement).closest('a[href^="/posts/"]')) {
             try { sessionStorage.setItem('acn-scroll-y', String(window.scrollY)) } catch {}
@@ -289,20 +293,75 @@ export default function PostsGrid({ initialPosts, initialTotal, initialCategorie
             No posts found.
           </p>
         ) : (
-          Array.from({ length: colCount }, (_, col) => (
-            <div key={col} style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: colCount === 1 ? '10px' : '24px' }}>
-              {posts
-                .filter((_, i) => i % colCount === col)
-                .map(post => (
-                  <PostCard
-                    key={post.slug}
-                    post={post}
-                    isRead={readSlugs.has(post.slug)}
-                    className={newPostSlugs.has(post.slug) ? 'post-anim-new' : undefined}
-                  />
+          <>
+            {featuredPosts.length > 0 && colCount >= 2 ? (
+              <>
+                {/* Row 1: Featured post (2 cols) + 2 regular posts (1 col each) */}
+                <div style={{ display: 'flex', gap: colCount === 1 ? '10px' : '24px', alignItems: 'flex-start', marginBottom: colCount === 1 ? '10px' : '16px' }}>
+                  {/* Featured post - takes 2 columns width */}
+                  <div style={{ flex: 2, minWidth: 0 }}>
+                    {featuredPosts.map(post => (
+                      <PostCard
+                        key={post.slug}
+                        post={post}
+                        isRead={readSlugs.has(post.slug)}
+                        className={`${newPostSlugs.has(post.slug) ? 'post-anim-new' : ''} post-featured`}
+                        featured
+                      />
+                    ))}
+                  </div>
+                  {/* 2 regular posts */}
+                  {regularPosts.slice(0, 2).map((post, idx) => (
+                    <div key={`row1-${idx}`} style={{ flex: 1, minWidth: 0 }}>
+                      <PostCard
+                        key={post.slug}
+                        post={post}
+                        isRead={readSlugs.has(post.slug)}
+                        className={newPostSlugs.has(post.slug) ? 'post-anim-new' : undefined}
+                      />
+                    </div>
+                  ))}
+                </div>
+                {/* Row 2+: Masonry of remaining regular posts in 4 columns */}
+                <div style={{ display: 'flex', gap: colCount === 1 ? '10px' : '24px', alignItems: 'flex-start' }}>
+                  {Array.from({ length: colCount }, (_, col) => (
+                    <div key={col} style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: colCount === 1 ? '10px' : '24px' }}>
+                      {regularPosts
+                        .slice(2) // Skip first 2 posts already shown
+                        .filter((_, i) => i % colCount === col)
+                        .map(post => (
+                          <PostCard
+                            key={post.slug}
+                            post={post}
+                            isRead={readSlugs.has(post.slug)}
+                            className={newPostSlugs.has(post.slug) ? 'post-anim-new' : undefined}
+                          />
+                        ))}
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              /* No featured posts: Standard column layout */
+              <div style={{ display: 'flex', gap: colCount === 1 ? '10px' : '24px', alignItems: 'flex-start' }}>
+                {Array.from({ length: colCount }, (_, col) => (
+                  <div key={col} style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: colCount === 1 ? '10px' : '24px' }}>
+                    {posts
+                      .filter((_, i) => i % colCount === col)
+                      .map(post => (
+                        <PostCard
+                          key={post.slug}
+                          post={post}
+                          isRead={readSlugs.has(post.slug)}
+                          className={newPostSlugs.has(post.slug) ? 'post-anim-new' : undefined}
+                          featured={post.featured}
+                        />
+                      ))}
+                  </div>
                 ))}
-            </div>
-          ))
+              </div>
+            )}
+          </>
         )}
       </div>
       <style jsx global>{`

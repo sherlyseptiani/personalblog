@@ -140,6 +140,7 @@ export async function POST(request: NextRequest) {
       },
       rawText: extractedText,
       filteredText,
+      source: 'vision',
     }
 
     return NextResponse.json(result)
@@ -159,12 +160,12 @@ async function extractWithGemini(base64Image: string, mimeType: string) {
     throw new Error('Gemini API key not configured')
   }
 
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
   const prompt = `Extract structured receipt data from this image. Return ONLY a JSON object with this exact structure:
 {
   "items": [
-    { "name": "item name", "quantity": 1, "price": 10000 }
+    { "name": "item name", "quantity": 1, "price": 10000, "lineTotal": 10000 }
   ],
   "tax": 11,
   "taxType": "percent" | "amount",
@@ -172,21 +173,24 @@ async function extractWithGemini(base64Image: string, mimeType: string) {
   "serviceChargeType": "percent" | "amount",
   "discount": 0,
   "discountType": "percent" | "amount",
+  "total": 29000,
   "currency": "IDR" | "USD" | "EUR" | "SGD" | "GBP" | "JPY",
   "merchant": "Restaurant Name",
   "date": "2024-01-15"
 }
 
-Rules:
-- Extract ALL items from the receipt with their names, quantities, and unit prices
-- If an item has a total price and quantity > 1, calculate the unit price
-- Detect tax percentage or amount (common: 10%, 11% for Indonesia)
-- Detect service charge (common: 5%, 10%, or fixed amounts)
-- Detect currency from symbols ($, Rp, €, £, ¥, S$) or context
-- Clean up item names (remove codes, keep readable names)
-- Return percent values as numbers (e.g., 11 for 11%)
-- If no tax/service charge found, use 0
-- Use "IDR" for Rupiah/Rp, "USD" for $, etc.`
+CRITICAL RULES:
+1. IGNORE the receipt header section (store name, address, NPWP, store ID, phone numbers, crew names, invoice numbers) - these are NOT items
+2. Only extract items from the "QTY ITEM" or item list section - look for food/drink products with quantities and prices
+3. Extract the TOTAL amount shown on the receipt (usually at the bottom, labeled "TOTAL", "GRAND TOTAL", "Total", or similar)
+4. Calculate lineTotal for each item: quantity × unit price
+5. After extracting, VALIDATE: sum of all lineTotals + tax + service charge - discount should equal the TOTAL
+6. Common Indonesian receipt format: items listed with prices, then TOTAL at bottom
+7. Include takeaway charges, packaging fees, etc. as separate items if listed
+8. Detect currency from symbols ($, Rp, €, £, ¥, S$) or context
+9. Clean up item names (remove codes, keep readable names)
+10. Return percent values as numbers (e.g., 11 for 11%)
+11. Use "IDR" for Rupiah/Rp, "USD" for $, etc.`
 
   const result = await model.generateContent({
     contents: [{
@@ -205,6 +209,16 @@ Rules:
   const response = await result.response
   const text = response.text()
 
+  // Log rate limit info if available
+  const usageMetadata = (response as any).usageMetadata
+  if (usageMetadata) {
+    console.log('Gemini API Usage:', {
+      promptTokens: usageMetadata.promptTokenCount,
+      completionTokens: usageMetadata.candidatesTokenCount,
+      totalTokens: usageMetadata.totalTokenCount,
+    })
+  }
+
   // Extract JSON from response
   const jsonMatch = text.match(/\{[\s\S]*\}/)
   if (!jsonMatch) {
@@ -213,13 +227,46 @@ Rules:
 
   const data = JSON.parse(jsonMatch[0])
 
+  // Validate and adjust items if total doesn't match
+  const items = (data.items || []).map((item: any, index: number) => ({
+    id: `item-${Date.now()}-${index}`,
+    name: item.name || 'Unknown Item',
+    quantity: item.quantity || 1,
+    price: Math.round(item.price || 0),
+    lineTotal: Math.round((item.quantity || 1) * (item.price || 0)),
+    assignedTo: [],
+  }))
+
+  const taxAmount = data.taxType === 'percent'
+    ? (items.reduce((sum: number, item: any) => sum + item.lineTotal, 0) * (data.tax || 0) / 100)
+    : (data.tax || 0)
+
+  const serviceChargeAmount = data.serviceChargeType === 'percent'
+    ? (items.reduce((sum: number, item: any) => sum + item.lineTotal, 0) * (data.serviceCharge || 0) / 100)
+    : (data.serviceCharge || 0)
+
+  const discountAmount = data.discountType === 'percent'
+    ? (items.reduce((sum: number, item: any) => sum + item.lineTotal, 0) * (data.discount || 0) / 100)
+    : (data.discount || 0)
+
+  const calculatedTotal = items.reduce((sum: number, item: any) => sum + item.lineTotal, 0)
+    + taxAmount
+    + serviceChargeAmount
+    - discountAmount
+
+  const extractedTotal = data.total || calculatedTotal
+
+  // Check if totals match (within 100 IDR tolerance)
+  const totalMismatch = Math.abs(calculatedTotal - extractedTotal) > 100
+
   // Transform to expected format
   return {
-    items: (data.items || []).map((item: any, index: number) => ({
-      id: `item-${Date.now()}-${index}`,
-      name: item.name || 'Unknown Item',
-      quantity: item.quantity || 1,
-      price: Math.round(item.price || 0),
+    items: items.map((item: any) => ({
+      id: item.id,
+      name: item.name,
+      quantity: item.quantity,
+      price: item.price,
+      lineTotal: item.lineTotal,
       assignedTo: [],
     })),
     billData: {
@@ -229,6 +276,9 @@ Rules:
       serviceChargeType: data.serviceChargeType || 'amount',
       discount: data.discount || 0,
       discountType: data.discountType || 'amount',
+      total: extractedTotal,
+      calculatedTotal: Math.round(calculatedTotal),
+      totalMismatch,
       currency: data.currency || 'IDR',
       merchant: data.merchant || '',
       date: data.date || '',
@@ -260,5 +310,6 @@ function simulateExtraction() {
       merchant: 'Sample Restaurant',
     },
     note: 'Using mock data. Set GEMINI_API_KEY or GOOGLE_VISION_API_KEY for real OCR.',
+    source: 'mock',
   })
 }

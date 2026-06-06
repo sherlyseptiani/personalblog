@@ -1607,7 +1607,7 @@ export default function SplitBillContent() {
   const [extractionStep, setExtractionStep] = useState<'select' | 'preview' | 'processing'>('select')
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }) }, [step])
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }) }, [])
 
   const goNext = useCallback(() => setStep(s => Math.min(s + 1, totalSteps)), [totalSteps])
   const goBack = useCallback(() => setStep(s => Math.max(s - 1, 1)), [])

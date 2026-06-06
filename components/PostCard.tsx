@@ -15,7 +15,7 @@ function ReadChip() {
   )
 }
 
-export default function PostCard({ post, className, isRead, priority }: { post: Post; className?: string; isRead?: boolean; priority?: boolean }) {
+export default function PostCard({ post, className, isRead, priority, featured }: { post: Post; className?: string; isRead?: boolean; priority?: boolean; featured?: boolean }) {
   const cat = CATEGORIES[post.category]
   const href = `/posts/${post.slug}`
   const date = formatDate(post.published_at)
@@ -46,9 +46,12 @@ export default function PostCard({ post, className, isRead, priority }: { post: 
   return (
     <Link
       href={href}
-      className={`post-card glass${post.featured ? ' featured' : ''}${className ? ` ${className}` : ''}`}
+      className={`post-card glass${(featured || post.featured) ? ' featured' : ''}${className ? ` ${className}` : ''}`}
       data-cat={post.category}
     >
+      {(featured || post.featured) && (
+        <span className="featured-label">Featured</span>
+      )}
       <CoverThumb
         thumbnail={post.post_thumbnail ?? null}
         coverArt={post.cover_art}

@@ -48,7 +48,9 @@ export default function CoverThumb({ thumbnail, coverArt, slug, category, priori
     thumb: coverArt?.thumb ?? derived.thumb,
   }
 
-  const imageUrl = coverArt?.svg_url ?? coverArt?.image_url ?? thumbnail
+  // Auto-assign thumbnail from /thumbnails/{slug}.svg if it exists
+  const fallbackThumbnail = `/thumbnails/${slug}.svg`
+  const imageUrl = coverArt?.svg_url ?? coverArt?.image_url ?? thumbnail ?? fallbackThumbnail
   const hasThumbnail = imageUrl && !imgFailed
 
   // Check if this is an SVG thumbnail that should have dark mode support

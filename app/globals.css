@@ -2,6 +2,62 @@
    Global mobile overrides — supplements /design/styles.css
    ───────────────────────────────────────────────────────── */
 
+/* Featured post thumbnail - 2:1 ratio */
+.post-card.featured .thumb {
+  aspect-ratio: 2 / 1;
+}
+
+/* Featured label - small overlay on top right */
+.post-card.featured {
+  position: relative;
+}
+
+.post-card .featured-label {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--video-tint);
+  color: white;
+  font-weight: 600;
+  z-index: 10;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+/* Featured posts with sidebar layout */
+.posts-with-featured {
+  width: 100%;
+}
+
+.posts-with-featured .featured-post-container {
+  position: sticky;
+  top: 100px;
+}
+
+.posts-with-featured .featured-post-container .post-card {
+  height: 100%;
+}
+
+.posts-with-featured .featured-post-container .post-card .thumb {
+  aspect-ratio: 4 / 3;
+}
+
+@media (max-width: 1100px) {
+  .posts-with-featured {
+    grid-template-columns: 1fr !important;
+  }
+
+  .posts-with-featured .featured-post-container {
+    position: static;
+  }
+}
+
 /* ── Thumbnail fixes ───────────────────────────────────────
    Ensure SVG thumbnails fill container without gaps */
 .thumb img[src$=".svg"] {

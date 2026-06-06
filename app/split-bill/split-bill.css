@@ -62,27 +62,19 @@ html[data-theme="dark"] {
   --sb2-text-muted: #6a7280;
 }
 
-/* Page wrapper */
+/* Split Bill Page - transparent background like homepage */
 .sb2-page {
   min-height: 100dvh;
-  background-color: transparent;
-  background-image: radial-gradient(circle, rgba(var(--video-r), var(--video-g), var(--video-b), 0.13) 1px, transparent 1px);
-  background-size: 22px 22px;
+  background: transparent;
   padding-top: 32px;
   padding-bottom: 40px;
   position: relative;
 }
 
-.sb2-page::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(var(--video-r), var(--video-g), var(--video-b), 0.12) 1px, transparent 1px);
-  background-size: 22px 22px;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 45%, black 80%);
-  mask-image: linear-gradient(to bottom, transparent 45%, black 80%);
-  pointer-events: none;
-  z-index: -1;
+/* Ensure main and content areas are transparent */
+.sb2-main,
+.sb2-content {
+  background: transparent;
 }
 
 /* Step indicator */

@@ -23,7 +23,11 @@ export async function GET(request: NextRequest) {
     query = query.neq('slug', exclude)
   }
 
-  query = query.order('published_at', { ascending: false }).order('id', { ascending: false }).range(offset, offset + limit - 1)
+  query = query
+    .order('featured', { ascending: false })  // Featured posts first (true > false)
+    .order('published_at', { ascending: false })
+    .order('id', { ascending: false })
+    .range(offset, offset + limit - 1)
 
   const { data: posts, count, error } = await query
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
