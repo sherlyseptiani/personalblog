@@ -2307,11 +2307,17 @@ html[data-theme="dark"] .acn-search-dialog::before {
 }
 
 /* ── Theme toggle icons ──────────────────────────── */
-.icon-btn[data-theme-toggle] .theme-icon-sun,
-.icon-btn[data-theme-toggle][data-is-dark="true"] .theme-icon-moon {
-  display: none !important;
+/* Default: show moon (light mode), hide sun */
+.icon-btn[data-theme-toggle] .theme-icon-sun {
+  display: none;
 }
-.icon-btn[data-theme-toggle][data-is-dark="true"] .theme-icon-sun,
 .icon-btn[data-theme-toggle] .theme-icon-moon {
-  display: block !important;
+  display: block;
+}
+/* Dark mode: show sun, hide moon */
+.icon-btn[data-theme-toggle][data-is-dark="true"] .theme-icon-sun {
+  display: block;
+}
+.icon-btn[data-theme-toggle][data-is-dark="true"] .theme-icon-moon {
+  display: none;
 }
