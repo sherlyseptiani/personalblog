@@ -19,16 +19,15 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
   const isPostPage = pathname?.startsWith('/posts/')
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isDark, setIsDark] = useState(false)
-  const [mounted, setMounted] = useState(false)
 
   // Check if navbar should be hidden for this route
   const shouldHideNav = pathname ? HIDDEN_NAV_ROUTES.some(route => pathname.startsWith(route)) : false
 
   // Prevent hydration mismatch by deferring pathname-dependent rendering
-  const showSearch = mounted && !isPostPage
+  // For theme icon, we use isDark directly with inline styles to avoid hydration issues
+  const showSearch = !!pathname && !isPostPage
 
   useEffect(() => {
-    setMounted(true)
     const sync = () => setIsDark(document.documentElement.getAttribute('data-theme') === 'dark')
     sync()
     const observer = new MutationObserver(sync)
@@ -112,16 +111,15 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
             className="icon-btn"
             aria-label="Toggle theme"
             data-theme-toggle=""
-            data-is-dark={mounted ? (isDark ? 'true' : 'false') : 'false'}
+            data-is-dark={isDark ? 'true' : 'false'}
             onClick={(e) => { handleGlitter(e); (window as any).toggleTheme?.() }}
-            suppressHydrationWarning
           >
-            {/* Both icons always rendered - CSS controls visibility via data-is-dark */}
-            <svg className="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="18" height="18" suppressHydrationWarning>
+            {/* Moon icon shown by default (light mode), sun shown in dark mode */}
+            <svg className="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="18" height="18" style={{ display: isDark ? 'block' : 'none' }}>
               <circle cx="12" cy="12" r="4"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
             </svg>
-            <svg className="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="18" height="18" suppressHydrationWarning>
+            <svg className="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="18" height="18" style={{ display: isDark ? 'none' : 'block' }}>
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
           </button>

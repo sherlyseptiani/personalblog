@@ -155,9 +155,18 @@ export default function DecisionCoinContent() {
   const filledOptions = options.filter(o => o.trim())
   const resultIndex = result ? filledOptions.indexOf(result) : -1
 
+  // Prevent hydration mismatch - show nothing until mounted
+  if (!mounted) {
+    return (
+      <div className="dc-container" style={{ opacity: 0 }}>
+        <div className="dc-card" />
+      </div>
+    )
+  }
+
   return (
     <>
-      <div className="dc-container" style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.2s ease' }}>
+      <div className="dc-container">
         {/* Header */}
         <header className="dc-header">
           <div className="dc-eyebrow">

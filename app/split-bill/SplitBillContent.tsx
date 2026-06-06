@@ -1789,8 +1789,17 @@ export default function SplitBillContent() {
     }
   }
 
+  // Prevent hydration mismatch - show minimal UI until mounted
+  if (!mounted) {
+    return (
+      <div className="sb2-page" style={{ opacity: 0 }}>
+        <main className="sb2-main" />
+      </div>
+    )
+  }
+
   return (
-    <div className="sb2-page" style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.2s ease' }}>
+    <div className="sb2-page">
       <main className="sb2-main">
         {step === 1 && (
           <header className="sb2-header">

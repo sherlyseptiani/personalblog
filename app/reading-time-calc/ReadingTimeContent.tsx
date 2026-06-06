@@ -336,8 +336,17 @@ ${summary}`
     setBookInfo(null)
   }, [])
 
+  // Prevent hydration mismatch - show nothing until mounted
+  if (!mounted) {
+    return (
+      <main className="wrap rtc-page" style={{ opacity: 0 }}>
+        <div className="rtc-container" />
+      </main>
+    )
+  }
+
   return (
-    <main className="wrap rtc-page" style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.2s ease' }}>
+    <main className="wrap rtc-page">
       <div className="rtc-container">
         {/* Header */}
         <header className="rtc-header">
