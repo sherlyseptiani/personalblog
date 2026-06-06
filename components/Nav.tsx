@@ -8,6 +8,9 @@ import Search from './Search'
 
 type ActivePage = 'writing' | 'about' | undefined
 
+// Routes that hide the navbar (tools with their own UI)
+const HIDDEN_NAV_ROUTES = ['/split-bill', '/reading-timer', '/decision-coin']
+
 export default function Nav({ activePage }: { activePage?: ActivePage }) {
   const pathname = usePathname()
   const router = useRouter()
@@ -17,6 +20,12 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isDark, setIsDark] = useState(false)
   const [mounted, setMounted] = useState(false)
+
+  // Check if navbar should be hidden for this route
+  const shouldHideNav = pathname ? HIDDEN_NAV_ROUTES.some(route => pathname.startsWith(route)) : false
+
+  // Prevent hydration mismatch by deferring pathname-dependent rendering
+  const showSearch = mounted && !isPostPage
 
   useEffect(() => {
     setMounted(true)
@@ -68,6 +77,15 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
     setIsSearchOpen(true)
   }
 
+  // Hide navbar for tool routes that have their own UI
+  if (shouldHideNav) {
+    return (
+      <>
+        <Search isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      </>
+    )
+  }
+
   return (
     <>
       <nav className="nav glass" aria-label="Primary">
@@ -76,14 +94,14 @@ export default function Nav({ activePage }: { activePage?: ActivePage }) {
           <span className="brand-text">A Curious Note</span>
         </Link>
         <div className="nav-actions">
-          {!isPostPage && (
+          {showSearch && (
             <button
               type="button"
               className="icon-btn"
               aria-label="Search"
               onClick={handleOpenSearch}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" suppressHydrationWarning>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="7" />
                 <path d="m21 21-4.35-4.35" />
               </svg>

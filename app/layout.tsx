@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import { Suspense } from 'react'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Nav from '@/components/Nav'
@@ -81,9 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <div className="ambient" aria-hidden="true"></div>
         <div className="grain" aria-hidden="true"></div>
-        <Suspense fallback={<nav className="nav glass" style={{ height: '64px' }} />}>
-          <Nav />
-        </Suspense>
+        <Nav />
         <ScrollToTop />
         {children}
         <CorgiEasterEgg />
