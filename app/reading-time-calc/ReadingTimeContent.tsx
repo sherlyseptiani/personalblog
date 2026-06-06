@@ -150,6 +150,8 @@ export default function ReadingTimeCalcPage() {
     author: string
     publishedYear: number | null
     pageCount: number
+    wordCount: number
+    readingLevel: string
     genre: string
     description: string
     confidence: string
