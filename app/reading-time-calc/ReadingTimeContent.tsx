@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import './reading-time-calc.css'
 import PaletteSwitcher from '../tools/shared/PaletteSwitcher'
+import { usePalette } from '../tools/shared/PaletteContext'
 
 // Reading speeds (words per minute)
 const READING_SPEEDS = {
@@ -12,7 +13,7 @@ const READING_SPEEDS = {
   aloud: 140,
 }
 
-type InputMode = 'text' | 'url'
+type InputMode = 'text' | 'url' | 'book'
 
 // Reading levels based on complexity
 function calculateReadingLevel(avgSentenceLength: number, longWordPercentage: number): {
@@ -127,7 +128,8 @@ function calculateStats(text: string) {
 }
 
 export default function ReadingTimeCalcPage() {
-  const [inputMode, setInputMode] = useState<InputMode>('text')
+  const { mounted } = usePalette()
+  const [inputMode, setInputMode] = useState<InputMode>('book')
   const [text, setText] = useState('')
   const [url, setUrl] = useState('')
   const [urlTitle, setUrlTitle] = useState<string | null>(null)
@@ -137,6 +139,23 @@ export default function ReadingTimeCalcPage() {
   const [copied, setCopied] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const urlInputRef = useRef<HTMLInputElement>(null)
+
+  // Book lookup state
+  const [bookQuery, setBookQuery] = useState('')
+  const [bookQueryType, setBookQueryType] = useState<'title' | 'author' | 'isbn'>('title')
+  const [isLoadingBook, setIsLoadingBook] = useState(false)
+  const [bookError, setBookError] = useState<string | null>(null)
+  const [bookInfo, setBookInfo] = useState<{
+    title: string
+    author: string
+    publishedYear: number | null
+    pageCount: number
+    genre: string
+    description: string
+    confidence: string
+  } | null>(null)
+  const [multipleBooks, setMultipleBooks] = useState<typeof bookInfo[] | null>(null)
+  const bookInputRef = useRef<HTMLInputElement>(null)
 
   // Auto-calculate on text change (debounced)
   useEffect(() => {
@@ -162,11 +181,17 @@ export default function ReadingTimeCalcPage() {
     setUrl('')
     setUrlTitle(null)
     setUrlError(null)
+    setBookQuery('')
+    setBookError(null)
+    setBookInfo(null)
+    setMultipleBooks(null)
     setStats(null)
     if (inputMode === 'text') {
       textareaRef.current?.focus()
-    } else {
+    } else if (inputMode === 'url') {
       urlInputRef.current?.focus()
+    } else {
+      bookInputRef.current?.focus()
     }
   }, [inputMode])
 
@@ -200,10 +225,83 @@ export default function ReadingTimeCalcPage() {
     }
   }, [url])
 
+  const handleFetchBook = useCallback(async () => {
+    if (!bookQuery.trim()) return
+
+    setIsLoadingBook(true)
+    setBookError(null)
+    setBookInfo(null)
+    setMultipleBooks(null)
+
+    try {
+      const response = await fetch('/api/estimate-book-reading', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: bookQuery.trim(), type: bookQueryType }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to look up book')
+      }
+
+      if (data.multipleResults && data.books.length > 1) {
+        // Show multiple results for selection
+        setMultipleBooks(data.books)
+      } else if (data.book) {
+        // Single result
+        setBookInfo(data.book)
+        setStats(data.stats)
+      }
+    } catch (err) {
+      setBookError(err instanceof Error ? err.message : 'Failed to look up book')
+    } finally {
+      setIsLoadingBook(false)
+    }
+  }, [bookQuery, bookQueryType])
+
+  const handleSelectBook = useCallback((book: typeof bookInfo) => {
+    if (!book) return
+
+    setBookInfo(book)
+    setMultipleBooks(null)
+
+    // Calculate stats for selected book
+    const wordCount = book.wordCount
+    const pageCount = book.pageCount
+    const readingLevel = book.readingLevel
+
+    setStats({
+      wordCount,
+      charCount: wordCount * 5,
+      charCountNoSpaces: wordCount * 4,
+      sentenceCount: Math.round(wordCount / 15),
+      paragraphCount: Math.round(pageCount * 2.5),
+      avgSentenceLength: 15,
+      longWordPercentage: readingLevel === 'Dense' ? 25 : readingLevel === 'Easy' ? 12 : 18,
+      times: {
+        casual: wordCount / 250,
+        average: wordCount / 200,
+        careful: wordCount / 150,
+        aloud: wordCount / 140,
+      },
+      readingLevel: {
+        level: readingLevel,
+        description: readingLevel === 'Easy'
+          ? 'Simple, clear writing that flows quickly.'
+          : readingLevel === 'Dense'
+          ? 'Complex writing that rewards careful attention.'
+          : 'Comfortable reading for most audiences.',
+      },
+      contextNote: `${pageCount} pages · ${book.genre || 'General'}`,
+    })
+  }, [])
+
   const handleCopy = useCallback(async () => {
     if (!stats) return
 
-    const summary = `Reading time estimate:
+    let summary = `Reading time estimate:
 Words: ${stats.wordCount.toLocaleString()}
 Casual: ${formatTime(stats.times.casual)}
 Average: ${formatTime(stats.times.average)}
@@ -211,23 +309,33 @@ Careful: ${formatTime(stats.times.careful)}
 Aloud: ${formatTime(stats.times.aloud)}
 Reading level: ${stats.readingLevel.level}`
 
+    if (bookInfo) {
+      summary = `"${bookInfo.title}" by ${bookInfo.author}
+${bookInfo.pageCount} pages · ${bookInfo.genre}
+
+${summary}`
+    }
+
     await navigator.clipboard.writeText(summary)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
-  }, [stats])
+  }, [stats, bookInfo])
 
   const handleModeChange = useCallback((mode: InputMode) => {
     setInputMode(mode)
     setUrlError(null)
+    setBookError(null)
     // Clear results when switching modes
     setStats(null)
     setText('')
     setUrl('')
     setUrlTitle(null)
+    setBookQuery('')
+    setBookInfo(null)
   }, [])
 
   return (
-    <main className="wrap rtc-page">
+    <main className="wrap rtc-page" style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.2s ease' }}>
       <div className="rtc-container">
         {/* Header */}
         <header className="rtc-header">
@@ -239,7 +347,7 @@ Reading level: ${stats.readingLevel.level}`
             Reading Time <em>Calculator</em>.
           </h1>
           <p className="rtc-lede">
-            Paste any text or enter a URL to get a calmer estimate of how long it takes to read — for casual, average, and careful readers.
+            Search any book,enter a URL, or copy paste any text to get an estimate of how long it takes to read — for casual, average, and careful readers.
           </p>
         </header>
 
@@ -247,6 +355,30 @@ Reading level: ${stats.readingLevel.level}`
         <div className="rtc-input-card">
           {/* Mode Tabs */}
           <div className="rtc-mode-tabs">
+            <button
+              type="button"
+              className={`rtc-mode-tab ${inputMode === 'book' ? 'active' : ''}`}
+              onClick={() => handleModeChange('book')}
+              aria-pressed={inputMode === 'book'}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+              </svg>
+              <span className="rtc-tab-text">Book</span>
+            </button>
+            <button
+              type="button"
+              className={`rtc-mode-tab ${inputMode === 'url' ? 'active' : ''}`}
+              onClick={() => handleModeChange('url')}
+              aria-pressed={inputMode === 'url'}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+              </svg>
+              <span className="rtc-tab-text">URL</span>
+            </button>
             <button
               type="button"
               className={`rtc-mode-tab ${inputMode === 'text' ? 'active' : ''}`}
@@ -260,44 +392,92 @@ Reading level: ${stats.readingLevel.level}`
                 <line x1="16" y1="17" x2="8" y2="17" />
                 <polyline points="10 9 9 9 8 9" />
               </svg>
-              Paste Text
-            </button>
-            <button
-              type="button"
-              className={`rtc-mode-tab ${inputMode === 'url' ? 'active' : ''}`}
-              onClick={() => handleModeChange('url')}
-              aria-pressed={inputMode === 'url'}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-              </svg>
-              From URL
+              <span className="rtc-tab-text">Text</span>
             </button>
           </div>
 
-          {inputMode === 'text' ? (
+          {inputMode === 'book' ? (
             <div className="rtc-field">
-              <label htmlFor="text-input">Paste your text</label>
-              <div className="rtc-textarea-wrap">
-                <textarea
-                  ref={textareaRef}
-                  id="text-input"
-                  className="rtc-textarea"
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  placeholder="Paste an article, essay, newsletter, script, or anything else you want to measure."
-                  aria-label="Paste text to calculate reading time"
-                />
+              <label htmlFor="book-input">Search by book</label>
+              <div className="rtc-book-query-type">
+                <button
+                  type="button"
+                  className={bookQueryType === 'title' ? 'active' : ''}
+                  onClick={() => setBookQueryType('title')}
+                >
+                  Title
+                </button>
+                <button
+                  type="button"
+                  className={bookQueryType === 'author' ? 'active' : ''}
+                  onClick={() => setBookQueryType('author')}
+                >
+                  Author
+                </button>
+                <button
+                  type="button"
+                  className={bookQueryType === 'isbn' ? 'active' : ''}
+                  onClick={() => setBookQueryType('isbn')}
+                >
+                  ISBN
+                </button>
               </div>
+              <div className="rtc-url-wrap">
+                <input
+                  ref={bookInputRef}
+                  id="book-input"
+                  type="text"
+                  className="rtc-url-input"
+                  value={bookQuery}
+                  onChange={(e) => setBookQuery(e.target.value)}
+                  placeholder={bookQueryType === 'isbn' ? '978-0-123456-78-9' : bookQueryType === 'author' ? 'J.K. Rowling' : 'The Great Gatsby'}
+                  aria-label={`Enter ${bookQueryType} to search for book`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && bookQuery.trim() && !isLoadingBook) {
+                      handleFetchBook()
+                    }
+                  }}
+                />
+                <button
+                  type="button"
+                  className="rtc-btn rtc-btn-primary rtc-fetch-btn"
+                  onClick={handleFetchBook}
+                  disabled={!bookQuery.trim() || isLoadingBook}
+                >
+                  {isLoadingBook ? (
+                    <>
+                      <span className="rtc-spinner" />
+                      Searching...
+                    </>
+                  ) : (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35" />
+                      </svg>
+                      Search
+                    </>
+                  )}
+                </button>
+              </div>
+              {bookError && (
+                <div className="rtc-url-error">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
+                  {bookError}
+                </div>
+              )}
               <div className="rtc-privacy-note">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
-                Your text stays in your browser. Nothing is uploaded.
+                Book data is fetched using AI. Results are estimates.
               </div>
             </div>
-          ) : (
+          ) : inputMode === 'url' ? (
             <div className="rtc-field">
               <label htmlFor="url-input">Enter a URL</label>
               <div className="rtc-url-wrap">
@@ -356,28 +536,51 @@ Reading level: ${stats.readingLevel.level}`
                 Fetched content is processed on our server. URLs are not stored.
               </div>
             </div>
+          ) : (
+            <div className="rtc-field">
+              <label htmlFor="text-input">Paste your text</label>
+              <div className="rtc-textarea-wrap">
+                <textarea
+                  ref={textareaRef}
+                  id="text-input"
+                  className="rtc-textarea"
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  placeholder="Paste an article, essay, newsletter, script, or anything else you want to measure."
+                  aria-label="Paste text to calculate reading time"
+                />
+              </div>
+              <div className="rtc-privacy-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                Your text stays in your browser. Nothing is uploaded.
+              </div>
+            </div>
           )}
 
-          <div className="rtc-actions">
-            <button
-              className="rtc-btn rtc-btn-primary"
-              onClick={handleCalculate}
-              disabled={!text.trim()}
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.35-4.35" />
-              </svg>
-              Calculate Reading Time
-            </button>
-            <button
-              className="rtc-btn rtc-btn-secondary"
-              onClick={handleClear}
-              disabled={!text && !url}
-            >
-              Clear
-            </button>
-          </div>
+          {inputMode !== 'book' && (
+            <div className="rtc-actions">
+              <button
+                className="rtc-btn rtc-btn-primary"
+                onClick={handleCalculate}
+                disabled={!text.trim()}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+                Calculate Reading Time
+              </button>
+              <button
+                className="rtc-btn rtc-btn-secondary"
+                onClick={handleClear}
+                disabled={!text && !url}
+              >
+                Clear
+              </button>
+            </div>
+          )}
         </div>
 
         {/* URL Title Display */}
@@ -388,6 +591,82 @@ Reading level: ${stats.readingLevel.level}`
               <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
             </svg>
             <span>Fetched: <strong>{urlTitle}</strong></span>
+          </div>
+        )}
+
+        {/* Multiple Books Selection */}
+        {multipleBooks && multipleBooks.length > 0 && (
+          <div className="rtc-book-selection">
+            <h3 className="rtc-book-selection-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+              Multiple books found
+            </h3>
+            <p className="rtc-book-selection-subtitle">Select the book you&apos;re looking for:</p>
+            <div className="rtc-book-list">
+              {multipleBooks.map((book, index) => (
+                <button
+                  key={index}
+                  className="rtc-book-option"
+                  onClick={() => handleSelectBook(book)}
+                  type="button"
+                >
+                  <div className="rtc-book-option-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                    </svg>
+                  </div>
+                  <div className="rtc-book-option-details">
+                    <span className="rtc-book-option-title">{book?.title}</span>
+                    <span className="rtc-book-option-meta">
+                      by {book?.author}
+                      {book?.publishedYear && ` · ${book.publishedYear}`}
+                      {book?.pageCount && book.pageCount > 0 && ` · ${book.pageCount} pages`}
+                      {book?.genre && ` · ${book.genre}`}
+                    </span>
+                  </div>
+                  <svg className="rtc-book-option-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Book Info Display */}
+        {bookInfo && (
+          <div className="rtc-book-info">
+            <div className="rtc-book-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+              </svg>
+            </div>
+            <div className="rtc-book-details">
+              <h3 className="rtc-book-title">{bookInfo.title}</h3>
+              <p className="rtc-book-meta">
+                by {bookInfo.author}
+                {bookInfo.publishedYear && ` · ${bookInfo.publishedYear}`}
+                {bookInfo.pageCount > 0 && ` · ${bookInfo.pageCount} pages`}
+              </p>
+              {bookInfo.description && (
+                <p className="rtc-book-desc">{bookInfo.description}</p>
+              )}
+              {bookInfo.confidence === 'low' && (
+                <p className="rtc-book-confidence">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
+                  Low confidence match — results may be estimates
+                </p>
+              )}
+            </div>
           </div>
         )}
 
@@ -502,12 +781,14 @@ Reading level: ${stats.readingLevel.level}`
         )}
 
         {/* Empty State */}
-        {!stats && !text && !url && (
+        {!stats && !text && !url && !bookQuery && (
           <div className="rtc-empty-state">
             <p>
               {inputMode === 'text'
                 ? "Paste something above. A blog post, a speech, a long email, a chapter draft, a wall of text from someone who really discovered paragraphs late in life."
-                : "Enter a URL above to fetch the article content and calculate reading time. Works with most blogs and news sites."}
+                : inputMode === 'url'
+                ? "Enter a URL above to fetch the article content and calculate reading time. Works with most blogs and news sites."
+                : "Search for a book by title, author, or ISBN. We'll estimate reading time based on typical word counts for that book."}
             </p>
           </div>
         )}

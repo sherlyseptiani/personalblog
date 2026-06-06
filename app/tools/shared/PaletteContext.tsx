@@ -30,12 +30,14 @@ interface PaletteContextType {
   activePalette: PaletteId
   palette: Palette
   setPalette: (id: PaletteId) => void
+  mounted: boolean
 }
 
 const PaletteContext = createContext<PaletteContextType | undefined>(undefined)
 
 export function PaletteProvider({ children }: { children: ReactNode }) {
   const [activePalette, setActivePalette] = useState<PaletteId>(DEFAULT_PALETTE)
+  const [mounted, setMounted] = useState(false)
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -44,6 +46,7 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
       setActivePalette(saved)
       applyPalette(saved)
     }
+    setMounted(true)
     // Reset palette on unmount (when leaving tools pages)
     return () => {
       resetPalette()
@@ -82,7 +85,7 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
   const palette = PALETTES.find(p => p.id === activePalette) || PALETTES[0]
 
   return (
-    <PaletteContext.Provider value={{ activePalette, palette, setPalette }}>
+    <PaletteContext.Provider value={{ activePalette, palette, setPalette, mounted }}>
       {children}
     </PaletteContext.Provider>
   )
@@ -96,6 +99,7 @@ export function usePalette() {
       activePalette: DEFAULT_PALETTE,
       palette: PALETTES[0],
       setPalette: () => {},
+      mounted: false,
     }
   }
   return context

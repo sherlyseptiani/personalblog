@@ -4,15 +4,13 @@ import { useState, useEffect } from 'react'
 import { usePalette, PALETTES } from './PaletteContext'
 
 export default function PaletteSwitcher() {
-  const { activePalette, setPalette } = usePalette()
+  const { activePalette, setPalette, mounted } = usePalette()
   const [open, setOpen] = useState(false)
   const [isDark, setIsDark] = useState(false)
-  const [mounted, setMounted] = useState(false)
 
   const active = PALETTES.find(p => p.id === activePalette) || PALETTES[0]
 
   useEffect(() => {
-    setMounted(true)
     const sync = () => setIsDark(document.documentElement.getAttribute('data-theme') === 'dark')
     sync()
     const observer = new MutationObserver(sync)
@@ -24,6 +22,26 @@ export default function PaletteSwitcher() {
     if (typeof window !== 'undefined' && (window as any).toggleTheme) {
       (window as any).toggleTheme()
     }
+  }
+
+  // Don't render until mounted to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="tools-palette-switcher">
+        <button
+          className="tools-palette-btn"
+          type="button"
+          aria-label="Change colour palette"
+          style={{ '--active-gradient': `linear-gradient(135deg, ${active.p1}, ${active.p2})` } as React.CSSProperties}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="18" height="18">
+            <path d="M12 2v8" />
+            <rect x="8" y="10" width="8" height="2.5" rx="1" />
+            <rect x="3.5" y="12.5" width="17" height="7" rx="2" />
+          </svg>
+        </button>
+      </div>
+    )
   }
 
   return (
@@ -49,8 +67,7 @@ export default function PaletteSwitcher() {
               type="button"
               aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-              data-is-dark={mounted ? (isDark ? 'true' : 'false') : 'false'}
-              suppressHydrationWarning
+              data-is-dark={isDark ? 'true' : 'false'}
             >
               <span className="tools-theme-toggle-track">
                 <span className="tools-theme-toggle-thumb">

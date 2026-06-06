@@ -4,7 +4,7 @@ import ReadingTimeContent from './ReadingTimeContent'
 
 export const metadata: Metadata = {
   title: 'Reading Time Calculator — A Curious Note',
-  description: 'Paste any text or enter a URL to get a calmer estimate of how long it takes to read — for casual, average, and careful readers.',
+  description: 'Search any book,enter a URL, or copy paste any text to get a calmer estimate of how long it takes to read — for casual, average, and careful readers.',
   keywords: ['reading time', 'read time calculator', 'reading speed', 'words per minute'],
   authors: [{ name: 'Sherly Septiani' }],
   creator: 'Sherly Septiani',

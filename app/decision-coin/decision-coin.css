@@ -538,6 +538,101 @@
   color: var(--ink-3);
 }
 
+/* ---------- Multi-Option Input ---------- */
+.dc-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dc-field-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.dc-field-flex {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.dc-field-flex input {
+  height: 48px;
+  font-size: 16px;
+}
+
+.dc-remove-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--glass-bg-strong);
+  color: var(--ink-3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.dc-remove-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.dc-add-option-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 16px;
+  margin-bottom: 24px;
+  border-radius: 10px;
+  border: 1px dashed var(--line);
+  background: transparent;
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dc-add-option-btn:hover {
+  border-color: var(--dc-accent);
+  color: var(--dc-accent);
+  background: rgba(var(--dc-accent-rgb), 0.05);
+}
+
+/* ---------- Multi-Option Coin ---------- */
+.dc-coin-multi {
+  background: linear-gradient(145deg, #f0f0e8 0%, #e0e0d8 50%, #c8c8c0 100%);
+}
+
+.dc-coin-question {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 400;
+  color: rgba(var(--dc-accent-rgb), 0.5);
+}
+
+@media (min-width: 480px) {
+  .dc-coin-question {
+    font-size: 56px;
+  }
+}
+
+html[data-theme="dark"] .dc-coin-multi {
+  background: linear-gradient(145deg, #353530 0%, #252520 50%, #151510 100%);
+}
+
+html[data-theme="dark"] .dc-coin-question {
+  color: rgba(var(--dc-accent-rgb), 0.7);
+}
+
 /* ---------- Footer ---------- */
 .dc-footer {
   text-align: center;

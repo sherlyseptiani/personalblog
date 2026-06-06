@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import './decision-coin.css'
 import PaletteSwitcher from '../tools/shared/PaletteSwitcher'
+import { usePalette } from '../tools/shared/PaletteContext'
 
 type Step = 'input' | 'flipping' | 'result' | 'reflection' | 'response'
 
@@ -26,41 +27,62 @@ const REFLECTIONS: Record<string, ReflectionResponse> = {
   },
 }
 
+const MAX_OPTIONS = 5
+
 export default function DecisionCoinContent() {
   const [step, setStep] = useState<Step>('input')
-  const [optionA, setOptionA] = useState('')
-  const [optionB, setOptionB] = useState('')
+  const [options, setOptions] = useState<string[]>(['', ''])
   const [result, setResult] = useState<string | null>(null)
   const [reflection, setReflection] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const { mounted } = usePalette()
 
   // Load from URL params on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const a = params.get('optionA')
     const b = params.get('optionB')
-    if (a) setOptionA(a)
-    if (b) setOptionB(b)
+
+    // Try new format first
+    const optionsParam = params.get('options')
+    if (optionsParam) {
+      try {
+        const parsedOptions = JSON.parse(decodeURIComponent(optionsParam))
+        if (Array.isArray(parsedOptions) && parsedOptions.length >= 2) {
+          setOptions(parsedOptions.slice(0, MAX_OPTIONS))
+          return
+        }
+      } catch {
+        // Fall through to old format
+      }
+    }
+
+    // Legacy format support
+    if (a || b) {
+      const newOptions = ['', '']
+      if (a) newOptions[0] = a
+      if (b) newOptions[1] = b
+      setOptions(newOptions)
+    }
   }, [])
 
   const validate = useCallback(() => {
-    const a = optionA.trim()
-    const b = optionB.trim()
+    const filledOptions = options.filter(o => o.trim())
 
-    if (!a || !b) {
-      setError('Please enter both options')
+    if (filledOptions.length < 2) {
+      setError('Please enter at least 2 options')
       return false
     }
 
-    if (a.length > 60 || b.length > 60) {
+    if (options.some(o => o.length > 60)) {
       setError('Each option must be 60 characters or less')
       return false
     }
 
     setError(null)
     return true
-  }, [optionA, optionB])
+  }, [options])
 
   const handleFlip = useCallback(() => {
     if (!validate()) return
@@ -69,7 +91,8 @@ export default function DecisionCoinContent() {
 
     // Wait for animation to complete (1.8s)
     setTimeout(() => {
-      const winner = Math.random() < 0.5 ? optionA.trim() : optionB.trim()
+      const filledOptions = options.filter(o => o.trim())
+      const winner = filledOptions[Math.floor(Math.random() * filledOptions.length)]
       setResult(winner)
       setStep('result')
 
@@ -78,7 +101,7 @@ export default function DecisionCoinContent() {
         setStep('reflection')
       }, 1800)
     }, 1800)
-  }, [optionA, optionB, validate])
+  }, [options, validate])
 
   const handleReflection = useCallback((answer: string) => {
     setReflection(answer)
@@ -95,20 +118,46 @@ export default function DecisionCoinContent() {
 
   const handleCopyLink = useCallback(async () => {
     const url = new URL(window.location.href)
-    url.searchParams.set('optionA', optionA.trim())
-    url.searchParams.set('optionB', optionB.trim())
+    // Clear old params
+    url.searchParams.delete('optionA')
+    url.searchParams.delete('optionB')
+    // Set new format
+    const filledOptions = options.filter(o => o.trim())
+    url.searchParams.set('options', encodeURIComponent(JSON.stringify(filledOptions)))
     await navigator.clipboard.writeText(url.toString())
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
-  }, [optionA, optionB])
+  }, [options])
+
+  const addOption = useCallback(() => {
+    if (options.length < MAX_OPTIONS) {
+      setOptions([...options, ''])
+    }
+  }, [options])
+
+  const removeOption = useCallback((index: number) => {
+    if (options.length > 2) {
+      const newOptions = options.filter((_, i) => i !== index)
+      setOptions(newOptions)
+    }
+  }, [options])
+
+  const updateOption = useCallback((index: number, value: string) => {
+    const newOptions = [...options]
+    newOptions[index] = value.slice(0, 60)
+    setOptions(newOptions)
+  }, [options])
 
   const getInitial = (text: string) => {
     return text.trim().charAt(0).toUpperCase() || '?'
   }
 
+  const filledOptions = options.filter(o => o.trim())
+  const resultIndex = result ? filledOptions.indexOf(result) : -1
+
   return (
     <>
-      <div className="dc-container">
+      <div className="dc-container" style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.2s ease' }}>
         {/* Header */}
         <header className="dc-header">
           <div className="dc-eyebrow">
@@ -126,37 +175,52 @@ export default function DecisionCoinContent() {
           {/* Step 1: Input */}
           {step === 'input' && (
             <div className="dc-step-input">
-              <h2 className="dc-question">What are you deciding between?</h2>
+              <h2 className="dc-question">
+                {options.length === 2 ? 'What are you deciding between?' : 'What are your options?'}
+              </h2>
 
-              <div className="dc-inputs">
-                <div className="dc-field">
-                  <label htmlFor="optionA">Option A</label>
-                  <input
-                    id="optionA"
-                    type="text"
-                    value={optionA}
-                    onChange={(e) => setOptionA(e.target.value.slice(0, 60))}
-                    placeholder="Stay home"
-                    maxLength={60}
-                    aria-label="First option"
-                  />
-                </div>
-
-                <div className="dc-or">or</div>
-
-                <div className="dc-field">
-                  <label htmlFor="optionB">Option B</label>
-                  <input
-                    id="optionB"
-                    type="text"
-                    value={optionB}
-                    onChange={(e) => setOptionB(e.target.value.slice(0, 60))}
-                    placeholder="Go out"
-                    maxLength={60}
-                    aria-label="Second option"
-                  />
-                </div>
+              <div className="dc-options-list">
+                {options.map((option, index) => (
+                  <div key={index} className="dc-field-row">
+                    <div className="dc-field dc-field-flex">
+                      <label htmlFor={`option-${index}`}>Option {String.fromCharCode(65 + index)}</label>
+                      <input
+                        id={`option-${index}`}
+                        type="text"
+                        value={option}
+                        onChange={(e) => updateOption(index, e.target.value)}
+                        placeholder={index === 0 ? 'Stay home' : index === 1 ? 'Go out' : `Option ${String.fromCharCode(65 + index)}`}
+                        maxLength={60}
+                        aria-label={`Option ${String.fromCharCode(65 + index)}`}
+                      />
+                    </div>
+                    {options.length > 2 && (
+                      <button
+                        type="button"
+                        className="dc-remove-btn"
+                        onClick={() => removeOption(index)}
+                        aria-label={`Remove option ${String.fromCharCode(65 + index)}`}
+                        title="Remove option"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <line x1="18" y1="6" x2="6" y2="18" />
+                          <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                ))}
               </div>
+
+              {options.length < MAX_OPTIONS && (
+                <button type="button" className="dc-add-option-btn" onClick={addOption}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  Add another option
+                </button>
+              )}
 
               {error && <p className="dc-error">{error}</p>}
 
@@ -165,7 +229,7 @@ export default function DecisionCoinContent() {
                   <circle cx="12" cy="12" r="10" />
                   <path d="M12 8v8M8 12h8" />
                 </svg>
-                Flip the Coin
+                {options.length === 2 ? 'Flip the Coin' : `Choose from ${filledOptions.length} options`}
               </button>
             </div>
           )}
@@ -174,25 +238,20 @@ export default function DecisionCoinContent() {
           {step === 'flipping' && (
             <div className="dc-coin-container">
               <div className="dc-coin dc-coin-flipping">
-                <div className="dc-coin-face">
+                <div className="dc-coin-face dc-coin-multi">
                   <div className="dc-coin-inner">
-                    <span className="dc-coin-initial">{getInitial(optionA)}</span>
-                  </div>
-                </div>
-                <div className="dc-coin-back">
-                  <div className="dc-coin-inner">
-                    <span className="dc-coin-initial">{getInitial(optionB)}</span>
+                    <span className="dc-coin-question">?</span>
                   </div>
                 </div>
               </div>
-              <p className="dc-flipping-text">The coin is in the air...</p>
+              <p className="dc-flipping-text">The coin is deciding...</p>
             </div>
           )}
 
           {/* Step 3: Result */}
           {step === 'result' && result && (
             <div className="dc-result">
-              <p className="dc-result-label">The coin landed on</p>
+              <p className="dc-result-label">The coin chose</p>
               <p className="dc-result-value">{result}</p>
               <p className="dc-result-hint">Take a moment to notice your reaction...</p>
             </div>
@@ -248,7 +307,7 @@ export default function DecisionCoinContent() {
         </div>
 
         {/* Empty State - Only show on initial input step */}
-        {step === 'input' && !optionA && !optionB && (
+        {step === 'input' && !options.some(o => o.trim()) && (
           <div className="dc-empty-state">
             <p>Some choices don't need advice. They just need a coin and a moment of honesty.</p>
           </div>
