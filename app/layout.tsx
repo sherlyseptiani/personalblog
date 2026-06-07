@@ -77,6 +77,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
+        <meta name="google-adsense-account" content="ca-pub-6248246317044144" />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6248246317044144" crossOrigin="anonymous"></script>
       </head>
       <body>
         <div className="ambient" aria-hidden="true"></div>
